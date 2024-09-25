@@ -45,8 +45,9 @@ export const Login = () => {
                 secureTextEntry={true}
               />
               <TouchableOpacity style={styles.submitBtn} onPress={handleLogin}>
-                <Text>Enviar</Text>
+                <Text style={styles.submitBtnTxt}>Login</Text>
               </TouchableOpacity>
+              <Text style={styles.registerLink}>NÃO POSSUI CONTA?</Text>
             </View>
           </View>
         </View>
@@ -58,6 +59,7 @@ export const Login = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'white'
   },
   logoBg: {
     height: "100%",
@@ -75,6 +77,8 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 100,
     display: "flex",
     padding: 55,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   logo: {
     marginTop: 170,
@@ -97,6 +101,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 50,
     justifyContent: "space-around",
+    gap: 20
   },
   input: {
     width: 300,
@@ -104,13 +109,26 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: "#D9D9D9",
     color: "black",
-    fontSize: 20,
-    padding: 10,
+    fontWeight: 'thin',
+    fontSize: 24,
+    padding: 20,
   },
   submitBtn: {
     backgroundColor: "purple",
     width: 200,
     height: 50,
     borderRadius: 10,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 60
   },
+  submitBtnTxt: {
+   color: 'white',
+   fontSize: 23
+  },
+  registerLink: {
+    color: 'black',
+    fontSize: 18
+   },
 });

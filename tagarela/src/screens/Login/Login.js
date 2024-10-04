@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 import {
   View,
@@ -49,7 +49,7 @@ export const Login = () => {
               <Pressable style={({pressed}) => [
                 styles.submitBtn,
                 {backgroundColor: pressed ? 'darkviolet' : 'purple'}
-              ]} onPress={handleLogin}>
+              ]}>
                 <Text style={styles.submitBtnTxt}>Login</Text>
               </Pressable>
               <Text style={styles.registerLink}>NÃO POSSUI CONTA?</Text>

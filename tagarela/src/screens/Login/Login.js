@@ -6,7 +6,7 @@ import {
   StyleSheet,
   Image,
   TextInput,
-  TouchableOpacity,
+  Pressable,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
@@ -46,9 +46,12 @@ export const Login = () => {
                 onChangeText={setPassword}
                 secureTextEntry={true}
               />
-              <TouchableOpacity style={styles.submitBtn} onPress={handleLogin}>
+              <Pressable style={({pressed}) => [
+                styles.submitBtn,
+                {backgroundColor: pressed ? 'darkviolet' : 'purple'}
+              ]} onPress={handleLogin}>
                 <Text style={styles.submitBtnTxt}>Login</Text>
-              </TouchableOpacity>
+              </Pressable>
               <Text style={styles.registerLink}>NÃO POSSUI CONTA?</Text>
             </View>
           </View>

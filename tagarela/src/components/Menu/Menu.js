@@ -1,4 +1,5 @@
 import { View, Pressable, StyleSheet, Image } from "react-native";
+import images from "../../assets/assets";
 
 const Menu = () => {
   return (
@@ -9,7 +10,7 @@ const Menu = () => {
           { backgroundColor: pressed ? "#6841AD" : "#7E57C2" },
         ]}
       >
-        <Image source={require("../../assets/icon-home.png")}></Image>
+        <Image source={images.home}></Image>
       </Pressable>
       <Pressable
         style={({ pressed }) => [
@@ -17,7 +18,7 @@ const Menu = () => {
           { backgroundColor: pressed ? "#6841AD" : "#7E57C2" },
         ]}
       >
-        <Image source={require("../../assets/icon-find.png")}></Image>
+        <Image source={images.find}></Image>
       </Pressable>
       <Pressable
         style={({ pressed }) => [
@@ -25,7 +26,7 @@ const Menu = () => {
           { backgroundColor: pressed ? "#6841AD" : "#7E57C2" },
         ]}
       >
-        <Image source={require("../../assets/icon-alarm.png")}></Image>
+        <Image source={images.alarm}></Image>
       </Pressable>
       <Pressable
         style={({ pressed }) => [
@@ -33,7 +34,7 @@ const Menu = () => {
           { backgroundColor: pressed ? "#6841AD" : "#7E57C2" },
         ]}
       >
-        <Image source={require("../../assets/icon-settings.png")}></Image>
+        <Image source={images.settings}></Image>
       </Pressable>
     </View>
   );

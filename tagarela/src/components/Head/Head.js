@@ -1,11 +1,12 @@
 import { View, Image, StyleSheet } from "react-native";
+import images from "../../assets/assets";
 
 const Head = () => {
   return (
     <View style={styles.headContainer}>
       <Image
         style={styles.wave}
-        source={require("../../assets/img-head.png")}
+        source={images.head}
       />
     </View>
   );

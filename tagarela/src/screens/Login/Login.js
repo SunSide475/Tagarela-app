@@ -8,6 +8,7 @@ import {
   Pressable,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import images from "../../assets/assets";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
@@ -24,7 +25,7 @@ export const Login = () => {
       <View style={styles.container}>
         <View style={styles.logoBg}>
           <Image
-            source={require("../../assets/tagarela_logo.png")}
+            source={images.logo}
             style={styles.logo}
           />
           <View style={styles.loginInputs}>

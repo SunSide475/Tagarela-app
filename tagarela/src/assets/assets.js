@@ -1,10 +1,28 @@
 const images = {
-    logo: require('./tagarela_logo.png'),
-    settings: require('./icon-settings.png'),
-    home: require('./icon-home.png'),
-    find: require('./icon-find.png'),
-    alarm: require('./icon-alarm.png'),
-    head: require('./img-head.png')
-}
+  logo: {
+    src: require("./tagarela_logo.png"),
+    alt: "tagarela logo",
+  },
+  settings: {
+    src: require("./icon-settings.png"),
+    alt: "settings icon",
+  },
+  home: {
+    src: require("./icon-home.png"),
+    alt: "home icon",
+  },
+  find: {
+    src: require("./icon-find.png"),
+    alt: "find icon",
+  },
+  alarm: {
+    src: require("./icon-alarm.png"),
+    alt: "alarm icon",
+  },
+  head: {
+    src: require("./img-head.png"),
+    alt: "header with tagarela logo",
+  },
+};
 
-export default images
+export default images;

@@ -10,7 +10,7 @@ const Menu = () => {
           { backgroundColor: pressed ? "#6841AD" : "#7E57C2" },
         ]}
       >
-        <Image source={images.home}></Image>
+        <Image source={images.home.src} accessibilityLabel={images.home.alt}></Image>
       </Pressable>
       <Pressable
         style={({ pressed }) => [
@@ -18,7 +18,7 @@ const Menu = () => {
           { backgroundColor: pressed ? "#6841AD" : "#7E57C2" },
         ]}
       >
-        <Image source={images.find}></Image>
+        <Image source={images.find.src} accessibilityLabel={images.find.alt}></Image>
       </Pressable>
       <Pressable
         style={({ pressed }) => [
@@ -26,7 +26,7 @@ const Menu = () => {
           { backgroundColor: pressed ? "#6841AD" : "#7E57C2" },
         ]}
       >
-        <Image source={images.alarm}></Image>
+        <Image source={images.alarm.src} accessibilityLabel={images.alarm.alt}></Image>
       </Pressable>
       <Pressable
         style={({ pressed }) => [
@@ -34,7 +34,7 @@ const Menu = () => {
           { backgroundColor: pressed ? "#6841AD" : "#7E57C2" },
         ]}
       >
-        <Image source={images.settings}></Image>
+        <Image source={images.settings.src} accessibilityLabel={images.settings.alt}></Image>
       </Pressable>
     </View>
   );

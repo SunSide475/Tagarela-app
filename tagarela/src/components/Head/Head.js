@@ -6,7 +6,8 @@ const Head = () => {
     <View style={styles.headContainer}>
       <Image
         style={styles.wave}
-        source={images.head}
+        source={images.head.src}
+        accessibilityLabel={images.head.alt}
       />
     </View>
   );

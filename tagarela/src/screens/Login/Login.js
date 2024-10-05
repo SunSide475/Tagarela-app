@@ -25,7 +25,8 @@ export const Login = () => {
       <View style={styles.container}>
         <View style={styles.logoBg}>
           <Image
-            source={images.logo}
+            source={images.logo.src}
+            accessibilityLabel={images.logo.alt}
             style={styles.logo}
           />
           <View style={styles.loginInputs}>

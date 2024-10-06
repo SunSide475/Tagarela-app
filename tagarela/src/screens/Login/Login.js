@@ -8,10 +8,12 @@ import {
   Pressable,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { useNavigation } from "@react-navigation/native";
 import general from "../../assets/general/genereal";
 import useAuthStore from "../../store/useAuthStore";
 
-export const Login = () => {
+const Login = () => {
+  const navigation = useNavigation()
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { login, error, loading } = useAuthStore();
@@ -20,7 +22,7 @@ export const Login = () => {
     const response = await login(email, password);
 
     if (response) {
-      console.log(response);
+      navigation.navigate('Settings')
     } else {
       console.error("Erro no login:", error);
     }
@@ -154,3 +156,5 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
 });
+
+export default Login

@@ -1,22 +1,35 @@
-import { create } from 'zustand';
-import axios from 'axios';
+import { create } from "zustand";
+import axios from "axios";
 
 const useAuthStore = create((set) => ({
   user: null,
   error: null,
-  login: async (userName, password) => {
+  loading: false,
+  login: async (email, password) => {
+    set({ loading: true, error: null });
     try {
-      const response = await axios.post('localhost:4000/login', {
-        userName,
-        password,
-      });
-      set({ user: response.data.user, error: null });
+      const response = await axios.post(
+        "http://localhost:4000/login",
+        {
+          email,
+          password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      set({ user: response.data.user, error: null, loading: false });
+      return response.data;
     } catch (error) {
-      const errorMessage = error.response?.data?.message || 'login Error';
+      const errorMessage = error.response?.data?.message || "login Error";
+      console.error("Erro na requisição:", error);
       set({ error: errorMessage });
+      return null;
     }
   },
-  logout: () => set({ user: null, error: null }),
+  logout: () => set({ user: null, error: null, loading: false }),
 }));
 
 export default useAuthStore;

@@ -51,6 +51,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     gap: 16,
+    bottom: 0
   },
   submitBtn: {
     width: "20%",

@@ -8,7 +8,7 @@ import {
   Pressable,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import images from "../../assets/assets";
+import general from "../../assets/general/genereal";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
@@ -25,8 +25,8 @@ export const Login = () => {
       <View style={styles.container}>
         <View style={styles.logoBg}>
           <Image
-            source={images.logo.src}
-            accessibilityLabel={images.logo.alt}
+            source={general.logo.src}
+            accessibilityLabel={general.logo.alt}
             style={styles.logo}
           />
           <View style={styles.loginInputs}>

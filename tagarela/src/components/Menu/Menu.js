@@ -1,5 +1,5 @@
 import { View, Pressable, StyleSheet, Image } from "react-native";
-import images from "../../assets/assets";
+import icons from "../../assets/icons/icons";
 
 const Menu = () => {
   return (
@@ -10,7 +10,7 @@ const Menu = () => {
           { backgroundColor: pressed ? "#6841AD" : "#7E57C2" },
         ]}
       >
-        <Image source={images.home.src} accessibilityLabel={images.home.alt}></Image>
+        <Image source={icons.home.src} accessibilityLabel={icons.home.alt}></Image>
       </Pressable>
       <Pressable
         style={({ pressed }) => [
@@ -18,7 +18,7 @@ const Menu = () => {
           { backgroundColor: pressed ? "#6841AD" : "#7E57C2" },
         ]}
       >
-        <Image source={images.find.src} accessibilityLabel={images.find.alt}></Image>
+        <Image source={icons.find.src} accessibilityLabel={icons.find.alt}></Image>
       </Pressable>
       <Pressable
         style={({ pressed }) => [
@@ -26,7 +26,7 @@ const Menu = () => {
           { backgroundColor: pressed ? "#6841AD" : "#7E57C2" },
         ]}
       >
-        <Image source={images.alarm.src} accessibilityLabel={images.alarm.alt}></Image>
+        <Image source={icons.alarm.src} accessibilityLabel={icons.alarm.alt}></Image>
       </Pressable>
       <Pressable
         style={({ pressed }) => [
@@ -34,7 +34,7 @@ const Menu = () => {
           { backgroundColor: pressed ? "#6841AD" : "#7E57C2" },
         ]}
       >
-        <Image source={images.settings.src} accessibilityLabel={images.settings.alt}></Image>
+        <Image source={icons.settings.src} accessibilityLabel={icons.settings.alt}></Image>
       </Pressable>
     </View>
   );

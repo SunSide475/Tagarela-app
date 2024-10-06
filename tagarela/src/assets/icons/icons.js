@@ -1,8 +1,4 @@
-const images = {
-  logo: {
-    src: require("./tagarela_logo.png"),
-    alt: "tagarela logo",
-  },
+const icons = {
   settings: {
     src: require("./icon-settings.png"),
     alt: "settings icon",
@@ -18,10 +14,6 @@ const images = {
   alarm: {
     src: require("./icon-alarm.png"),
     alt: "alarm icon",
-  },
-  head: {
-    src: require("./img-head.png"),
-    alt: "header with tagarela logo",
   },
   profile: {
     src: require("./icon-profile.png"),
@@ -49,4 +41,4 @@ const images = {
   },
 };
 
-export default images;
+export default icons;

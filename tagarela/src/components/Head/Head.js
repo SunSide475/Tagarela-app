@@ -1,13 +1,13 @@
 import { View, Image, StyleSheet } from "react-native";
-import images from "../../assets/assets";
+import general from "../../assets/general/genereal";
 
 const Head = () => {
   return (
     <View style={styles.headContainer}>
       <Image
         style={styles.wave}
-        source={images.head.src}
-        accessibilityLabel={images.head.alt}
+        source={general.head.src}
+        accessibilityLabel={general.head.alt}
       />
     </View>
   );

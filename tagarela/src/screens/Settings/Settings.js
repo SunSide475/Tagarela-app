@@ -1,7 +1,7 @@
 import { View, StyleSheet, Text, Image } from "react-native"
 import Head from '../../components/Head/Head'
 import Menu from '../../components/Menu/Menu'
-import images from "../../assets/assets"
+import icons from "../../assets/icons/icons"
 
 const Settings = () => {
   return (
@@ -13,38 +13,38 @@ const Settings = () => {
     </View>
     <View style={styles.settingsActions}>   
     <View style={styles.actionsTitle}>
-    <Image source={images.profile.src} accessibilityLabel={images.profile.alt}></Image>
+    <Image source={icons.profile.src} accessibilityLabel={icons.profile.alt}></Image>
     <Text style={styles.text}>SUA CONTA</Text>
     </View>
-    <Image source={images.arrow.src} accessibilityLabel={images.arrow.alt}></Image>
+    <Image source={icons.arrow.src} accessibilityLabel={icons.arrow.alt}></Image>
     </View>
     <View style={styles.settingsActions}>   
     <View style={styles.actionsTitle}>
-    <Image source={images.eye.src} accessibilityLabel={images.eye.alt}></Image>
+    <Image source={icons.eye.src} accessibilityLabel={icons.eye.alt}></Image>
     <Text style={styles.text}>ACESSIBILIDADE</Text>
     </View>
-    <Image source={images.arrow.src} accessibilityLabel={images.arrow.alt}></Image>
+    <Image source={icons.arrow.src} accessibilityLabel={icons.arrow.alt}></Image>
     </View>
     <View style={styles.settingsActions}>   
     <View style={styles.actionsTitle}>
-    <Image source={images.notification.src} accessibilityLabel={images.notification.alt}></Image>
+    <Image source={icons.notification.src} accessibilityLabel={icons.notification.alt}></Image>
     <Text style={styles.text}>NOTIFICAÇÃO</Text>
     </View>
-    <Image source={images.arrow.src} accessibilityLabel={images.arrow.alt}></Image>
+    <Image source={icons.arrow.src} accessibilityLabel={icons.arrow.alt}></Image>
     </View>
     <View style={styles.settingsActions}>   
     <View style={styles.actionsTitle}>
-    <Image source={images.security.src} accessibilityLabel={images.security.alt}></Image>
+    <Image source={icons.security.src} accessibilityLabel={icons.security.alt}></Image>
     <Text style={styles.text}>PRIVACIDADE E SEGURANÇA</Text>
     </View>
-    <Image source={images.arrow.src} accessibilityLabel={images.arrow.alt}></Image>
+    <Image source={icons.arrow.src} accessibilityLabel={icons.arrow.alt}></Image>
     </View>
     <View style={styles.settingsActions}>   
     <View style={styles.actionsTitle}>
-    <Image source={images.help.src} accessibilityLabel={images.help.alt}></Image>
+    <Image source={icons.help.src} accessibilityLabel={icons.help.alt}></Image>
     <Text style={styles.text}>AJUDA</Text>
     </View>
-    <Image source={images.arrow.src} accessibilityLabel={images.arrow.alt}></Image>
+    <Image source={icons.arrow.src} accessibilityLabel={icons.arrow.alt}></Image>
     </View>
     </View>
     <Menu />

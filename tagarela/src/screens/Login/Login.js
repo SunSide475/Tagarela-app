@@ -13,7 +13,7 @@ import general from "../../assets/general/genereal";
 import useAuthStore from "../../store/useAuthStore";
 
 const Login = () => {
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { login, error, loading } = useAuthStore();
@@ -22,9 +22,13 @@ const Login = () => {
     const response = await login(email, password);
 
     if (response) {
-      navigation.navigate('Settings')
-    } else {
-      console.error("Erro no login:", error);
+      const currentError = useAuthStore.getState().error;
+      if (!currentError) {
+        navigation.navigate("Settings");
+      } else {
+        setEmail('')
+        setPassword('')
+      }
     }
   };
   return (
@@ -46,6 +50,7 @@ const Login = () => {
                 BEM-VINDO <Text style={styles.welcomeOrange}>DE VOLTA</Text>
               </Text>
               <View style={styles.inputContainer}>
+                {error && <Text style={styles.error}>{error}</Text>}
                 <TextInput
                   style={styles.input}
                   value={email}
@@ -155,6 +160,9 @@ const styles = StyleSheet.create({
     color: "black",
     fontSize: 18,
   },
+  error: {
+    color: 'red'
+  }
 });
 
-export default Login
+export default Login;

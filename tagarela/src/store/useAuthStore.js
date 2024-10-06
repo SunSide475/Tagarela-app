@@ -23,10 +23,10 @@ const useAuthStore = create((set) => ({
       set({ user: response.data.user, error: null, loading: false });
       return response.data;
     } catch (error) {
-      const errorMessage = error.response?.data?.message || "login Error";
-      console.error("Erro na requisição:", error);
+      const errorMessage = error.response?.data?.error || error.message || "login Error";
       set({ error: errorMessage });
-      return null;
+      set({loading: false})
+      return error;
     }
   },
   logout: () => set({ user: null, error: null, loading: false }),

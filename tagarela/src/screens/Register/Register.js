@@ -9,15 +9,29 @@ import {
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import general from "../../assets/general/genereal";
+import { useNavigation } from "@react-navigation/native";
+import useAuthStore from "../../store/useAuthStore";
 
 const Register = () => {
+  const navigation = useNavigation();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const { register, error, loading } = useAuthStore();
 
-  const handleRegister = () => {
-    // Lógica de registro aqui
+  const handleRegister = async () => {
+    const { success, error } = await register(username, email, confirmPassword);
+
+    if (success) {
+      navigation.navigate("Settings");
+      o;
+    } else {
+      setUsername("");
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
+    }
   };
 
   return (
@@ -38,6 +52,7 @@ const Register = () => {
               <Text style={styles.welcome}>
                 BEM-VINDO! <Text style={styles.welcomeOrange}>:)</Text>
               </Text>
+              <Text style={styles.error_register}>{error}</Text>
               <View style={styles.inputContainer}>
                 <TextInput
                   style={styles.input}
@@ -84,6 +99,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
+  },
+  error_register: {
+    color: "red",
+    fontSize: 15,
+    marginTop: "2%",
   },
   logoBg: {
     height: "40%",
@@ -156,4 +176,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Register
+export default Register;

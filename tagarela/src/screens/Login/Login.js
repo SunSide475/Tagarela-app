@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -11,24 +11,26 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { useNavigation } from "@react-navigation/native";
 import general from "../../assets/general/genereal";
 import useAuthStore from "../../store/useAuthStore";
+import { Loading } from "../../components/Loading/Loading";
 
 const Login = () => {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login, error, loading } = useAuthStore();
+  const { loading, login, error, cleanError } = useAuthStore();
+
+  useEffect(() => {
+    cleanError();
+  }, []);
 
   const handleLogin = async () => {
-    const response = await login(email, password);
+    const { success } = await login(email, password);
 
-    if (response) {
-      const currentError = useAuthStore.getState().error;
-      if (!currentError) {
-        navigation.navigate("Settings");
-      } else {
-        setEmail('')
-        setPassword('')
-      }
+    if (success) {
+      navigation.navigate("Settings");
+    } else {
+      setEmail("");
+      setPassword("");
     }
   };
   return (
@@ -38,6 +40,7 @@ const Login = () => {
         resetScrollToCoords={{ x: 0, y: 0 }}
         scrollEnabled={true}
       >
+        {loading && <Loading/>}
         <View style={styles.container}>
           <View style={styles.logoBg}>
             <Image
@@ -76,7 +79,12 @@ const Login = () => {
                     {loading ? "Carregando..." : "Login"}
                   </Text>
                 </Pressable>
-                <Text style={styles.registerLink} onPress={() => navigation.navigate("Register")}>NÃO POSSUI CONTA?</Text>
+                <Text
+                  style={styles.registerLink}
+                  onPress={() => navigation.navigate("Register")}
+                >
+                  NÃO POSSUI CONTA?
+                </Text>
               </View>
             </View>
           </View>
@@ -89,6 +97,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
+  },
+  error_register: {
+    color: "red",
+    fontSize: 15,
+    marginTop: "2%",
   },
   logoBg: {
     height: "100%",
@@ -161,8 +174,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   error: {
-    color: 'red'
-  }
+    color: "red",
+  },
 });
 
 export default Login;

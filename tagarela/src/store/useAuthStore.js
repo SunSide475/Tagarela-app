@@ -21,13 +21,12 @@ const useAuthStore = create((set) => ({
         }
       );
       set({ user: response.data.user, error: null, loading: false });
-      return response.data;
+      return { success: true, data: response.data };
     } catch (error) {
       const errorMessage =
-        error.response?.data?.error || error.message || "login Error";
-      set({ error: errorMessage });
-      set({ loading: false });
-      return error;
+        error.response?.data?.error || error.message || "Login Error";
+      set({ error: errorMessage, loading: false });
+      return { success: false, error: errorMessage }; 
     }
   },
   register: async (username, email, password) => {
@@ -55,6 +54,7 @@ const useAuthStore = create((set) => ({
   },
 
   logout: () => set({ user: null, error: null, loading: false }),
+  cleanError: () => set({error: null}),
 }));
 
 export default useAuthStore;

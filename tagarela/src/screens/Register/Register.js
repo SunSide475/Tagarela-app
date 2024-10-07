@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -11,6 +11,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import general from "../../assets/general/genereal";
 import { useNavigation } from "@react-navigation/native";
 import useAuthStore from "../../store/useAuthStore";
+import {Loading} from '../../components/Loading/Loading'
 
 const Register = () => {
   const navigation = useNavigation();
@@ -18,14 +19,17 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const { register, error, loading } = useAuthStore();
+  const { register, error, loading, cleanError } = useAuthStore();
+
+  useEffect(() => {
+    cleanError();
+  }, []);
 
   const handleRegister = async () => {
-    const { success, error } = await register(username, email, confirmPassword);
+    const { success } = await register(username, email, confirmPassword);
 
     if (success) {
       navigation.navigate("Settings");
-      o;
     } else {
       setUsername("");
       setEmail("");
@@ -41,6 +45,7 @@ const Register = () => {
         resetScrollToCoords={{ x: 0, y: 0 }}
         scrollEnabled={true}
       >
+        {loading && <Loading/>}
         <View style={styles.container}>
           <View style={styles.logoBg}>
             <Image

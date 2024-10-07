@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { useNavigation } from "@react-navigation/native";
 import general from "../../assets/general/genereal";
 
 const Register = () => {
@@ -28,17 +27,17 @@ const Register = () => {
         resetScrollToCoords={{ x: 0, y: 0 }}
         scrollEnabled={true}
       >
-       <View style={styles.container}>
+        <View style={styles.container}>
           <View style={styles.logoBg}>
-          <Image
-  source={general.logo.src}
-  accessibilityLabel={general.logo.alt}
-  style={styles.logo}
-/>
+            <Image
+              source={general.logo.src}
+              accessibilityLabel={general.logo.alt}
+              style={styles.logo}
+            />
             <View style={styles.loginInputs}>
               <Text style={styles.welcome}>
                 BEM-VINDO! <Text style={styles.welcomeOrange}>:)</Text>
-                </Text>
+              </Text>
               <View style={styles.inputContainer}>
                 <TextInput
                   style={styles.input}
@@ -99,8 +98,8 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: "white",
     marginTop: "10%",
-    borderTopLeftRadius: 50, 
-    borderTopRightRadius: 50, 
+    borderTopLeftRadius: 50,
+    borderTopRightRadius: 50,
     display: "flex",
     padding: 55,
     justifyContent: "center",
@@ -113,7 +112,7 @@ const styles = StyleSheet.create({
     fontSize: 27,
     fontWeight: "bold",
     color: "#000000",
-    textAlign: "left", 
+    textAlign: "left",
     width: "100%",
   },
   welcomeOrange: {
@@ -156,3 +155,5 @@ const styles = StyleSheet.create({
     fontSize: 23,
   },
 });
+
+export default Register

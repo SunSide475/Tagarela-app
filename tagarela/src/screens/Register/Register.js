@@ -3,116 +3,156 @@ import {
   View,
   Text,
   StyleSheet,
+  Image,
   TextInput,
   TouchableOpacity,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { useNavigation } from '@react-navigation/native'; // Importando useNavigation
- 
-export const cadastro = () => {
-  const [name, setName] = useState("");
+import { useNavigation } from "@react-navigation/native";
+import general from "../../assets/general/genereal";
+
+const Register = () => {
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigation = useNavigation(); // Usando useNavigation para navegação
- 
+  const [confirmPassword, setConfirmPassword] = useState("");
+
   const handleRegister = () => {
-    // Lógica de cadastro
+    // Lógica de registro aqui
   };
- 
+
   return (
-    <KeyboardAwareScrollView
-      style={styles.container}
-      resetScrollToCoords={{ x: 0, y: 0 }}
-      scrollEnabled={true}
-    >
-      <View style={styles.container}>
-        <View style={styles.registrationBg}>
-          <Text style={styles.title}>Cadastre-se</Text>
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.input}
-              value={name}
-              placeholder="NOME"
-              onChangeText={setName}
-            />
-            <TextInput
-              style={styles.input}
-              value={email}
-              placeholder="EMAIL"
-              onChangeText={setEmail}
-            />
-            <TextInput
-              style={styles.input}
-              value={password}
-              placeholder="SENHA"
-              onChangeText={setPassword}
-              secureTextEntry={true}
-            />
-            <TouchableOpacity style={styles.submitBtn} onPress={handleRegister}>
-              <Text style={styles.submitText}>Cadastrar</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.loginLink} // Estilo opcional para o botão de login
-              onPress={() => navigation.navigate('Login')} // Navegue para a tela de Login
-            >
-              <Text style={styles.loginText}>Já tem uma conta? Faça login aqui!</Text>
-            </TouchableOpacity>
+    <>
+      <KeyboardAwareScrollView
+        style={styles.container}
+        resetScrollToCoords={{ x: 0, y: 0 }}
+        scrollEnabled={true}
+      >
+       <View style={styles.container}>
+          <View style={styles.logoBg}>
+          <Image
+  source={general.logo.src}
+  accessibilityLabel={general.logo.alt}
+  style={styles.logo}
+/>
+            <View style={styles.loginInputs}>
+              <Text style={styles.welcome}>
+                BEM-VINDO! <Text style={styles.welcomeOrange}>:)</Text>
+                </Text>
+              <View style={styles.inputContainer}>
+                <TextInput
+                  style={styles.input}
+                  value={username}
+                  placeholder="USERNAME"
+                  onChangeText={setUsername}
+                />
+                <TextInput
+                  style={styles.input}
+                  value={email}
+                  placeholder="EMAIL"
+                  onChangeText={setEmail}
+                />
+                <TextInput
+                  style={styles.input}
+                  value={password}
+                  placeholder="SENHA"
+                  onChangeText={setPassword}
+                  secureTextEntry={true}
+                />
+                <TextInput
+                  style={styles.input}
+                  value={confirmPassword}
+                  placeholder="REPITA A SENHA"
+                  onChangeText={setConfirmPassword}
+                  secureTextEntry={true}
+                />
+                <TouchableOpacity
+                  style={styles.submitBtn}
+                  onPress={handleRegister}
+                >
+                  <Text style={styles.submitBtnTxt}>Sign In</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
           </View>
         </View>
-      </View>
-    </KeyboardAwareScrollView>
+      </KeyboardAwareScrollView>
+    </>
   );
 };
- 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "white",
   },
-  registrationBg: {
-    height: "100%",
+  logoBg: {
+    height: "40%",
     width: "100%",
-    backgroundColor: "lightgray",
+    backgroundColor: "#7e57c2",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
   },
-  title: {
-    fontSize: 30,
+  loginInputs: {
+    height: "60%",
+    width: "100%",
+    backgroundColor: "white",
+    marginTop: "10%",
+    borderTopLeftRadius: 50, 
+    borderTopRightRadius: 50, 
+    display: "flex",
+    padding: 55,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  logo: {
+    marginTop: 170,
+  },
+  welcome: {
+    fontSize: 27,
     fontWeight: "bold",
-    marginBottom: 20,
+    color: "#000000",
+    textAlign: "left", 
+    width: "100%",
+  },
+  welcomeOrange: {
+    fontSize: 27,
+    color: "orange",
+    fontWeight: "bold",
   },
   inputContainer: {
+    height: "70%",
     width: "90%",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    marginTop: 30,
     justifyContent: "space-around",
-    height: "60%",
+    gap: 30,
   },
   input: {
     width: 300,
     height: 70,
     borderRadius: 10,
-    backgroundColor: "#D9D9D9",
+    backgroundColor: "#f4f3f4",
     color: "black",
-    fontSize: 20,
-    padding: 10,
-    marginBottom: 15,
+    fontWeight: "thin",
+    fontSize: 24,
+    padding: 20,
   },
   submitBtn: {
-    backgroundColor: "blue",
+    backgroundColor: "orange",
     width: 200,
     height: 50,
     borderRadius: 10,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    marginTop: 60,
   },
-  loginLink: {
-    marginTop: 20,
-  },
-  loginText: {
-    color: "blue",
-    fontSize: 16,
+  submitBtnTxt: {
+    color: "white",
+    fontSize: 23,
   },
 });

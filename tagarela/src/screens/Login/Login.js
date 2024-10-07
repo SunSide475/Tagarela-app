@@ -76,7 +76,7 @@ const Login = () => {
                     {loading ? "Carregando..." : "Login"}
                   </Text>
                 </Pressable>
-                <Text style={styles.registerLink}>NÃO POSSUI CONTA?</Text>
+                <Text style={styles.registerLink} onPress={() => navigation.navigate("Register")}>NÃO POSSUI CONTA?</Text>
               </View>
             </View>
           </View>

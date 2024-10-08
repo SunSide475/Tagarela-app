@@ -98,7 +98,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
   },
   error_register: {
-    flex: 1,
     color: "red",
     fontSize: 15,
     marginTop: "2%",
@@ -117,7 +116,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 60,
   },
   welcome: {
-    paddingLeft: 16,
+    paddingLeft: 50,
     alignContent: "flex-end",
     fontSize: 27,
     fontWeight: "bold",
@@ -140,10 +139,11 @@ const styles = StyleSheet.create({
   },
   input: {
     width: "75%",
-    height: "15%",
+    height: "12%",
     borderRadius: 10,
     backgroundColor: "#D9D9D9",
     color: "black",
+    fontSize: 24,
     fontWeight: "normal",
     paddingLeft: "16px"
   },
@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 60,
+    marginTop: 10,
   },
   submitBtnTxt: {
     color: "white",

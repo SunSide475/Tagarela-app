@@ -11,7 +11,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import general from "../../assets/general/genereal";
 import { useNavigation } from "@react-navigation/native";
 import useAuthStore from "../../store/useAuthStore";
-import {Loading} from '../../components/Loading/Loading'
+import { Loading } from "../../components/Loading/Loading";
 
 const Register = () => {
   const navigation = useNavigation();
@@ -40,62 +40,53 @@ const Register = () => {
 
   return (
     <>
-      <KeyboardAwareScrollView
-        style={styles.container}
-        resetScrollToCoords={{ x: 0, y: 0 }}
-        scrollEnabled={true}
-      >
-        {loading && <Loading/>}
-        <View style={styles.container}>
-          <View style={styles.logoBg}>
-            <Image
-              source={general.logo.src}
-              accessibilityLabel={general.logo.alt}
-              style={styles.logo}
+      {loading && <Loading />}
+      <View style={styles.container}>
+        <View style={styles.logoBg}>
+          <Image
+            source={general.logo.src}
+            accessibilityLabel={general.logo.alt}
+            style={styles.logo}
+          />
+        </View>
+        <View style={styles.registerInputs}>
+          <Text style={styles.welcome}>
+            BEM-VINDO! <Text style={styles.welcomeOrange}>:)</Text>
+          </Text>
+          <Text style={styles.error_register}>{error}</Text>
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              value={username}
+              placeholder="USERNAME"
+              onChangeText={setUsername}
             />
-            <View style={styles.loginInputs}>
-              <Text style={styles.welcome}>
-                BEM-VINDO! <Text style={styles.welcomeOrange}>:)</Text>
-              </Text>
-              <Text style={styles.error_register}>{error}</Text>
-              <View style={styles.inputContainer}>
-                <TextInput
-                  style={styles.input}
-                  value={username}
-                  placeholder="USERNAME"
-                  onChangeText={setUsername}
-                />
-                <TextInput
-                  style={styles.input}
-                  value={email}
-                  placeholder="EMAIL"
-                  onChangeText={setEmail}
-                />
-                <TextInput
-                  style={styles.input}
-                  value={password}
-                  placeholder="SENHA"
-                  onChangeText={setPassword}
-                  secureTextEntry={true}
-                />
-                <TextInput
-                  style={styles.input}
-                  value={confirmPassword}
-                  placeholder="REPITA A SENHA"
-                  onChangeText={setConfirmPassword}
-                  secureTextEntry={true}
-                />
-                <TouchableOpacity
-                  style={styles.submitBtn}
-                  onPress={handleRegister}
-                >
-                  <Text style={styles.submitBtnTxt}>Sign In</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
+            <TextInput
+              style={styles.input}
+              value={email}
+              placeholder="EMAIL"
+              onChangeText={setEmail}
+            />
+            <TextInput
+              style={styles.input}
+              value={password}
+              placeholder="SENHA"
+              onChangeText={setPassword}
+              secureTextEntry={true}
+            />
+            <TextInput
+              style={styles.input}
+              value={confirmPassword}
+              placeholder="REPITA A SENHA"
+              onChangeText={setConfirmPassword}
+              secureTextEntry={true}
+            />
+            <TouchableOpacity style={styles.submitBtn} onPress={handleRegister}>
+              <Text style={styles.submitBtnTxt}>Sign In</Text>
+            </TouchableOpacity>
           </View>
         </View>
-      </KeyboardAwareScrollView>
+      </View>
     </>
   );
 };
@@ -103,67 +94,58 @@ const Register = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: "#7e57c2",
+    flexDirection: "column",
   },
   error_register: {
+    flex: 1,
     color: "red",
     fontSize: 15,
     marginTop: "2%",
   },
   logoBg: {
-    height: "40%",
-    width: "100%",
-    backgroundColor: "#7e57c2",
     display: "flex",
-    justifyContent: "center",
+    flex: 1,
     alignItems: "center",
+    justifyContent: "flex-end",
+    paddingBottom: "64px"
   },
-  loginInputs: {
-    height: "60%",
-    width: "100%",
+  registerInputs: {
+    flex: 5,
     backgroundColor: "white",
-    marginTop: "10%",
-    borderTopLeftRadius: 50,
-    borderTopRightRadius: 50,
-    display: "flex",
-    padding: 55,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  logo: {
-    marginTop: 170,
+    borderTopLeftRadius: 60,
+    borderTopRightRadius: 60,
   },
   welcome: {
+    paddingLeft: 16,
+    alignContent: "flex-end",
     fontSize: 27,
     fontWeight: "bold",
     color: "#000000",
     textAlign: "left",
-    width: "100%",
+    flex: 1,
   },
   welcomeOrange: {
+    flex: 1,
     fontSize: 27,
     color: "orange",
     fontWeight: "bold",
   },
   inputContainer: {
-    height: "70%",
-    width: "90%",
     display: "flex",
+    flex: 6,
     flexDirection: "column",
     alignItems: "center",
-    marginTop: 30,
-    justifyContent: "space-around",
-    gap: 30,
+    justifyContent: "space-evenly",
   },
   input: {
-    width: 300,
-    height: 70,
+    width: "75%",
+    height: "15%",
     borderRadius: 10,
-    backgroundColor: "#f4f3f4",
+    backgroundColor: "#D9D9D9",
     color: "black",
-    fontWeight: "thin",
-    fontSize: 24,
-    padding: 20,
+    fontWeight: "normal",
+    paddingLeft: "16px"
   },
   submitBtn: {
     backgroundColor: "orange",

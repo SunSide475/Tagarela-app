@@ -7,7 +7,6 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import general from "../../assets/general/genereal";
 import { useNavigation } from "@react-navigation/native";
 import useAuthStore from "../../store/useAuthStore";

@@ -12,7 +12,6 @@ import { useNavigation } from "@react-navigation/native";
 import general from "../../assets/general/genereal";
 import useAuthStore from "../../store/useAuthStore";
 import { Loading } from "../../components/Loading/Loading";
-import PopUp from "../../components/PopUp/PopUp";
 
 const Login = () => {
   const navigation = useNavigation();
@@ -43,7 +42,6 @@ const Login = () => {
       >
         {loading && <Loading />}
         <View style={styles.container}>
-          <PopUp></PopUp>
           <View style={styles.logoBg}>
             <Image
               source={general.logo.src}

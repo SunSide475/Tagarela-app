@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   View,
   Text,
@@ -6,11 +6,13 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  Animated,
 } from "react-native";
 import general from "../../assets/general/genereal";
 import { useNavigation } from "@react-navigation/native";
 import useAuthStore from "../../store/useAuthStore";
 import { Loading } from "../../components/Loading/Loading";
+import PopUp from "../../components/PopUp/PopUp";
 
 const Register = () => {
   const navigation = useNavigation();
@@ -19,6 +21,9 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const { register, error, loading, cleanError } = useAuthStore();
+  const [popUpVisible, setPopUpVisible] = useState(false);
+  const [popUpMessage, setPopUpMessage] = useState("");
+  const popUpAnimation = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     cleanError();
@@ -28,14 +33,60 @@ const Register = () => {
     const { success } = await register(username, email, confirmPassword);
 
     if (success) {
+      setPopUpMessage("Registro realizado com sucesso!");
+      setPopUpVisible(true);
+      
+      // Animação do pop-up
+      Animated.timing(popUpAnimation, {
+        toValue: 1,
+        duration: 900,
+        useNativeDriver: false, // Mude para false
+      }).start();
+
+      // Esconder o PopUp após 5 segundos
+      setTimeout(() => {
+        Animated.timing(popUpAnimation, {
+          toValue: 0,
+          duration: 900,
+          useNativeDriver: false, // Mude para false
+        }).start(() => setPopUpVisible(false));
+      }, 5000);
+      
       navigation.navigate("Settings");
     } else {
       setUsername("");
       setEmail("");
       setPassword("");
       setConfirmPassword("");
+
+      // Exibir mensagem de erro
+      if (error) {
+        setPopUpMessage(error);
+        setPopUpVisible(true);
+        
+        // Animação do pop-up para erro
+        Animated.timing(popUpAnimation, {
+          toValue: 1,
+          duration: 900,
+          useNativeDriver: false, // Mude para false
+        }).start();
+
+        // Esconder o PopUp após 5 segundos
+        setTimeout(() => {
+          Animated.timing(popUpAnimation, {
+            toValue: 0,
+            duration: 900,
+            useNativeDriver: false, // Mude para false
+          }).start(() => setPopUpVisible(false));
+        }, 5000);
+      }
     }
   };
+
+  const popUpScale = popUpAnimation.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 1],
+  });
 
   return (
     <>
@@ -85,6 +136,16 @@ const Register = () => {
             </TouchableOpacity>
           </View>
         </View>
+        {popUpVisible && (
+          <Animated.View
+            style={[
+              styles.popUpContainer,
+              { transform: [{ scale: popUpScale }] }, // Aplicar animação
+            ]}
+          >
+            <PopUp title="Sucesso!" message={popUpMessage} />
+          </Animated.View>
+        )}
       </View>
     </>
   );
@@ -106,7 +167,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "flex-end",
-    paddingBottom: "64px"
+    paddingBottom: "64px",
   },
   registerInputs: {
     flex: 5,
@@ -144,7 +205,7 @@ const styles = StyleSheet.create({
     color: "black",
     fontSize: 24,
     fontWeight: "normal",
-    paddingLeft: "16px"
+    paddingLeft: "16px",
   },
   submitBtn: {
     backgroundColor: "orange",
@@ -152,13 +213,20 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 10,
     display: "flex",
-    justifyContent: "center",
     alignItems: "center",
+    justifyContent: "center",
     marginTop: 10,
   },
   submitBtnTxt: {
-    color: "white",
-    fontSize: 23,
+    fontSize: 20,
+    color: "#000000",
+  },
+  popUpContainer: {
+    position: "absolute",
+    top: "40%",
+    left: "50%",
+    transform: [{ translateX: -100 }, { translateY: -50 }],
+    zIndex: 100,
   },
 });
 

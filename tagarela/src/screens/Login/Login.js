@@ -40,7 +40,7 @@ const Login = () => {
         resetScrollToCoords={{ x: 0, y: 0 }}
         scrollEnabled={true}
       >
-        {loading && <Loading/>}
+        {loading && <Loading />}
         <View style={styles.container}>
           <View style={styles.logoBg}>
             <Image

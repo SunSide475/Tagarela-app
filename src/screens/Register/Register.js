@@ -161,6 +161,7 @@ const styles = StyleSheet.create({
     color: "red",
     fontSize: 15,
     marginTop: "2%",
+    paddingLeft: 50,
   },
   logoBg: {
     display: "flex",

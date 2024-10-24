@@ -1,11 +1,5 @@
 import Head from "../../components/Head/Head";
-import {
-  View,
-  FlatList,
-  Pressable,
-  Text,
-  StyleSheet,
-} from "react-native";
+import { View, FlatList, Pressable, Text, StyleSheet } from "react-native";
 
 const btns = [
   { id: 1, title: "alimento" },
@@ -18,38 +12,59 @@ const btns = [
 
 const Home = () => {
   const renderItem = ({ item }) => (
-    <Pressable 
-    style={({ pressed }) => [
-      styles.button,
-      pressed && styles.buttonPressed 
-    ]}  
-  >
-    <Text style={styles.buttonText}>{item.title}</Text>
-  </Pressable>
+    <Pressable
+      style={({ pressed }) => [styles.button, pressed && styles.buttonPressed]}
+    >
+      <Text style={styles.buttonText}>{item.title}</Text>
+    </Pressable>
   );
   return (
-    <>
+    <View style={styles.container}>
       <Head />
-      <View>
-        <FlatList
-          data={btns}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-        ></FlatList>
+      <View style={styles.homeContainer}>
+        <View styles={styles.carousel}>
+          <FlatList
+            data={btns}
+            renderItem={renderItem}
+            keyExtractor={(item) => String(item.id)}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            styles={styles.flat}
+          ></FlatList>
+        </View>
       </View>
-    </>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    display: "flex",
+    flexDirection: "column",
+  },
+  carousel: {
+    height: "auto",
+  },
+  flat: {
+    width: "100%",
+  },
+  homeContainer: {
+    height: 100,
+    width: "100%",
+    marginTop: "40%",
+    backgroundColor: "#000",
+    zIndex: -2,
+  },
   button: {
     backgroundColor: "#FFC247",
-    paddingVertical: 13,
-    paddingHorizontal: 40,
-    borderRadius: 35, 
+    width: 100,
+    height: 40,
+    borderRadius: 20,
     marginHorizontal: 5,
+    justifyContent: "center",
+    alignItems: "center",
   },
   buttonText: {
     color: "#FFFFFF",

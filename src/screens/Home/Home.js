@@ -15,7 +15,7 @@ const Home = () => {
     <Pressable
       style={({ pressed }) => [styles.button, pressed && styles.buttonPressed]}
     >
-      <Text style={styles.buttonText}>{item.title}</Text>
+      <Text style={styles.globalStyles.text}>{item.title}</Text>
     </Pressable>
   );
   return (
@@ -58,8 +58,9 @@ const styles = StyleSheet.create({
     zIndex: -2,
   },
   button: {
+    display: 'flex',
     backgroundColor: "#FFC247",
-    width: 244,
+    width: 279,
     height: 58,
     borderRadius: 60,
     marginHorizontal: 5,
@@ -68,8 +69,9 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "#FFFFFF",
+    fontFamily: 'regular',
     fontSize: 32
-  },
+  },  
   buttonPressed: {
     opacity: 0.2,
   },

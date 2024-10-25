@@ -21,7 +21,7 @@ const Home = () => {
   return (
     <View style={styles.container}>
       <Head />
-      <View style={styles.homeContainer}>
+      <View style={styles.carouselContainer}>
         <View styles={styles.carousel}>
           <FlatList
             data={btns}
@@ -50,24 +50,25 @@ const styles = StyleSheet.create({
   flat: {
     width: "100%",
   },
-  homeContainer: {
-    height: 100,
+  carouselContainer: {
+    height: 60,
     width: "100%",
     marginTop: "40%",
-    backgroundColor: "#000",
+    backgroundColor: "#fff",
     zIndex: -2,
   },
   button: {
     backgroundColor: "#FFC247",
-    width: 100,
-    height: 40,
-    borderRadius: 20,
+    width: 244,
+    height: 58,
+    borderRadius: 60,
     marginHorizontal: 5,
     justifyContent: "center",
     alignItems: "center",
   },
   buttonText: {
     color: "#FFFFFF",
+    fontSize: 32
   },
   buttonPressed: {
     opacity: 0.2,

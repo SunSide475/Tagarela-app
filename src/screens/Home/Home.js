@@ -1,5 +1,7 @@
 import Head from "../../components/Head/Head";
 import { View, FlatList, Pressable, Text, StyleSheet } from "react-native";
+import { Loading } from "../../components/Loading/Loading";
+import useLoadFont from "../../hooks/useLoadFont";
 
 const btns = [
   { id: 1, title: "alimento" },
@@ -11,11 +13,22 @@ const btns = [
 ];
 
 const Home = () => {
+  const { fontsLoaded } = useLoadFont(
+    {
+      regular: require("../../assets/fonts/Quicksand-Regular.ttf"),
+    },
+    Loading
+  );
+
+  if (!fontsLoaded) {
+    return <Loading />;
+  }
+
   const renderItem = ({ item }) => (
     <Pressable
       style={({ pressed }) => [styles.button, pressed && styles.buttonPressed]}
     >
-      <Text style={styles.globalStyles.text}>{item.title}</Text>
+      <Text style={styles.buttonText}>{item.title}</Text>
     </Pressable>
   );
   return (
@@ -58,7 +71,7 @@ const styles = StyleSheet.create({
     zIndex: -2,
   },
   button: {
-    display: 'flex',
+    display: "flex",
     backgroundColor: "#FFC247",
     width: 279,
     height: 58,
@@ -69,9 +82,9 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "#FFFFFF",
-    fontFamily: 'regular',
-    fontSize: 32
-  },  
+    fontFamily: "regular",
+    fontSize: 32,
+  },
   buttonPressed: {
     opacity: 0.2,
   },

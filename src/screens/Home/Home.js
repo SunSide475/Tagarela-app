@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
   carouselContainer: {
     height: 60,
     width: "100%",
-    marginTop: "40%",
+    marginTop: "42%",
     backgroundColor: "#fff",
     zIndex: -2,
   },

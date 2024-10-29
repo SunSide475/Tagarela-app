@@ -1,12 +1,12 @@
 const general = {
     logo: {
       src: require("./tagarela_logo.png"),
-      alt: "tagarela logo",
+      alt: "Tagarela logo",
     },
-    head: {
-      src: require("./img-head.png"),
-      alt: "header with tagarela logo",
-    },
+    logoSmall: {
+      src: require("./tagarela-logo-small.png"),
+      alt: "Small tagarela logo",
+    }
   };
   
   export default general;

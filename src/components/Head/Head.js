@@ -6,8 +6,8 @@ const Head = () => {
     <View style={styles.headContainer}>
       <Image
         style={styles.wave}
-        source={general.head.src}
-        accessibilityLabel={general.head.alt}
+        source={general.logoSmall.src}
+        accessibilityLabel={general.logoSmall.alt}
       />
     </View>
   );
@@ -16,17 +16,17 @@ const Head = () => {
 const styles = StyleSheet.create({
   headContainer: {
     width: "100%",
-    height: "19%",
+    height: "16%",
     position: "absolute",
     top: 0,
     left: 0,
-    backgroundColor: "white",
+    backgroundColor: "orange",
     display: "flex",
     justifyContent: "flex-end",
     alignItems: "center",
   },
   wave: {
-    height: "100%",
+    marginBottom: "10%"
   },
 });
 

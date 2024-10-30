@@ -46,6 +46,13 @@ const Home = () => {
           ></FlatList>
         </View>
       </View>
+      <Text style={styles.text}>RECENTES</Text>
+      <View style={styles.cardsContainer}>
+        <View style={styles.cards}></View>
+        <View style={styles.cards}></View>
+        <View style={styles.cards}></View>
+        <View style={styles.cards}></View>
+      </View>
     </View>
   );
 };
@@ -88,6 +95,26 @@ const styles = StyleSheet.create({
   buttonPressed: {
     opacity: 0.2,
   },
+  cardsContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginTop: "5%",
+    gap: 40,
+  },
+  cards: {
+    backgroundColor: 'gray',
+    width: 155,
+    height: 160,
+    borderRadius: 8
+  },
+  text: {
+    fontSize: 24,
+    fontFamily: 'regular',
+    marginTop: "5%",
+    paddingLeft: "8%",
+  }
 });
 
 export default Home;

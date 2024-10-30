@@ -1,6 +1,9 @@
 # Tagarela
 
-Um aplicativo móvel desenvolvido em React Native para oferecer uma experiência de comunicação fluída. O Tagarela App é composto por funcionalidades que permitem interações rápidas e eficientes entre os usuários, promovendo uma plataforma de mensagens dinâmica e intuitiva. Aqui está uma visão do que você verá neste README:
+O Tagarela é um aplicativo desenvolvido para apoiar a comunicação de crianças com Transtorno do Espectro Autista (TEA) e Apraxia de Fala na Infância (AFI). Usando recursos visuais e interativos, o aplicativo auxilia no desenvolvimento da fala, inspirado em métodos como PECS e Prompt.
+
+## 📖 Sobre o Projeto
+Com uma interface simples e adaptada, o Tagarela permite que as crianças cliquem em imagens que representam ações ou objetos e visualizem vídeos demonstrativos para aprender a articulação correta dos sons. Ele complementa as terapias tradicionais, promovendo inclusão e melhorando a comunicação. Aqui está uma visão do que você verá neste README:
 
 1. Sobre o Projeto
 2. Funcionalidades
@@ -8,9 +11,6 @@ Um aplicativo móvel desenvolvido em React Native para oferecer uma experiência
 4. Pré-Requisitos
 5. Instalação
 6. Uso
-
-## 📖 Sobre o Projeto
-
 
 ## ⚙️ Funcionalidades
 

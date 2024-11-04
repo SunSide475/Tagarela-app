@@ -1,6 +1,8 @@
 import Head from "../../components/Head/Head";
 import { View, FlatList, Pressable, Text, StyleSheet } from "react-native";
 import { Loading } from "../../components/Loading/Loading";
+import Card from "../../components/Card/Card"
+
 import useLoadFont from "../../hooks/useLoadFont";
 
 const btns = [
@@ -48,10 +50,10 @@ const Home = () => {
       </View>
       <Text style={styles.text}>RECENTES</Text>
       <View style={styles.cardsContainer}>
-        <View style={styles.cards}></View>
-        <View style={styles.cards}></View>
-        <View style={styles.cards}></View>
-        <View style={styles.cards}></View>
+        <Card name="DOG" imageUrl={"https://em-content.zobj.net/source/apple/81/dog-face_1f436.png"}/>
+        <Card />
+        <Card />
+        <Card />
       </View>
     </View>
   );
@@ -102,12 +104,6 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     marginTop: "5%",
     gap: 40,
-  },
-  cards: {
-    backgroundColor: 'gray',
-    width: 155,
-    height: 160,
-    borderRadius: 8
   },
   text: {
     fontSize: 24,

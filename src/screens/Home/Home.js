@@ -1,4 +1,4 @@
-import Head from "../../components/Head/Head";
+import React from "react";
 import {
   View,
   FlatList,
@@ -7,12 +7,16 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
+  Dimensions,
 } from "react-native";
 import { Loading } from "../../components/Loading/Loading";
 import Card from "../../components/Card/Card";
 import Menu from "../../components/Menu/Menu";
 import icons from "../../assets/icons/icons";
 import useLoadFont from "../../hooks/useLoadFont";
+import Head from "../../components/Head/Head";
+
+const { width, height } = Dimensions.get("window");
 
 const btns = [
   { id: 1, title: "ALIMENTO" },
@@ -22,6 +26,18 @@ const btns = [
   { id: 5, title: "NECESSIDADE" },
   { id: 6, title: "NÃO SEI" },
 ];
+
+const isTablet = width > 600;
+const searchWidth = isTablet ? 90 : 40;
+const searchHeight = isTablet ? 90 : 40;
+const buttonWidth = isTablet ? width * 0.4 : width * 0.45;
+const buttonHeight = isTablet ? 130 : 50;
+const carouselPaddingLeft = isTablet ? "5%" : null
+const carouselMarginTop = isTablet ? "36%" : "46%"
+
+const getFontSize = (size) => {
+  return isTablet ? size * 1.9 : size;
+};
 
 const Home = () => {
   const { fontsLoaded } = useLoadFont(
@@ -37,31 +53,37 @@ const Home = () => {
 
   const renderItem = ({ item }) => (
     <Pressable
-      style={({ pressed }) => [styles.button, pressed && styles.buttonPressed]}
+      style={({ pressed }) => [
+        styles.button,
+        { width: buttonWidth, height: buttonHeight },
+        pressed && styles.buttonPressed,
+      ]}
     >
-      <Text style={styles.buttonText}>{item.title}</Text>
+      <Text style={[styles.buttonText, { fontSize: getFontSize(24) }]}>{item.title}</Text>
     </Pressable>
   );
+
   return (
     <View style={styles.container}>
       <Head />
 
-      <View style={styles.carouselContainer}>
+      <View style={[styles.carouselContainer, {paddingLeft: carouselPaddingLeft, marginTop: carouselMarginTop}]}>
         <TouchableOpacity>
-          <Image source={icons.searchPurple.src}></Image>
+          <Image source={icons.searchPurple.src} style={[styles.searchIcon, {width: searchWidth, height: searchHeight}]} />
         </TouchableOpacity>
-        <View styles={styles.carousel}>
-          <FlatList
-            data={btns}
-            renderItem={renderItem}
-            keyExtractor={(item) => String(item.id)}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            styles={styles.flat}
-          ></FlatList>
-        </View>
+
+        <FlatList
+          data={btns}
+          renderItem={renderItem}
+          keyExtractor={(item) => String(item.id)}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.flatListContainer}
+        />
       </View>
-      <Text style={styles.text}>RECENTES</Text>
+
+      <Text style={[styles.text, { fontSize: getFontSize(22) }]}>RECENTES</Text>
+
       <View style={styles.cardsContainer}>
         <Card
           name="CACHORRO"
@@ -73,6 +95,7 @@ const Home = () => {
         <Card />
         <Card />
       </View>
+
       <Menu />
     </View>
   );
@@ -85,29 +108,23 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
   },
-  carousel: {
-    height: "auto",
-  },
-  flat: {
-    width: "100%",
-  },
   carouselContainer: {
-    height: 60,
     width: "100%",
-    marginTop: "46%",
     backgroundColor: "#fff",
-    zIndex: -2,
-    paddingLeft: 20,
+    paddingHorizontal: 20,
+  },
+  flatListContainer: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    paddingVertical: 10,
   },
   button: {
     display: "flex",
     backgroundColor: "#FFC247",
-    width: 209,
-    height: 50,
     borderRadius: 60,
-    marginHorizontal: 12,
     justifyContent: "center",
     alignItems: "center",
+    marginHorizontal: 8, // Ajuste as margens horizontais conforme necessário
     marginTop: 25,
   },
   buttonText: {
@@ -118,6 +135,9 @@ const styles = StyleSheet.create({
   buttonPressed: {
     opacity: 0.2,
   },
+  searchIcon: {
+    marginRight: 10,
+  },
   cardsContainer: {
     display: "flex",
     justifyContent: "center",
@@ -127,12 +147,10 @@ const styles = StyleSheet.create({
     gap: 40,
   },
   text: {
-    fontSize: 22,
     fontFamily: "regular",
-    marginTop: "25%",
+    marginTop: "8%",
     paddingLeft: "10%",
   },
-
 });
 
 export default Home;

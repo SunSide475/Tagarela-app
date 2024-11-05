@@ -1,22 +1,21 @@
 import React from "react";
-import { StyleSheet, Text, Image, Alert, Pressable } from "react-native";
+import { StyleSheet, Text, Image, Pressable, Dimensions } from "react-native";
+
+const { width, height } = Dimensions.get("window");
+
+const isTablet = width > 600;
+const cardWidth = isTablet ? width * 0.4 : width * 0.35;
+const cardHeight = isTablet ? cardWidth * 1.0 : cardWidth * 1.03;
 
 const Card = ({ name, imageUrl }) => {
-  const handlePress = () => {
-    Alert.alert(
-      "Card pressionado!",
-      `Você pressionou o card com o nome: ${name}`
-    );
-  };
-
   return (
     <Pressable
-      onPress={handlePress}
       style={({ pressed }) => [
         styles.card,
         {
-          backgroundColor: pressed ? "#aaa" : "fff",
-          borderColor: "##7E57C2",
+          width: cardWidth,
+          height: cardHeight,
+          backgroundColor: pressed ? "#aaa" : "#fff",
           borderColor: "#7E57C2",
           borderWidth: pressed ? 4 : 0,
           opacity: pressed ? 0.7 : 1,
@@ -31,8 +30,6 @@ const Card = ({ name, imageUrl }) => {
 
 const styles = StyleSheet.create({
   card: {
-    width: 155,
-    height: 160,
     borderRadius: 8,
     backgroundColor: "white",
     alignItems: "center",
@@ -44,12 +41,12 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   image: {
-    width: 80,
-    height: 80,
+    width: "60%",
+    height: "60%",
     marginBottom: 10,
   },
   text: {
-    fontSize: 19,
+    fontSize: isTablet ? 45 : 19,
     color: "#7E57C2",
     fontWeight: "bold",
   },

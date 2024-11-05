@@ -39,6 +39,10 @@ const icons = {
     src: require("./icon-arrow.png"),
     alt: "arrow icon",
   },
+  searchPurple: {
+    src: require("./icon-search-purple.png"),
+    alt: "Search icon",
+  },
 };
 
 export default icons;

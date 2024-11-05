@@ -1,17 +1,26 @@
 import Head from "../../components/Head/Head";
-import { View, FlatList, Pressable, Text, StyleSheet } from "react-native";
+import {
+  View,
+  FlatList,
+  Pressable,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 import { Loading } from "../../components/Loading/Loading";
-import Card from "../../components/Card/Card"
-
+import Card from "../../components/Card/Card";
+import Menu from "../../components/Menu/Menu";
+import icons from "../../assets/icons/icons";
 import useLoadFont from "../../hooks/useLoadFont";
 
 const btns = [
-  { id: 1, title: "alimento" },
-  { id: 2, title: "necessidade" },
-  { id: 3, title: "não sei" },
-  { id: 4, title: "alimento" },
-  { id: 5, title: "necessidade" },
-  { id: 6, title: "não sei" },
+  { id: 1, title: "ALIMENTO" },
+  { id: 2, title: "NECESSIDADE" },
+  { id: 3, title: "NÃO SEI" },
+  { id: 4, title: "ALIMENTO" },
+  { id: 5, title: "NECESSIDADE" },
+  { id: 6, title: "NÃO SEI" },
 ];
 
 const Home = () => {
@@ -36,7 +45,11 @@ const Home = () => {
   return (
     <View style={styles.container}>
       <Head />
+
       <View style={styles.carouselContainer}>
+        <TouchableOpacity>
+          <Image source={icons.searchPurple.src}></Image>
+        </TouchableOpacity>
         <View styles={styles.carousel}>
           <FlatList
             data={btns}
@@ -50,11 +63,17 @@ const Home = () => {
       </View>
       <Text style={styles.text}>RECENTES</Text>
       <View style={styles.cardsContainer}>
-        <Card name="DOG" imageUrl={"https://em-content.zobj.net/source/apple/81/dog-face_1f436.png"}/>
+        <Card
+          name="CACHORRO"
+          imageUrl={
+            "https://em-content.zobj.net/source/apple/81/dog-face_1f436.png"
+          }
+        />
         <Card />
         <Card />
         <Card />
       </View>
+      <Menu />
     </View>
   );
 };
@@ -75,42 +94,45 @@ const styles = StyleSheet.create({
   carouselContainer: {
     height: 60,
     width: "100%",
-    marginTop: "42%",
+    marginTop: "46%",
     backgroundColor: "#fff",
     zIndex: -2,
+    paddingLeft: 20,
   },
   button: {
     display: "flex",
     backgroundColor: "#FFC247",
-    width: 279,
-    height: 58,
+    width: 209,
+    height: 50,
     borderRadius: 60,
-    marginHorizontal: 5,
+    marginHorizontal: 12,
     justifyContent: "center",
     alignItems: "center",
+    marginTop: 25,
   },
   buttonText: {
     color: "#FFFFFF",
     fontFamily: "regular",
-    fontSize: 32,
+    fontSize: 28,
   },
   buttonPressed: {
     opacity: 0.2,
   },
   cardsContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    display: "flex",
+    justifyContent: "center",
+    flexDirection: "row",
+    flexWrap: "wrap",
     marginTop: "5%",
     gap: 40,
   },
   text: {
-    fontSize: 24,
-    fontFamily: 'regular',
-    marginTop: "5%",
-    paddingLeft: "8%",
-  }
+    fontSize: 22,
+    fontFamily: "regular",
+    marginTop: "25%",
+    paddingLeft: "10%",
+  },
+
 });
 
 export default Home;

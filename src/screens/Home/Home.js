@@ -7,7 +7,7 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
-  ScrollView
+  ScrollView,
 } from "react-native";
 import { Loading } from "../../components/Loading/Loading";
 import Card from "../../components/Card/Card";
@@ -15,7 +15,6 @@ import Menu from "../../components/Menu/Menu";
 import icons from "../../assets/icons/icons";
 import useLoadFont from "../../hooks/useLoadFont";
 import Head from "../../components/Head/Head";
-
 
 const btns = [
   { id: 1, title: "ALIMENTO" },
@@ -25,8 +24,6 @@ const btns = [
   { id: 5, title: "NECESSIDADE" },
   { id: 6, title: "CORES" },
 ];
-
-
 
 const Home = () => {
   const { fontsLoaded } = useLoadFont(
@@ -74,12 +71,58 @@ const Home = () => {
         <Text style={styles.text}>RECENTES</Text>
 
         <View style={styles.cardsContainer}>
-          <Card name="CACHORRO" imageUrl={"https://em-content.zobj.net/source/apple/81/dog-face_1f436.png"} />
-          <Card name="PANQUECA" imageUrl={"https://em-content.zobj.net/source/apple/391/pancakes_1f95e.png"}/>
-          <Card name="SUSHI" imageUrl={"https://em-content.zobj.net/source/apple/391/sushi_1f363.png"}/>
-          <Card name="PIZZA" imageUrl={"https://em-content.zobj.net/source/apple/391/pizza_1f355.png"}/>
-          <Card name="SORVETE" imageUrl={"https://em-content.zobj.net/source/apple/391/soft-ice-cream_1f366.png"}/>
-          <Card name="BOLO" imageUrl={"https://em-content.zobj.net/source/apple/391/shortcake_1f370.png"}/>
+          <Card
+            name="CACHORRO"
+            imageUrl={
+              "https://em-content.zobj.net/source/apple/81/dog-face_1f436.png"
+            }
+          />
+          <Card
+            name="PANQUECA"
+            imageUrl={
+              "https://em-content.zobj.net/source/apple/391/pancakes_1f95e.png"
+            }
+          />
+          <Card
+            name="SUSHI"
+            imageUrl={
+              "https://em-content.zobj.net/source/apple/391/sushi_1f363.png"
+            }
+          />
+          <Card
+            name="PIZZA"
+            imageUrl={
+              "https://em-content.zobj.net/source/apple/391/pizza_1f355.png"
+            }
+          />
+        </View>
+        <Text style={styles.text}>MAIS UTILIZADOS</Text>
+
+        <View style={[styles.cardsContainer, {paddingBottom: "35%"}]}>     
+          <Card
+            name="SORVETE"
+            imageUrl={
+              "https://em-content.zobj.net/source/apple/391/soft-ice-cream_1f366.png"
+            }
+          />
+          <Card
+            name="BOLO"
+            imageUrl={
+              "https://em-content.zobj.net/source/apple/391/shortcake_1f370.png"
+            }
+          />
+          <Card
+            name="SUSHI"
+            imageUrl={
+              "https://em-content.zobj.net/source/apple/391/sushi_1f363.png"
+            }
+          />
+          <Card
+            name="PIZZA"
+            imageUrl={
+              "https://em-content.zobj.net/source/apple/391/pizza_1f355.png"
+            }
+          />
         </View>
       </ScrollView>
 
@@ -117,8 +160,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginHorizontal: 8,
-    paddingHorizontal: 90,
-    paddingVertical: 20,
+    paddingHorizontal: 110,
+    paddingVertical: 26,
     marginTop: 25,
   },
   buttonText: {
@@ -138,14 +181,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     marginTop: "5%",
-    paddingBottom: "38%",
+    paddingBottom: "5%",
     gap: 40,
   },
   text: {
     fontFamily: "regular",
     marginTop: "8%",
-    paddingLeft: "10%",
-    fontSize: 22
+    paddingLeft: "4%",
+    fontSize: 22,
   },
 });
 

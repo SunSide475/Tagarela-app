@@ -1,12 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, Image, Pressable, Dimensions } from "react-native";
-
-const { width, height } = Dimensions.get("window");
-
-const isTablet = width > 600;
-const cardWidth = isTablet ? width * 0.35 : width * 0.35;
-const cardHeight = isTablet ? cardWidth * 1.0 : cardWidth * 1.03;
-
+import { StyleSheet, Text, Image, Pressable } from "react-native";
 
 const Card = ({ name, imageUrl }) => {
   return (
@@ -14,8 +7,6 @@ const Card = ({ name, imageUrl }) => {
       style={({ pressed }) => [
         styles.card,
         {
-          width: cardWidth,
-          height: cardHeight,
           backgroundColor: pressed ? "#aaa" : "#fff",
           borderColor: "#7E57C2",
           borderWidth: pressed ? 4 : 0,
@@ -40,14 +31,16 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.4,
     shadowRadius: 8,
     elevation: 10,
+    width: 160,
+    height: 170
   },
   image: {
-    width: "60%",
+    width: "65%",
     height: "60%",
     marginBottom: 10,
   },
   text: {
-    fontSize: isTablet ? 35 : 19,
+    fontSize: 19,
     color: "#7E57C2",
     fontWeight: "bold",
   },

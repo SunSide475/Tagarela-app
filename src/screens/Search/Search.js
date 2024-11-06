@@ -16,20 +16,6 @@ import icons from "../../assets/icons/icons";
 import useLoadFont from "../../hooks/useLoadFont";
 import Head from "../../components/Head/Head";
 
-const { width, height } = Dimensions.get("window");
-
-const isTablet = width > 600;
-const searchWidth = isTablet ? 60 : 40;
-const searchHeight = isTablet ? 60 : 40;
-const buttonWidth = isTablet ? width * 0.4 : width * 0.45;
-const buttonHeight = isTablet ? 90 : 50;
-const carouselPaddingLeft = isTablet ? "5%" : null;
-const carouselMarginTop = isTablet ? "36%" : "46%";
-
-const getFontSize = (size) => {
-  return isTablet ? size * 1.5 : size;
-};
-
 const Search = () => {
   const [text, setText] = useState("");
   const { fontsLoaded } = useLoadFont(
@@ -53,7 +39,7 @@ const Search = () => {
       <ScrollView contentContainerStyle={styles.scrollViewContainer}>
         <TextInput
           style={styles.input}
-          placeholder="Pesquisar..."
+          placeholder="PESQUISE O CARTÃO"
           value={text}
           onChangeText={handleChange}
         />
@@ -158,11 +144,11 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: "purple",
-    width: "79%",
+    width: "90%",
     height: 50,
     marginTop: "50%",
     borderRadius: 20,
-    marginLeft: "10%"
+    marginLeft: "5%"
   }
 });
 

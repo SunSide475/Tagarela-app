@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import {
   View,
   FlatList,
@@ -37,12 +37,18 @@ const Search = () => {
     <View style={styles.container}>
       <Head />
       <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="PESQUISE O CARTÃO"
-          value={text}
-          onChangeText={handleChange}
-        />
+        <View style={styles.searchContainer}>
+          <Image
+            source={icons.searchWhite.src}
+            style={styles.searchIcon}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="PESQUISE O CARTÃO"
+            value={text}
+            onChangeText={handleChange}
+          />
+        </View>
         <View style={styles.cardsContainer}>
           <Card
             name="CACHORRO"
@@ -98,6 +104,20 @@ const styles = StyleSheet.create({
   scrollViewContainer: {
     flexGrow: 1,
   },
+  searchContainer: {
+    alignItems: "center",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#7E57C2",
+    width: "90%",
+    height: 50,
+    marginTop: "5%",
+    borderRadius: 20,
+    marginLeft: "5%",
+    paddingHorizontal: 10,
+    marginTop: "50%",
+  },
   carouselContainer: {
     width: "100%",
     backgroundColor: "#fff",
@@ -143,13 +163,20 @@ const styles = StyleSheet.create({
     paddingLeft: "10%",
   },
   input: {
-    backgroundColor: "purple",
-    width: "90%",
-    height: 50,
-    marginTop: "50%",
+    width: "100%",
+    height: "100%",
+    color: "white",
+    fontSize: 18,
+    borderWidth: 0,
+    outlineWidth: 0,
     borderRadius: 20,
-    marginLeft: "5%"
-  }
+    marginLeft: "5%",
+  },
+  searchIcon: {
+    width: 20,
+    height: 20,
+    marginLeft: 20
+  },
 });
 
 export default Search;

@@ -7,7 +7,6 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
-  Dimensions,
   ScrollView
 } from "react-native";
 import { Loading } from "../../components/Loading/Loading";
@@ -17,28 +16,17 @@ import icons from "../../assets/icons/icons";
 import useLoadFont from "../../hooks/useLoadFont";
 import Head from "../../components/Head/Head";
 
-const { width, height } = Dimensions.get("window");
 
 const btns = [
   { id: 1, title: "ALIMENTO" },
   { id: 2, title: "NECESSIDADE" },
-  { id: 3, title: "NÃO SEI" },
+  { id: 3, title: "VIDA" },
   { id: 4, title: "ALIMENTO" },
   { id: 5, title: "NECESSIDADE" },
-  { id: 6, title: "NÃO SEI" },
+  { id: 6, title: "CORES" },
 ];
 
-const isTablet = width > 600;
-const searchWidth = isTablet ? 60 : 40;
-const searchHeight = isTablet ? 60 : 40;
-const buttonWidth = isTablet ? width * 0.4 : width * 0.45;
-const buttonHeight = isTablet ? 90 : 50;
-const carouselPaddingLeft = isTablet ? "5%" : null;
-const carouselMarginTop = isTablet ? "36%" : "46%";
 
-const getFontSize = (size) => {
-  return isTablet ? size * 1.5 : size;
-};
 
 const Home = () => {
   const { fontsLoaded } = useLoadFont(
@@ -56,11 +44,11 @@ const Home = () => {
     <Pressable
       style={({ pressed }) => [
         styles.button,
-        { width: buttonWidth, height: buttonHeight },
+        { width: 50, height: 10 },
         pressed && styles.buttonPressed,
       ]}
     >
-      <Text style={[styles.buttonText, { fontSize: getFontSize(24) }]}>{item.title}</Text>
+      <Text style={styles.buttonText}>{item.title}</Text>
     </Pressable>
   );
 
@@ -68,9 +56,9 @@ const Home = () => {
     <View style={styles.container}>
       <Head />
       <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-        <View style={[styles.carouselContainer, { paddingLeft: carouselPaddingLeft, marginTop: carouselMarginTop }]}>
+        <View style={styles.carouselContainer}>
           <TouchableOpacity>
-            <Image source={icons.searchPurple.src} style={[styles.searchIcon, { width: searchWidth, height: searchHeight }]} />
+            <Image source={icons.searchPurple.src} style={styles.searchIcon} />
           </TouchableOpacity>
 
           <FlatList
@@ -83,7 +71,7 @@ const Home = () => {
           />
         </View>
 
-        <Text style={[styles.text, { fontSize: getFontSize(22) }]}>RECENTES</Text>
+        <Text style={styles.text}>RECENTES</Text>
 
         <View style={styles.cardsContainer}>
           <Card name="CACHORRO" imageUrl={"https://em-content.zobj.net/source/apple/81/dog-face_1f436.png"} />
@@ -111,6 +99,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   carouselContainer: {
+    marginTop: "46%",
     width: "100%",
     backgroundColor: "#fff",
     paddingHorizontal: 20,
@@ -122,17 +111,20 @@ const styles = StyleSheet.create({
   },
   button: {
     display: "flex",
+    flexWrap: "nowrap",
     backgroundColor: "#FFC247",
     borderRadius: 60,
     justifyContent: "center",
     alignItems: "center",
     marginHorizontal: 8,
+    paddingHorizontal: 90,
+    paddingVertical: 20,
     marginTop: 25,
   },
   buttonText: {
     color: "#FFFFFF",
     fontFamily: "regular",
-    fontSize: 28,
+    fontSize: 24,
   },
   buttonPressed: {
     opacity: 0.2,
@@ -153,6 +145,7 @@ const styles = StyleSheet.create({
     fontFamily: "regular",
     marginTop: "8%",
     paddingLeft: "10%",
+    fontSize: 22
   },
 });
 

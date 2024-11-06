@@ -1,15 +1,13 @@
 import React from "react";
-import { View, Pressable, StyleSheet, Image, Dimensions } from "react-native";
+import { View, Pressable, StyleSheet, Image } from "react-native";
 import icons from "../../assets/icons/icons";
 
-const { width, height } = Dimensions.get("window");
-
-const isTablet = width > 600;
-const buttonWidth = isTablet ? width * 0.18 : width * 0.22;
-const buttonHeight = isTablet ? height * 0.11 : height * 0.1;
-const menuHeight = isTablet ? height * 0.12 : height * 0.11;
-
 const Menu = () => {
+  // Definindo tamanhos fixos
+  const buttonWidth = 60; // Largura fixa do botão
+  const buttonHeight = 60; // Altura fixa do botão
+  const menuHeight = 80;  // Altura fixa do menu
+
   return (
     <View style={[styles.menuContainer, { height: menuHeight }]}>
       <Pressable
@@ -102,8 +100,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   icon: {
-    width: "38%",
-    height: "38%", 
+    
   },
 });
 

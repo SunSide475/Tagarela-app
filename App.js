@@ -6,6 +6,7 @@ import Register from "./src/screens/Register/Register";
 import Home from "./src/screens/Home/Home";
 import Settings from "./src/screens/Settings/Settings";
 import TestCard from "./src/screens/TestCard/TestCard";
+import Search from "./src/screens/Search/Search";
   
 
 const Stack = createNativeStackNavigator();
@@ -15,7 +16,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName="Search">
         <Stack.Screen
           name="Home"
           component={Home}
@@ -39,6 +40,11 @@ export default function App() {
         <Stack.Screen
           name="Settings"
           component={Settings}
+          options={{ headerShown: false }}
+        />
+         <Stack.Screen
+          name="Search"
+          component={Search}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

@@ -8,6 +8,7 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
+  ScrollView
 } from "react-native";
 import { Loading } from "../../components/Loading/Loading";
 import Card from "../../components/Card/Card";
@@ -28,15 +29,15 @@ const btns = [
 ];
 
 const isTablet = width > 600;
-const searchWidth = isTablet ? 90 : 40;
-const searchHeight = isTablet ? 90 : 40;
+const searchWidth = isTablet ? 60 : 40;
+const searchHeight = isTablet ? 60 : 40;
 const buttonWidth = isTablet ? width * 0.4 : width * 0.45;
-const buttonHeight = isTablet ? 130 : 50;
-const carouselPaddingLeft = isTablet ? "5%" : null
-const carouselMarginTop = isTablet ? "36%" : "46%"
+const buttonHeight = isTablet ? 90 : 50;
+const carouselPaddingLeft = isTablet ? "5%" : null;
+const carouselMarginTop = isTablet ? "36%" : "46%";
 
 const getFontSize = (size) => {
-  return isTablet ? size * 1.9 : size;
+  return isTablet ? size * 1.5 : size;
 };
 
 const Home = () => {
@@ -66,36 +67,35 @@ const Home = () => {
   return (
     <View style={styles.container}>
       <Head />
+      <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+        <View style={[styles.carouselContainer, { paddingLeft: carouselPaddingLeft, marginTop: carouselMarginTop }]}>
+          <TouchableOpacity>
+            <Image source={icons.searchPurple.src} style={[styles.searchIcon, { width: searchWidth, height: searchHeight }]} />
+          </TouchableOpacity>
 
-      <View style={[styles.carouselContainer, {paddingLeft: carouselPaddingLeft, marginTop: carouselMarginTop}]}>
-        <TouchableOpacity>
-          <Image source={icons.searchPurple.src} style={[styles.searchIcon, {width: searchWidth, height: searchHeight}]} />
-        </TouchableOpacity>
+          <FlatList
+            data={btns}
+            renderItem={renderItem}
+            keyExtractor={(item) => String(item.id)}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.flatListContainer}
+          />
+        </View>
 
-        <FlatList
-          data={btns}
-          renderItem={renderItem}
-          keyExtractor={(item) => String(item.id)}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.flatListContainer}
-        />
-      </View>
+        <Text style={[styles.text, { fontSize: getFontSize(22) }]}>RECENTES</Text>
 
-      <Text style={[styles.text, { fontSize: getFontSize(22) }]}>RECENTES</Text>
+        <View style={styles.cardsContainer}>
+          <Card name="CACHORRO" imageUrl={"https://em-content.zobj.net/source/apple/81/dog-face_1f436.png"} />
+          <Card name="PANQUECA" imageUrl={"https://em-content.zobj.net/source/apple/391/pancakes_1f95e.png"}/>
+          <Card name="SUSHI" imageUrl={"https://em-content.zobj.net/source/apple/391/sushi_1f363.png"}/>
+          <Card name="PIZZA" imageUrl={"https://em-content.zobj.net/source/apple/391/pizza_1f355.png"}/>
+          <Card name="SORVETE" imageUrl={"https://em-content.zobj.net/source/apple/391/soft-ice-cream_1f366.png"}/>
+          <Card name="BOLO" imageUrl={"https://em-content.zobj.net/source/apple/391/shortcake_1f370.png"}/>
+        </View>
+      </ScrollView>
 
-      <View style={styles.cardsContainer}>
-        <Card
-          name="CACHORRO"
-          imageUrl={
-            "https://em-content.zobj.net/source/apple/81/dog-face_1f436.png"
-          }
-        />
-        <Card />
-        <Card />
-        <Card />
-      </View>
-
+      {/* Menu fixo no fundo */}
       <Menu />
     </View>
   );
@@ -107,6 +107,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     display: "flex",
     flexDirection: "column",
+  },
+  scrollViewContainer: {
+    flexGrow: 1,
   },
   carouselContainer: {
     width: "100%",
@@ -124,7 +127,7 @@ const styles = StyleSheet.create({
     borderRadius: 60,
     justifyContent: "center",
     alignItems: "center",
-    marginHorizontal: 8, // Ajuste as margens horizontais conforme necessário
+    marginHorizontal: 8,
     marginTop: 25,
   },
   buttonText: {
@@ -144,6 +147,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     marginTop: "5%",
+    paddingBottom: "38%",
     gap: 40,
   },
   text: {

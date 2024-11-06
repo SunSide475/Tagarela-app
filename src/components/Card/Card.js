@@ -4,8 +4,9 @@ import { StyleSheet, Text, Image, Pressable, Dimensions } from "react-native";
 const { width, height } = Dimensions.get("window");
 
 const isTablet = width > 600;
-const cardWidth = isTablet ? width * 0.4 : width * 0.35;
+const cardWidth = isTablet ? width * 0.35 : width * 0.35;
 const cardHeight = isTablet ? cardWidth * 1.0 : cardWidth * 1.03;
+
 
 const Card = ({ name, imageUrl }) => {
   return (
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   text: {
-    fontSize: isTablet ? 45 : 19,
+    fontSize: isTablet ? 35 : 19,
     color: "#7E57C2",
     fontWeight: "bold",
   },

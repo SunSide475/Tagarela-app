@@ -87,12 +87,13 @@ const styles = StyleSheet.create({
   menuContainer: {
     width: "100%",
     backgroundColor: "#7E57C2",
-    position: "fixed",
+    position: "absolute",
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
     bottom: 0,
+    left: 0,
     paddingHorizontal: 10,
   },
   submitBtn: {
@@ -101,8 +102,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   icon: {
-    width: "38%", // Ícone ajustado para ocupar metade do tamanho do botão
-    height: "38%", // Mantendo a proporção do ícone dentro do botão
+    width: "38%",
+    height: "38%", 
   },
 });
 

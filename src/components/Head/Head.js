@@ -4,8 +4,8 @@ import general from "../../assets/general/genereal";
 const { width, height } = Dimensions.get("window");
 
 const isTablet = width > 600;
-const imageWidth = isTablet ? width * 0.4 : width * 0.35;
-const imageHeight = isTablet ? height * 0.029 : height * 0.02;
+const imageWidth = isTablet ? width * 0.5 : width * 0.5;
+const imageHeight = isTablet ? height * 0.1 : height * 0.08;
 
 const Head = () => {
   return (
@@ -26,13 +26,15 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 0,
     left: 0,
+    zIndex: 1000,
     backgroundColor: "orange",
     display: "flex",
     justifyContent: "flex-end",
     alignItems: "center",
   },
   wave: {
-    marginBottom: "10%",
+    paddingBottom: "10%",
+    resizeMode: "contain"
   },
 });
 

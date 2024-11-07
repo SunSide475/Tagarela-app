@@ -1,16 +1,17 @@
 import React from "react";
 import { View, Pressable, StyleSheet, Image } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
 import icons from "../../assets/icons/icons";
 
 const Menu = () => {
-  // Definindo tamanhos fixos
-  const buttonWidth = 60; // Largura fixa do botão
-  const buttonHeight = 60; // Altura fixa do botão
-  const menuHeight = 80;  // Altura fixa do menu
+  const buttonWidth = 60;
+  const buttonHeight = 60;
+  const menuHeight = 80;
 
   return (
     <View style={[styles.menuContainer, { height: menuHeight }]}>
       <Pressable
+        onPress={() => navigation.navigate("Home")}
         style={({ pressed }) => [
           styles.submitBtn,
           {
@@ -99,9 +100,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  icon: {
-    
-  },
+  icon: {},
 });
 
 export default Menu;

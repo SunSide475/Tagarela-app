@@ -54,7 +54,7 @@ const Home = () => {
       <Head />
       <ScrollView contentContainerStyle={styles.scrollViewContainer}>
         <View style={styles.carouselContainer}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate("Search")}>
             <Image source={icons.searchPurple.src} style={styles.searchIcon} />
           </TouchableOpacity>
 
@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
   text: {
     fontFamily: "regular",
     marginTop: "8%",
-    paddingLeft: "4%",
+    paddingLeft: "7%",
     fontSize: 22,
   },
 });

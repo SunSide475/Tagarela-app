@@ -1,17 +1,11 @@
 import { View, Image, StyleSheet, Dimensions } from "react-native";
 import general from "../../assets/general/genereal";
 
-const { width, height } = Dimensions.get("window");
-
-const isTablet = width > 600;
-const imageWidth = isTablet ? width * 0.5 : width * 0.5;
-const imageHeight = isTablet ? height * 0.1 : height * 0.08;
-
 const Head = () => {
   return (
     <View style={styles.headContainer}>
       <Image
-        style={[styles.wave, {width: imageWidth, height: imageHeight}]}
+        style={styles.wave}
         source={general.logoSmall.src}
         accessibilityLabel={general.logoSmall.alt}
       />
@@ -34,7 +28,9 @@ const styles = StyleSheet.create({
   },
   wave: {
     paddingBottom: "10%",
-    resizeMode: "contain"
+    resizeMode: "contain",
+    width: 170,
+    marginBottom: 20
   },
 });
 

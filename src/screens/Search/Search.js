@@ -38,10 +38,7 @@ const Search = () => {
       <Head />
       <ScrollView contentContainerStyle={styles.scrollViewContainer}>
         <View style={styles.searchContainer}>
-          <Image
-            source={icons.searchWhite.src}
-            style={styles.searchIcon}
-          />
+          <Image source={icons.searchWhite.src} style={styles.searchIcon} />
           <TextInput
             style={styles.input}
             placeholder="PESQUISE O CARTÃO"
@@ -51,36 +48,42 @@ const Search = () => {
         </View>
         <View style={styles.cardsContainer}>
           <Card
+            smallSize={true}
             name="CACHORRO"
             imageUrl={
               "https://em-content.zobj.net/source/apple/81/dog-face_1f436.png"
             }
           />
           <Card
+            smallSize={true}
             name="PANQUECA"
             imageUrl={
               "https://em-content.zobj.net/source/apple/391/pancakes_1f95e.png"
             }
           />
           <Card
+            smallSize={true}
             name="SUSHI"
             imageUrl={
               "https://em-content.zobj.net/source/apple/391/sushi_1f363.png"
             }
           />
           <Card
+            smallSize={true}
             name="PIZZA"
             imageUrl={
               "https://em-content.zobj.net/source/apple/391/pizza_1f355.png"
             }
           />
           <Card
+            smallSize={true}
             name="SORVETE"
             imageUrl={
               "https://em-content.zobj.net/source/apple/391/soft-ice-cream_1f366.png"
             }
           />
           <Card
+            smallSize={true}
             name="BOLO"
             imageUrl={
               "https://em-content.zobj.net/source/apple/391/shortcake_1f370.png"
@@ -118,11 +121,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginTop: "50%",
   },
-  carouselContainer: {
-    width: "100%",
-    backgroundColor: "#fff",
-    paddingHorizontal: 20,
-  },
   flatListContainer: {
     flexDirection: "row",
     justifyContent: "flex-start",
@@ -155,7 +153,7 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     marginTop: "5%",
     paddingBottom: "38%",
-    gap: 40,
+    gap: 30,
   },
   text: {
     fontFamily: "regular",
@@ -175,7 +173,7 @@ const styles = StyleSheet.create({
   searchIcon: {
     width: 20,
     height: 20,
-    marginLeft: 20
+    marginLeft: 20,
   },
 });
 

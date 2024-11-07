@@ -1,11 +1,19 @@
 import React from "react";
 import { StyleSheet, Text, Image, Pressable } from "react-native";
 
-const Card = ({ name, imageUrl }) => {
+const Card = ({ name, imageUrl, smallSize }) => {
+  const cardStyles = [
+    styles.card,
+    {
+      width: smallSize ? 100 : 160,
+      height: smallSize ? 110 : 170,
+    },
+  ];
+
   return (
     <Pressable
       style={({ pressed }) => [
-        styles.card,
+        ...cardStyles,
         {
           backgroundColor: pressed ? "#aaa" : "#fff",
           borderColor: "#7E57C2",
@@ -14,8 +22,8 @@ const Card = ({ name, imageUrl }) => {
         },
       ]}
     >
-      <Image source={{ uri: `${imageUrl}` }} style={styles.image} />
-      <Text style={styles.text}>{name}</Text>
+      <Image source={{ uri: imageUrl }} style={styles.image} />
+      <Text style={[styles.text, { fontSize: smallSize ? 14 : 19 }]}>{name}</Text>
     </Pressable>
   );
 };
@@ -31,8 +39,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.4,
     shadowRadius: 8,
     elevation: 10,
-    width: 160,
-    height: 170
   },
   image: {
     width: "65%",
@@ -40,7 +46,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   text: {
-    fontSize: 19,
     color: "#7E57C2",
     fontWeight: "bold",
   },

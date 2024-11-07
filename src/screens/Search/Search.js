@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     marginTop: "5%",
     paddingBottom: "38%",
-    gap: 30,
+    gap: 20,
   },
   text: {
     fontFamily: "regular",

@@ -5,7 +5,7 @@ const Card = ({ name, imageUrl, smallSize }) => {
   const cardStyles = [
     styles.card,
     {
-      width: smallSize ? 100 : 160,
+      width: smallSize ? 110 : 160,
       height: smallSize ? 110 : 170,
     },
   ];

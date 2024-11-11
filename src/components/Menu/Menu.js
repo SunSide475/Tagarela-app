@@ -56,8 +56,8 @@ const Menu = () => {
         ]}
       >
         <Image
-          source={icons.alarm.src}
-          accessibilityLabel={icons.alarm.alt}
+          source={icons.quiz.src}
+          accessibilityLabel={icons.quiz.alt}
           style={styles.icon}
         />
       </Pressable>

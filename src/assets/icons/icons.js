@@ -47,6 +47,10 @@ const icons = {
     src: require("./icon-search-white.png"),
     alt: "Search icon",
   },
+  quiz: {
+    src: require("./icon-quiz.png"),
+    alt: "Quiz icon",
+  },
 };
 
 export default icons;

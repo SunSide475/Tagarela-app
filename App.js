@@ -7,6 +7,7 @@ import Home from "./src/screens/Home/Home";
 import Settings from "./src/screens/Settings/Settings";
 import TestCard from "./src/screens/TestCard/TestCard";
 import Search from "./src/screens/Search/Search";
+import QuizMenu from "./src/screens/QuizMenu/QuizMenu";
   
 
 const Stack = createNativeStackNavigator();
@@ -16,7 +17,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName="QuizMenu">
         <Stack.Screen
           name="Home"
           component={Home}
@@ -45,6 +46,11 @@ export default function App() {
          <Stack.Screen
           name="Search"
           component={Search}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="QuizMenu"
+          component={QuizMenu}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

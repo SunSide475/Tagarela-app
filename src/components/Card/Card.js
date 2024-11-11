@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, Image, Pressable } from "react-native";
+import { View } from "react-native-web";
 
 const Card = ({ name, imageUrl, smallSize }) => {
   const cardStyles = [
@@ -22,8 +23,8 @@ const Card = ({ name, imageUrl, smallSize }) => {
         },
       ]}
     >
-      <Image source={{ uri: imageUrl }} style={styles.image} />
-      <Text style={[styles.text, { fontSize: smallSize ? 14 : 19 }]}>{name}</Text>
+      <View></View>
+      <Text>NÍVEL 1</Text>
     </Pressable>
   );
 };

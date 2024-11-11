@@ -9,6 +9,7 @@ const QuizMenu = () => {
   const { fontsLoaded } = useLoadFont(
     {
       regular: require("../../assets/fonts/Quicksand-Regular.ttf"),
+      bold: require("../../assets/fonts/Quicksand-Bold.ttf"),
     },
     Loading
   );
@@ -95,6 +96,7 @@ const styles = StyleSheet.create({
     marginTop: 50
   },
   buttonText: {
+    fontFamily: 'bold',
     marginLeft: 20,
     color: "#fff",
     fontSize: 19,
@@ -110,7 +112,7 @@ const styles = StyleSheet.create({
   },
   bigText: {
     fontSize: 30,
-    fontFamily: "regular",
+    fontFamily: "bold",
     color: "white",
   },
 });

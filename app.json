@@ -25,6 +25,7 @@
     },
     "plugins": [
       "expo-font"
-    ]
+    ],
+    "sdkVersion": "52.0.0"
   }
 }

@@ -32,11 +32,11 @@ const Card = ({ name, imageUrl, onPress, smallSize }) => {
 const styles = StyleSheet.create({
   card: {
     borderRadius: 8,
-    backgroundColor: "white",
+    backgroundColor: "blue",
     alignItems: "center",
     justifyContent: "center",
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
+    shadowOffset: { width: 0, height: 0.1 },
     shadowOpacity: 0.4,
     shadowRadius: 8,
     elevation: 10,

@@ -10,11 +10,7 @@ import {
   Platform,
   Image,
 } from "react-native";
-
-let VideoPlayer;
-if (Platform.OS !== "web") {
-  VideoPlayer = require("react-native-video").default;
-}
+import { Video } from "expo-av";
 
 const CustomModal = ({ isVisible, onClose, cardInfo }) => {
   if (!isVisible) return null;
@@ -41,13 +37,14 @@ const CustomModal = ({ isVisible, onClose, cardInfo }) => {
             {Platform.OS === "web" ? (
               <Image source={{ uri: imageUrl }} style={styles.image} />
             ) : (
-              <VideoPlayer
+              <Video
                 source={videoUrl}
                 style={styles.video}
-                controls={true}
-                onBuffer={() => console.log("Buffering...")}
-                onError={(e) => console.log(e)}
-                playing={true}
+                useNativeControls={true} 
+                resizeMode="contain" 
+                isLooping={true} 
+                shouldPlay={true} 
+                onError={(e) => console.log(e)} 
               />
             )}
           </View>

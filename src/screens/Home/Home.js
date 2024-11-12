@@ -91,7 +91,7 @@ const Home = () => {
             onPress={() =>
               openModal({
                 title: "CACHORRO",
-                description: "Imagem de um cachorro.",
+                description: "CA-CHO-RRO",
                 imageUrl: "https://em-content.zobj.net/source/apple/81/dog-face_1f436.png",
               })
             }
@@ -113,7 +113,7 @@ const Home = () => {
             onPress={() =>
               openModal({
                 title: "SUSHI",
-                description: "Imagem de sushi.",
+                description: "SU-SHI",
                 imageUrl: "https://em-content.zobj.net/source/apple/391/sushi_1f363.png",
               })
             }
@@ -124,7 +124,7 @@ const Home = () => {
             onPress={() =>
               openModal({
                 title: "PIZZA",
-                description: "Imagem de uma pizza.",
+                description: "PI-ZZA",
                 imageUrl: "https://em-content.zobj.net/source/apple/391/pizza_1f355.png",
               })
             }
@@ -139,7 +139,7 @@ const Home = () => {
             onPress={() =>
               openModal({
                 title: "SORVETE",
-                description: "Imagem de sorvete.",
+                description: "SOR-VE-TE",
                 imageUrl: "https://em-content.zobj.net/source/apple/391/soft-ice-cream_1f366.png",
               })
             }
@@ -150,7 +150,7 @@ const Home = () => {
             onPress={() =>
               openModal({
                 title: "BOLO",
-                description: "Imagem de bolo.",
+                description: "BO-LO",
                 imageUrl: "https://em-content.zobj.net/source/apple/391/shortcake_1f370.png",
               })
             }
@@ -161,7 +161,7 @@ const Home = () => {
             onPress={() =>
               openModal({
                 title: "SUSHI",
-                description: "Imagem de sushi.",
+                description: "SU-SHI",
                 imageUrl: "https://em-content.zobj.net/source/apple/391/sushi_1f363.png",
               })
             }
@@ -172,7 +172,7 @@ const Home = () => {
             onPress={() =>
               openModal({
                 title: "PIZZA",
-                description: "Imagem de pizza.",
+                description: "PI-ZZA",
                 imageUrl: "https://em-content.zobj.net/source/apple/391/pizza_1f355.png",
               })
             }

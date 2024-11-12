@@ -34,17 +34,14 @@ const Home = () => {
     Loading
   );
 
-  // Estados do Modal
   const [isModalVisible, setModalVisible] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
 
-  // Função para abrir o modal com as informações do card
   const openModal = (cardInfo) => {
     setSelectedCard(cardInfo);
     setModalVisible(true);
   };
 
-  // Função para fechar o modal
   const closeModal = () => {
     setModalVisible(false);
     setSelectedCard(null);
@@ -88,7 +85,6 @@ const Home = () => {
         <Text style={styles.text}>RECENTES</Text>
 
         <View style={styles.cardsContainer}>
-          {/* Cada Card tem uma invocação do Modal */}
           <Card
             name="CACHORRO"
             imageUrl="https://em-content.zobj.net/source/apple/81/dog-face_1f436.png"
@@ -186,7 +182,6 @@ const Home = () => {
 
       <Menu />
 
-      {/* Modal para exibir informações do card clicado */}
       <CustomModal
         isVisible={isModalVisible}
         onClose={closeModal}

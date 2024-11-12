@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, Image, Pressable } from "react-native";
 
-const Card = ({ name, imageUrl, smallSize }) => {
+const Card = ({ name, imageUrl, onPress, smallSize }) => {
   const cardStyles = [
     styles.card,
     {
@@ -21,6 +21,7 @@ const Card = ({ name, imageUrl, smallSize }) => {
           opacity: pressed ? 0.7 : 1,
         },
       ]}
+      onPress={onPress} 
     >
       <Image source={{ uri: imageUrl }} style={styles.image} />
       <Text style={[styles.text, { fontSize: smallSize ? 14 : 19 }]}>{name}</Text>

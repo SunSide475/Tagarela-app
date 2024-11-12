@@ -13,8 +13,8 @@ const CustomModal = ({ isVisible, onClose, cardInfo }) => {
     >
       <View style={styles.modalOverlay}>
         <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>{cardInfo.title}</Text>
-          <Text style={styles.modalBody}>{cardInfo.description}</Text>
+          <Text style={styles.modalTitle}>{cardInfo?.title}</Text>
+          <Text style={styles.modalBody}>{cardInfo?.description}</Text>
           <TouchableOpacity style={styles.closeButton} onPress={onClose}>
             <Text style={styles.closeButtonText}>Fechar</Text>
           </TouchableOpacity>
@@ -24,17 +24,16 @@ const CustomModal = ({ isVisible, onClose, cardInfo }) => {
   );
 };
 
-// Estilos do Modal
 const styles = StyleSheet.create({
   modalOverlay: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fundo semitransparente
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', 
   },
   modalContent: {
-    width: '80%', // Ajuste para garantir que o modal ocupe uma largura adequada
-    height: '50%', // Ajuste de altura para ser um pouco mais compacto
+    width: '80%',
+    height: '50%',
     position: 'absolute',
     padding: 20,
     backgroundColor: 'white',

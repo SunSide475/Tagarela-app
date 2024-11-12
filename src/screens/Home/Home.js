@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   FlatList,
@@ -15,6 +15,7 @@ import Menu from "../../components/Menu/Menu";
 import icons from "../../assets/icons/icons";
 import useLoadFont from "../../hooks/useLoadFont";
 import Head from "../../components/Head/Head";
+import CustomModal from "../../components/CustomModal/CustomModal";
 
 const btns = [
   { id: 1, title: "ALIMENTO" },
@@ -32,6 +33,22 @@ const Home = () => {
     },
     Loading
   );
+
+  // Estados do Modal
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [selectedCard, setSelectedCard] = useState(null);
+
+  // Função para abrir o modal com as informações do card
+  const openModal = (cardInfo) => {
+    setSelectedCard(cardInfo);
+    setModalVisible(true);
+  };
+
+  // Função para fechar o modal
+  const closeModal = () => {
+    setModalVisible(false);
+    setSelectedCard(null);
+  };
 
   if (!fontsLoaded) {
     return <Loading />;
@@ -71,62 +88,110 @@ const Home = () => {
         <Text style={styles.text}>RECENTES</Text>
 
         <View style={styles.cardsContainer}>
+          {/* Cada Card tem uma invocação do Modal */}
           <Card
             name="CACHORRO"
-            imageUrl={
-              "https://em-content.zobj.net/source/apple/81/dog-face_1f436.png"
+            imageUrl="https://em-content.zobj.net/source/apple/81/dog-face_1f436.png"
+            onPress={() =>
+              openModal({
+                title: "CACHORRO",
+                description: "Imagem de um cachorro.",
+                imageUrl: "https://em-content.zobj.net/source/apple/81/dog-face_1f436.png",
+              })
             }
           />
           <Card
             name="PANQUECA"
-            imageUrl={
-              "https://em-content.zobj.net/source/apple/391/pancakes_1f95e.png"
+            imageUrl="https://em-content.zobj.net/source/apple/391/pancakes_1f95e.png"
+            onPress={() =>
+              openModal({
+                title: "PANQUECA",
+                description: "PAN-QUE-CA",
+                imageUrl: "https://em-content.zobj.net/source/apple/391/pancakes_1f95e.png",
+              })
             }
           />
           <Card
             name="SUSHI"
-            imageUrl={
-              "https://em-content.zobj.net/source/apple/391/sushi_1f363.png"
+            imageUrl="https://em-content.zobj.net/source/apple/391/sushi_1f363.png"
+            onPress={() =>
+              openModal({
+                title: "SUSHI",
+                description: "Imagem de sushi.",
+                imageUrl: "https://em-content.zobj.net/source/apple/391/sushi_1f363.png",
+              })
             }
           />
           <Card
             name="PIZZA"
-            imageUrl={
-              "https://em-content.zobj.net/source/apple/391/pizza_1f355.png"
+            imageUrl="https://em-content.zobj.net/source/apple/391/pizza_1f355.png"
+            onPress={() =>
+              openModal({
+                title: "PIZZA",
+                description: "Imagem de uma pizza.",
+                imageUrl: "https://em-content.zobj.net/source/apple/391/pizza_1f355.png",
+              })
             }
           />
         </View>
         <Text style={styles.text}>MAIS UTILIZADOS</Text>
 
-        <View style={[styles.cardsContainer, {paddingBottom: "35%"}]}>     
+        <View style={[styles.cardsContainer, { paddingBottom: "35%" }]}>
           <Card
             name="SORVETE"
-            imageUrl={
-              "https://em-content.zobj.net/source/apple/391/soft-ice-cream_1f366.png"
+            imageUrl="https://em-content.zobj.net/source/apple/391/soft-ice-cream_1f366.png"
+            onPress={() =>
+              openModal({
+                title: "SORVETE",
+                description: "Imagem de sorvete.",
+                imageUrl: "https://em-content.zobj.net/source/apple/391/soft-ice-cream_1f366.png",
+              })
             }
           />
           <Card
             name="BOLO"
-            imageUrl={
-              "https://em-content.zobj.net/source/apple/391/shortcake_1f370.png"
+            imageUrl="https://em-content.zobj.net/source/apple/391/shortcake_1f370.png"
+            onPress={() =>
+              openModal({
+                title: "BOLO",
+                description: "Imagem de bolo.",
+                imageUrl: "https://em-content.zobj.net/source/apple/391/shortcake_1f370.png",
+              })
             }
           />
           <Card
             name="SUSHI"
-            imageUrl={
-              "https://em-content.zobj.net/source/apple/391/sushi_1f363.png"
+            imageUrl="https://em-content.zobj.net/source/apple/391/sushi_1f363.png"
+            onPress={() =>
+              openModal({
+                title: "SUSHI",
+                description: "Imagem de sushi.",
+                imageUrl: "https://em-content.zobj.net/source/apple/391/sushi_1f363.png",
+              })
             }
           />
           <Card
             name="PIZZA"
-            imageUrl={
-              "https://em-content.zobj.net/source/apple/391/pizza_1f355.png"
+            imageUrl="https://em-content.zobj.net/source/apple/391/pizza_1f355.png"
+            onPress={() =>
+              openModal({
+                title: "PIZZA",
+                description: "Imagem de pizza.",
+                imageUrl: "https://em-content.zobj.net/source/apple/391/pizza_1f355.png",
+              })
             }
           />
         </View>
       </ScrollView>
 
       <Menu />
+
+      {/* Modal para exibir informações do card clicado */}
+      <CustomModal
+        isVisible={isModalVisible}
+        onClose={closeModal}
+        cardInfo={selectedCard}
+      />
     </View>
   );
 };

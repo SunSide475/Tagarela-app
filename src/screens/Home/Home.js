@@ -26,7 +26,7 @@ const btns = [
   { id: 6, title: "CORES" },
 ];
 
-const Home = () => {
+const Home = ({navigation}) => {
   const { fontsLoaded } = useLoadFont(
     {
       regular: require("../../assets/fonts/Quicksand-Regular.ttf"),

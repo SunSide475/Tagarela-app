@@ -1,9 +1,10 @@
 import React from "react";
 import { View, Pressable, StyleSheet, Image } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
 import icons from "../../assets/icons/icons";
+import { useNavigation } from "@react-navigation/native";
 
 const Menu = () => {
+  const navigation = useNavigation();
   const buttonWidth = 60;
   const buttonHeight = 60;
   const menuHeight = 80;
@@ -29,6 +30,7 @@ const Menu = () => {
       </Pressable>
 
       <Pressable
+        onPress={() => navigation.navigate("Search")}
         style={({ pressed }) => [
           styles.submitBtn,
           {
@@ -46,6 +48,7 @@ const Menu = () => {
       </Pressable>
 
       <Pressable
+        onPress={() => navigation.navigate("QuizMenu")}
         style={({ pressed }) => [
           styles.submitBtn,
           {
@@ -63,6 +66,7 @@ const Menu = () => {
       </Pressable>
 
       <Pressable
+        onPress={() => navigation.navigate("Settings")}
         style={({ pressed }) => [
           styles.submitBtn,
           {

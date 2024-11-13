@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createStackNavigator } from "@react-navigation/stack";
 import Login from "./src/screens/Login/Login";
 import Register from "./src/screens/Register/Register";
 import Home from "./src/screens/Home/Home";
@@ -10,7 +9,7 @@ import Search from "./src/screens/Search/Search";
 import QuizMenu from "./src/screens/QuizMenu/QuizMenu";
   
 
-const Stack = createNativeStackNavigator();
+const Stack = createStackNavigator();
 
 export default function App() {
 

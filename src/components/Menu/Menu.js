@@ -1,87 +1,59 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, Pressable, StyleSheet, Image } from "react-native";
 import icons from "../../assets/icons/icons";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 
 const Menu = () => {
   const navigation = useNavigation();
+  const [selected, setSelected] = useState("");
+  const isFocused = useIsFocused();
+
   const buttonWidth = 60;
   const buttonHeight = 60;
   const menuHeight = 80;
 
+  const handlePress = (screen) => {
+    setSelected(screen);
+    navigation.navigate(screen);
+  };
+
+  useEffect(() => {
+    if (isFocused) {
+      const currentScreen = navigation.getState().routes[navigation.getState().index].name;
+      setSelected(currentScreen);
+    }
+  }, [isFocused, navigation]);
+
   return (
     <View style={[styles.menuContainer, { height: menuHeight }]}>
-      <Pressable
-        onPress={() => navigation.navigate("Home")}
-        style={({ pressed }) => [
-          styles.submitBtn,
-          {
-            backgroundColor: pressed ? "#6841AD" : "#7E57C2",
-            width: buttonWidth,
-            height: buttonHeight,
-          },
-        ]}
-      >
-        <Image
-          source={icons.home.src}
-          accessibilityLabel={icons.home.alt}
-          style={styles.icon}
-        />
-      </Pressable>
-
-      <Pressable
-        onPress={() => navigation.navigate("LineCards")}
-        style={({ pressed }) => [
-          styles.submitBtn,
-          {
-            backgroundColor: pressed ? "#6841AD" : "#7E57C2",
-            width: buttonWidth,
-            height: buttonHeight,
-          },
-        ]}
-      >
-        <Image
-          source={icons.fila.src}
-          accessibilityLabel={icons.fila.alt}
-          style={styles.icon}
-        />
-      </Pressable>
-
-      <Pressable
-        onPress={() => navigation.navigate("QuizMenu")}
-        style={({ pressed }) => [
-          styles.submitBtn,
-          {
-            backgroundColor: pressed ? "#6841AD" : "#7E57C2",
-            width: buttonWidth,
-            height: buttonHeight,
-          },
-        ]}
-      >
-        <Image
-          source={icons.quiz.src}
-          accessibilityLabel={icons.quiz.alt}
-          style={styles.icon}
-        />
-      </Pressable>
-
-      <Pressable
-        onPress={() => navigation.navigate("Settings")}
-        style={({ pressed }) => [
-          styles.submitBtn,
-          {
-            backgroundColor: pressed ? "#6841AD" : "#7E57C2",
-            width: buttonWidth,
-            height: buttonHeight,
-          },
-        ]}
-      >
-        <Image
-          source={icons.settings.src}
-          accessibilityLabel={icons.settings.alt}
-          style={styles.icon}
-        />
-      </Pressable>
+      {[
+        { screen: "Home", icon: icons.home.src, alt: icons.home.alt },
+        { screen: "LineCards", icon: icons.fila.src, alt: icons.fila.alt },
+        { screen: "QuizMenu", icon: icons.quiz.src, alt: icons.quiz.alt },
+        { screen: "Settings", icon: icons.settings.src, alt: icons.settings.alt },
+      ].map((item) => (
+        <Pressable
+          key={item.screen}
+          onPress={() => handlePress(item.screen)}
+          style={({ pressed }) => [
+            styles.submitBtn,
+            {
+              backgroundColor: pressed ? "#6841AD" : "#7E57C2",
+              width: buttonWidth,
+              height: buttonHeight,
+            },
+          ]}
+        >
+          {selected === item.screen && (
+            <View style={styles.selectedCircle} />
+          )}
+          <Image
+            source={item.icon}
+            accessibilityLabel={item.alt}
+            style={styles.icon}
+          />
+        </Pressable>
+      ))}
     </View>
   );
 };
@@ -103,6 +75,15 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     justifyContent: "center",
     alignItems: "center",
+    position: "relative",
+  },
+  selectedCircle: {
+    position: "absolute",
+    backgroundColor: "#6841AD",
+    width: 70,
+    height: 70,
+    borderRadius: 25,
+    zIndex: -1,
   },
   icon: {
     width: 40,

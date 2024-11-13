@@ -8,6 +8,7 @@ import TestCard from "./src/screens/TestCard/TestCard";
 import Search from "./src/screens/Search/Search";
 import QuizMenu from "./src/screens/QuizMenu/QuizMenu";
 import LineCards from "./src/screens/LineCards/LineCards";
+import Account from "./src/screens/Settings/Account/Account";
   
 
 const Stack = createStackNavigator();
@@ -56,6 +57,11 @@ export default function App() {
         <Stack.Screen
           name="LineCards"
           component={LineCards}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Account"
+          component={Account}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

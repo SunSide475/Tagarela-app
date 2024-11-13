@@ -8,6 +8,7 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
+  Dimensions,
 } from "react-native";
 import { Loading } from "../../components/Loading/Loading";
 import Card from "../../components/Card/Card";
@@ -25,6 +26,8 @@ const btns = [
   { id: 5, title: "PESSOA" },
   { id: 6, title: "MEUS CARTÕES" },
 ];
+
+const { height } = Dimensions.get('window'); // Obter altura da tela
 
 const Home = ({ navigation }) => {
   const { fontsLoaded } = useLoadFont(
@@ -56,8 +59,7 @@ const Home = ({ navigation }) => {
       style={({ pressed }) => [
         styles.button,
         pressed && styles.buttonPressed,
-      ]}
-    >
+      ]}>
       <Text style={styles.buttonText}>{item.title}</Text>
     </Pressable>
   );
@@ -67,7 +69,15 @@ const Home = ({ navigation }) => {
       <Head />
       <ScrollView contentContainerStyle={styles.scrollViewContainer}>
         <View style={styles.carouselContainer}>
-          <TouchableOpacity onPress={() => navigation.navigate("Search")}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("Search")}
+            style={[
+              styles.searchIconContainer,
+              {
+                marginTop: height > 800 ? height * 0.18 : height * 0.15, // Ajuste para um valor mais para cima
+              },
+            ]}
+          >
             <Image source={icons.searchPurple.src} style={styles.searchIcon} />
           </TouchableOpacity>
 
@@ -201,7 +211,6 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   carouselContainer: {
-    marginTop: "46%",
     width: "100%",
     backgroundColor: "#fff",
     paddingHorizontal: 20,
@@ -209,7 +218,7 @@ const styles = StyleSheet.create({
   flatListContainer: {
     flexDirection: "row",
     justifyContent: "flex-start",
-    paddingVertical: 10,
+    paddingVertical: 20,
   },
   button: {
     display: "flex",
@@ -228,8 +237,13 @@ const styles = StyleSheet.create({
     fontFamily: "semibold",
     fontSize: 20,
   },
-  searchIcon: {
+  searchIconContainer: {
     marginRight: 10,
+    width: 32,
+    height: 32,
+    marginTop: height > 800 ? height * 0.18 : height * 0.15,
+  },
+  searchIcon: {
     width: 32,
     height: 32,
   },

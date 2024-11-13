@@ -55,6 +55,10 @@ const icons = {
     src: require("./icon-fila.png"),
     alt: "Fila icon",
   },
+  edit: {
+    src: require("./icon-edit.png"),
+    alt: "Edit icon",
+  },
 };
 
 export default icons;

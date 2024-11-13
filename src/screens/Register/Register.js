@@ -39,7 +39,7 @@ const Register = () => {
       setPassword("");
       setConfirmPassword("");
 
-      showPopUp('Error');
+      showPopUp("Erro ao registrar.");
     }
   };
 
@@ -63,7 +63,7 @@ const Register = () => {
             <TextInput
               style={styles.input}
               value={username}
-              placeholder="USERNAME"
+              placeholder="APELIDO"
               onChangeText={setUsername}
             />
             <TextInput
@@ -87,12 +87,12 @@ const Register = () => {
               secureTextEntry={true}
             />
             <TouchableOpacity style={styles.submitBtn} onPress={handleRegister}>
-              <Text style={styles.submitBtnTxt}>Sign In</Text>
+              <Text style={styles.submitBtnTxt}>Cadastrar</Text>
             </TouchableOpacity>
           </View>
         </View>
         <PopUp
-          title="Operation"
+          title="Operação"
           message={popUpMessage}
           visible={popUpVisible}
           scale={scale}
@@ -118,67 +118,65 @@ const styles = StyleSheet.create({
     display: "flex",
     flex: 1,
     alignItems: "center",
-    justifyContent: "flex-end",
-    paddingBottom: "64px",
+    justifyContent: "flex-start",
+    paddingTop: 50,
+  },
+  logo: {
+    marginTop: 60,
+    height: "40%",
+    aspectRatio: 6,
+    resizeMode: "contain",
   },
   registerInputs: {
     flex: 5,
     backgroundColor: "white",
     borderTopLeftRadius: 60,
     borderTopRightRadius: 60,
+    padding: 25,
+    marginTop: "20%",
   },
   welcome: {
-    paddingLeft: 50,
-    alignContent: "flex-end",
     fontSize: 27,
     fontWeight: "bold",
-    color: "#000000",
-    textAlign: "left",
-    flex: 1,
+    color: "#4F4F4F",
+    textAlign: "center",
+    marginBottom: 20,
+    marginTop: 30,
   },
   welcomeOrange: {
-    flex: 1,
     fontSize: 27,
     color: "orange",
     fontWeight: "bold",
   },
   inputContainer: {
     display: "flex",
-    flex: 6,
     flexDirection: "column",
     alignItems: "center",
-    justifyContent: "space-evenly",
+    justifyContent: "space-around",
+    height: "60%",
+    gap: 20,
   },
   input: {
-    width: "75%",
-    height: "12%",
+    width: "90%",
+    height: 60,
     borderRadius: 10,
     backgroundColor: "#D9D9D9",
     color: "black",
-    fontSize: 24,
-    fontWeight: "normal",
-    paddingLeft: "16px",
+    fontSize: 18,
+    paddingLeft: 20,
   },
   submitBtn: {
-    backgroundColor: "orange",
-    width: 200,
+    backgroundColor: "#7E57C2",
+    width: "80%",
     height: 50,
     borderRadius: 10,
-    display: "flex",
-    alignItems: "center",
     justifyContent: "center",
-    marginTop: 10,
+    alignItems: "center",
+    marginTop: 40,
   },
   submitBtnTxt: {
     fontSize: 20,
-    color: "#000000",
-  },
-  popUpContainer: {
-    position: "absolute",
-    top: "40%",
-    left: "50%",
-    transform: [{ translateX: -100 }, { translateY: -50 }],
-    zIndex: 100,
+    color: "#fff",
   },
 });
 

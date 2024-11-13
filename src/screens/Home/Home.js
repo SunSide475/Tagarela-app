@@ -19,11 +19,11 @@ import CustomModal from "../../components/CustomModal/CustomModal";
 
 const btns = [
   { id: 1, title: "ALIMENTO" },
-  { id: 2, title: "NECESSIDADE" },
-  { id: 3, title: "VIDA" },
-  { id: 4, title: "ALIMENTO" },
-  { id: 5, title: "NECESSIDADE" },
-  { id: 6, title: "CORES" },
+  { id: 2, title: "AÇÃO" },
+  { id: 3, title: "EMOÇÃO" },
+  { id: 4, title: "NECESSIDADE" },
+  { id: 5, title: "PESSOA" },
+  { id: 6, title: "MEUS CARTÕES" },
 ];
 
 const Home = ({ navigation }) => {
@@ -55,7 +55,7 @@ const Home = ({ navigation }) => {
     <Pressable
       style={({ pressed }) => [
         styles.button,
-        pressed && styles.buttonPressed, // Estilo de botão pressionado
+        pressed && styles.buttonPressed,
       ]}
     >
       <Text style={styles.buttonText}>{item.title}</Text>
@@ -219,13 +219,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginHorizontal: 8,
-    paddingHorizontal: 30, // Reduzi o padding para melhor visualização
+    paddingHorizontal: 30,
     paddingVertical: 10,
+    marginTop: 20,
   },
   buttonText: {
-    color: "white", // Mantém a cor branca para contraste
-    fontFamily: "regular",
-    fontSize: 16, // Ajuste de tamanho se necessário
+    color: "#FFFFFF",
+    fontFamily: "semibold",
+    fontSize: 20,
   },
   searchIcon: {
     marginRight: 10,

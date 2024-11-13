@@ -13,7 +13,7 @@ export const Loading = () => {
         const animate = () => {
             const animationList = animations.map((animation, index) => 
                 Animated.sequence([
-                    Animated.delay(index * 300), // Atraso para cada bolinha
+                    Animated.delay(index * 300),
                     Animated.timing(animation, {
                         toValue: -10,
                         duration: 500,

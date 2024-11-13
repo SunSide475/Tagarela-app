@@ -70,13 +70,13 @@ const Login = () => {
                 <Pressable
                   style={({ pressed }) => [
                     styles.submitBtn,
-                    { backgroundColor: pressed ? "darkviolet" : "purple" },
+                    { backgroundColor: pressed ? "darkviolet" : "#7E57C2" },
                   ]}
                   onPress={handleLogin}
                   disabled={loading}
                 >
                   <Text style={styles.submitBtnTxt}>
-                    {loading ? "Carregando..." : "Login"}
+                    {loading ? "Carregando..." : "ENTRAR"}
                   </Text>
                 </Pressable>
                 <Text
@@ -98,11 +98,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
   },
-  error_register: {
-    color: "red",
-    fontSize: 15,
-    marginTop: "2%",
-  },
   logoBg: {
     height: "100%",
     width: "100%",
@@ -118,12 +113,16 @@ const styles = StyleSheet.create({
     marginTop: "25%",
     borderTopLeftRadius: 100,
     display: "flex",
-    padding: 55,
+    padding: 20,
     justifyContent: "center",
     alignItems: "center",
   },
   logo: {
     marginTop: 170,
+    width: "70%",
+    height: undefined,
+    aspectRatio: 6,
+    resizeMode: "contain",
   },
   welcome: {
     fontSize: 27,
@@ -136,7 +135,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   inputContainer: {
-    height: "70%",
+    height: "60%",
     width: "90%",
     display: "flex",
     flexDirection: "column",
@@ -146,18 +145,19 @@ const styles = StyleSheet.create({
     gap: 20,
   },
   input: {
-    width: 300,
-    height: 70,
+    width: "100%",
+    height: 60, 
     borderRadius: 10,
     backgroundColor: "#D9D9D9",
     color: "black",
     fontWeight: "thin",
-    fontSize: 24,
-    padding: 20,
+    fontSize: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
   },
   submitBtn: {
-    backgroundColor: "purple",
-    width: 200,
+    backgroundColor: "#7E57C2",
+    width: "80%",
     height: 50,
     borderRadius: 10,
     display: "flex",
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
     fontSize: 23,
   },
   registerLink: {
-    color: "black",
+    color: "#4F4F4F",
     fontSize: 18,
   },
   error: {

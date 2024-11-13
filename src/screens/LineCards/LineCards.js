@@ -16,7 +16,7 @@ import icons from "../../assets/icons/icons";
 import useLoadFont from "../../hooks/useLoadFont";
 import Head from "../../components/Head/Head";
 
-const Search = () => {
+const LineCards = () => {
   const [text, setText] = useState("");
   const { fontsLoaded } = useLoadFont(
     {
@@ -179,4 +179,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Search;
+export default LineCards;

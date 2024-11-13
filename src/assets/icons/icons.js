@@ -51,6 +51,10 @@ const icons = {
     src: require("./icon-quiz.png"),
     alt: "Quiz icon",
   },
+  fila: {
+    src: require("./icon-fila.png"),
+    alt: "Fila icon",
+  },
 };
 
 export default icons;

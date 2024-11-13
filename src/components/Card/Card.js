@@ -37,8 +37,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 0.1 },
-    shadowOpacity: 0.4,
-    shadowRadius: 8,
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
     elevation: 10,
   },
   image: {

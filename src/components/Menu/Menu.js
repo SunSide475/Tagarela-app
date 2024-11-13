@@ -30,7 +30,7 @@ const Menu = () => {
       </Pressable>
 
       <Pressable
-        onPress={() => navigation.navigate("Search")}
+        onPress={() => navigation.navigate("LineCards")}
         style={({ pressed }) => [
           styles.submitBtn,
           {
@@ -41,8 +41,8 @@ const Menu = () => {
         ]}
       >
         <Image
-          source={icons.find.src}
-          accessibilityLabel={icons.find.alt}
+          source={icons.fila.src}
+          accessibilityLabel={icons.fila.alt}
           style={styles.icon}
         />
       </Pressable>
@@ -104,7 +104,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  icon: {},
+  icon: {
+    width: 40,
+    height: 40,
+  },
 });
 
 export default Menu;

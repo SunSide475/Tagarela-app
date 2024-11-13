@@ -26,7 +26,7 @@ const btns = [
   { id: 6, title: "CORES" },
 ];
 
-const Home = ({navigation}) => {
+const Home = ({ navigation }) => {
   const { fontsLoaded } = useLoadFont(
     {
       regular: require("../../assets/fonts/Quicksand-Regular.ttf"),
@@ -55,8 +55,7 @@ const Home = ({navigation}) => {
     <Pressable
       style={({ pressed }) => [
         styles.button,
-        { width: 50, height: 10 },
-        pressed && styles.buttonPressed,
+        pressed && styles.buttonPressed, // Estilo de botão pressionado
       ]}
     >
       <Text style={styles.buttonText}>{item.title}</Text>
@@ -220,20 +219,18 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginHorizontal: 8,
-    paddingHorizontal: 110,
-    paddingVertical: 26,
-    marginTop: 25,
+    paddingHorizontal: 30, // Reduzi o padding para melhor visualização
+    paddingVertical: 10,
   },
   buttonText: {
-    color: "white",
+    color: "white", // Mantém a cor branca para contraste
     fontFamily: "regular",
-    fontSize: 24,
-  },
-  buttonPressed: {
-    opacity: 0.2,
+    fontSize: 16, // Ajuste de tamanho se necessário
   },
   searchIcon: {
     marginRight: 10,
+    width: 32,
+    height: 32,
   },
   cardsContainer: {
     display: "flex",
@@ -249,6 +246,7 @@ const styles = StyleSheet.create({
     marginTop: "8%",
     paddingLeft: "7%",
     fontSize: 22,
+    fontWeight: "bold",
   },
 });
 

@@ -58,7 +58,7 @@ const CustomModal = ({ isVisible, onClose, cardInfo }) => {
           </View>
 
           <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-            <Text style={styles.closeButtonText}>Fechar</Text>
+            <Text style={styles.closeButtonText}>PRONTO</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -95,10 +95,12 @@ const styles = StyleSheet.create({
     height: 200,
     backgroundColor: "gray",
     marginBottom: 20,
+    borderRadius: 20,
   },
   video: {
     width: "100%",
     height: "100%",
+    borderRadius: 20,
   },
   image: {
     width: "100%",
@@ -128,11 +130,11 @@ const styles = StyleSheet.create({
   closeButton: {
     paddingVertical: 10,
     paddingHorizontal: 20,
-    backgroundColor: "#3498db",
-    borderRadius: 5,
+    backgroundColor: "#FF9900",
+    borderRadius: 10,
   },
   closeButtonText: {
-    color: "black",
+    color: "#FFFFFF",
     fontSize: 16,
   },
 });

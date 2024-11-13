@@ -16,21 +16,21 @@ const Head = () => {
 const styles = StyleSheet.create({
   headContainer: {
     width: "100%",
-    height: "16%",
+    height: 150,
     position: "absolute",
     top: 0,
     left: 0,
     zIndex: 1000,
     backgroundColor: "orange",
     display: "flex",
-    justifyContent: "flex-end",
+    justifyContent: "center",
     alignItems: "center",
   },
   wave: {
-    paddingBottom: "10%",
     resizeMode: "contain",
-    width: 170,
-    marginBottom: 20
+    width: Dimensions.get("window").width * 0.6,
+    height: "15%",
+    marginTop: 40,
   },
 });
 

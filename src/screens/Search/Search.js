@@ -6,7 +6,6 @@ import {
   Text,
   StyleSheet,
   Image,
-  Dimensions,
   ScrollView,
 } from "react-native";
 import { Loading } from "../../components/Loading/Loading";
@@ -16,8 +15,18 @@ import icons from "../../assets/icons/icons";
 import useLoadFont from "../../hooks/useLoadFont";
 import Head from "../../components/Head/Head";
 
+const cardsData = [
+  { id: "1", name: "CACHORRO", imageUrl: "https://em-content.zobj.net/source/apple/81/dog-face_1f436.png" },
+  { id: "2", name: "PANQUECA", imageUrl: "https://em-content.zobj.net/source/apple/391/pancakes_1f95e.png" },
+  { id: "3", name: "SUSHI", imageUrl: "https://em-content.zobj.net/source/apple/391/sushi_1f363.png" },
+  { id: "4", name: "PIZZA", imageUrl: "https://em-content.zobj.net/source/apple/391/pizza_1f355.png" },
+  { id: "5", name: "SORVETE", imageUrl: "https://em-content.zobj.net/source/apple/391/soft-ice-cream_1f366.png" },
+  { id: "6", name: "BOLO", imageUrl: "https://em-content.zobj.net/source/apple/391/shortcake_1f370.png" },
+];
+
 const Search = () => {
   const [text, setText] = useState("");
+  const [filteredCards, setFilteredCards] = useState(cardsData);
   const { fontsLoaded } = useLoadFont(
     {
       regular: require("../../assets/fonts/Quicksand-Regular.ttf"),
@@ -31,6 +40,11 @@ const Search = () => {
 
   const handleChange = (input) => {
     setText(input);
+
+    const filtered = cardsData.filter((card) =>
+      card.name.toLowerCase().includes(input.toLowerCase())
+    );
+    setFilteredCards(filtered);
   };
 
   return (
@@ -47,50 +61,21 @@ const Search = () => {
             onChangeText={handleChange}
           />
         </View>
-        <View style={styles.cardsContainer}>
-          <Card
-            smallSize={true}
-            name="CACHORRO"
-            imageUrl={
-              "https://em-content.zobj.net/source/apple/81/dog-face_1f436.png"
-            }
-          />
-          <Card
-            smallSize={true}
-            name="PANQUECA"
-            imageUrl={
-              "https://em-content.zobj.net/source/apple/391/pancakes_1f95e.png"
-            }
-          />
-          <Card
-            smallSize={true}
-            name="SUSHI"
-            imageUrl={
-              "https://em-content.zobj.net/source/apple/391/sushi_1f363.png"
-            }
-          />
-          <Card
-            smallSize={true}
-            name="PIZZA"
-            imageUrl={
-              "https://em-content.zobj.net/source/apple/391/pizza_1f355.png"
-            }
-          />
-          <Card
-            smallSize={true}
-            name="SORVETE"
-            imageUrl={
-              "https://em-content.zobj.net/source/apple/391/soft-ice-cream_1f366.png"
-            }
-          />
-          <Card
-            smallSize={true}
-            name="BOLO"
-            imageUrl={
-              "https://em-content.zobj.net/source/apple/391/shortcake_1f370.png"
-            }
-          />
-        </View>
+
+        {filteredCards.length === 0 ? (
+          <Text style={styles.noResultsText}>Nenhum cartão encontrado.</Text>
+        ) : (
+          <View style={styles.cardsContainer}>
+            {filteredCards.map((card) => (
+              <Card
+                key={card.id}
+                smallSize={true}
+                name={card.name}
+                imageUrl={card.imageUrl}
+              />
+            ))}
+          </View>
+        )}
       </ScrollView>
 
       <Menu />
@@ -122,31 +107,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginTop: "50%",
   },
-  flatListContainer: {
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    paddingVertical: 10,
-  },
-  button: {
-    display: "flex",
-    backgroundColor: "#FFC247",
-    borderRadius: 60,
-    justifyContent: "center",
-    alignItems: "center",
-    marginHorizontal: 8,
-    marginTop: 25,
-  },
-  buttonText: {
-    color: "#FFFFFF",
-    fontFamily: "regular",
-    fontSize: 28,
-  },
-  buttonPressed: {
-    opacity: 0.2,
-  },
-  searchIcon: {
-    marginRight: 10,
-  },
   cardsContainer: {
     display: "flex",
     justifyContent: "center",
@@ -176,6 +136,13 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     marginLeft: 20,
+  },
+  noResultsText: {
+    textAlign: "center",
+    marginTop: 20,
+    fontSize: 18,
+    color: "#7E57C2",
+    fontFamily: "regular",
   },
 });
 

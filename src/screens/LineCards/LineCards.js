@@ -1,15 +1,13 @@
 import React, { useState } from "react";
 import {
   View,
-  FlatList,
   TextInput,
-  Text,
   StyleSheet,
   Image,
-  Dimensions,
   ScrollView,
+  TouchableOpacity,
+  Text,
 } from "react-native";
-import { Loading } from "../../components/Loading/Loading";
 import Card from "../../components/Card/Card";
 import Menu from "../../components/Menu/Menu";
 import icons from "../../assets/icons/icons";
@@ -18,25 +16,49 @@ import Head from "../../components/Head/Head";
 
 const LineCards = () => {
   const [text, setText] = useState("");
-  const { fontsLoaded } = useLoadFont(
-    {
-      regular: require("../../assets/fonts/Quicksand-Regular.ttf"),
-    },
-    Loading
-  );
+  const [queue, setQueue] = useState([]);
+  const [cardNames, setCardNames] = useState([]);
 
-  if (!fontsLoaded) {
-    return <Loading />;
-  }
-
-  const handleChange = (input) => {
-    setText(input);
+  const handleAddCard = (name, imageUrl) => {
+    if (!cardNames.includes(name) && queue.length < 3) {
+      setQueue([...queue, { name, imageUrl }]);
+      setCardNames([...cardNames, name]);
+    }
   };
+
+  const handleClearQueue = () => {
+    setQueue([]);
+    setCardNames([]);
+  };
+
+  const filteredCards = [
+    { name: "CACHORRO", imageUrl: "https://em-content.zobj.net/source/apple/81/dog-face_1f436.png" },
+    { name: "PANQUECA", imageUrl: "https://em-content.zobj.net/source/apple/391/pancakes_1f95e.png" },
+    { name: "SUSHI", imageUrl: "https://em-content.zobj.net/source/apple/391/sushi_1f363.png" },
+    { name: "PIZZA", imageUrl: "https://em-content.zobj.net/source/apple/391/pizza_1f355.png" },
+    { name: "SORVETE", imageUrl: "https://em-content.zobj.net/source/apple/391/soft-ice-cream_1f366.png" },
+    { name: "BOLO", imageUrl: "https://em-content.zobj.net/source/apple/391/shortcake_1f370.png" },
+  ].filter(card => card.name.toLowerCase().includes(text.toLowerCase()));
 
   return (
     <View style={styles.container}>
       <Head />
       <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+        
+        <View style={styles.phraseContainer}>
+          {queue.map((card, index) => (
+            <Image
+              key={index}
+              source={{ uri: card.imageUrl }}
+              style={styles.cardImageInQueue}
+            />
+          ))}
+          
+          <TouchableOpacity style={styles.clearButton} onPress={handleClearQueue}>
+            <Image source={require("../../assets/icons/icon-delete.png")} style={styles.deleteIcon} />
+          </TouchableOpacity>
+        </View>
+
         <View style={styles.searchContainer}>
           <Image source={icons.searchWhite.src} style={styles.searchIcon} />
           <TextInput
@@ -44,53 +66,22 @@ const LineCards = () => {
             placeholder="PESQUISE O CARTÃO"
             placeholderTextColor={"#FFFFFF"}
             value={text}
-            onChangeText={handleChange}
+            onChangeText={setText}
           />
         </View>
+
         <View style={styles.cardsContainer}>
-          <Card
-            smallSize={true}
-            name="CACHORRO"
-            imageUrl={
-              "https://em-content.zobj.net/source/apple/81/dog-face_1f436.png"
-            }
-          />
-          <Card
-            smallSize={true}
-            name="PANQUECA"
-            imageUrl={
-              "https://em-content.zobj.net/source/apple/391/pancakes_1f95e.png"
-            }
-          />
-          <Card
-            smallSize={true}
-            name="SUSHI"
-            imageUrl={
-              "https://em-content.zobj.net/source/apple/391/sushi_1f363.png"
-            }
-          />
-          <Card
-            smallSize={true}
-            name="PIZZA"
-            imageUrl={
-              "https://em-content.zobj.net/source/apple/391/pizza_1f355.png"
-            }
-          />
-          <Card
-            smallSize={true}
-            name="SORVETE"
-            imageUrl={
-              "https://em-content.zobj.net/source/apple/391/soft-ice-cream_1f366.png"
-            }
-          />
-          <Card
-            smallSize={true}
-            name="BOLO"
-            imageUrl={
-              "https://em-content.zobj.net/source/apple/391/shortcake_1f370.png"
-            }
-          />
+          {filteredCards.map((card) => (
+            <Card
+              key={card.name}
+              smallSize={true}
+              name={card.name}
+              imageUrl={card.imageUrl}
+              onPress={() => handleAddCard(card.name, card.imageUrl)}
+            />
+          ))}
         </View>
+
       </ScrollView>
 
       <Menu />
@@ -104,9 +95,32 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     display: "flex",
     flexDirection: "column",
+    paddingTop: 50,
   },
   scrollViewContainer: {
     flexGrow: 1,
+    paddingBottom: 60,
+  },
+  phraseContainer: {
+    width: "90%",
+    height: 120,
+    borderColor: "#7E57C2",
+    borderWidth: 2,
+    marginTop: 150,
+    marginLeft: "5%",
+    borderRadius: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    position: "relative",
+    flexDirection: "row",
+    flexWrap: "nowrap",
+    paddingHorizontal: 10,
+  },
+  cardImageInQueue: {
+    width: 60,
+    height: 60,
+    marginRight: 20,
+    marginBottom: 10,
   },
   searchContainer: {
     alignItems: "center",
@@ -116,36 +130,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#7E57C2",
     width: "90%",
     height: 50,
-    marginTop: "5%",
+    marginTop: 50,
     borderRadius: 20,
     marginLeft: "5%",
     paddingHorizontal: 10,
-    marginTop: "50%",
-  },
-  flatListContainer: {
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    paddingVertical: 10,
-  },
-  button: {
-    display: "flex",
-    backgroundColor: "#FFC247",
-    borderRadius: 60,
-    justifyContent: "center",
-    alignItems: "center",
-    marginHorizontal: 8,
-    marginTop: 25,
-  },
-  buttonText: {
-    color: "#FFFFFF",
-    fontFamily: "regular",
-    fontSize: 28,
-  },
-  buttonPressed: {
-    opacity: 0.2,
-  },
-  searchIcon: {
-    marginRight: 10,
   },
   cardsContainer: {
     display: "flex",
@@ -153,14 +141,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     marginTop: "5%",
-    paddingBottom: "38%",
     gap: 20,
-  },
-  text: {
-    fontFamily: "regular",
-    marginTop: "8%",
-    paddingLeft: "10%",
-    color: "#FFFFFF",
   },
   input: {
     width: "100%",
@@ -177,6 +158,17 @@ const styles = StyleSheet.create({
     height: 20,
     marginLeft: 20,
   },
+  deleteIcon: {
+    width: 30,
+    height: 30,
+  },
+  clearButton: {
+    position: "absolute",
+    right: 10,
+    top: 10,
+    padding: 5,
+  },
 });
+
 
 export default LineCards;

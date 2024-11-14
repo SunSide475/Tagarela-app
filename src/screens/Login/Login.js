@@ -24,10 +24,11 @@ const Login = () => {
   }, []);
 
   const handleLogin = async () => {
-    const { success } = await login(email, password);
+    const { success, userId } = await login(email, password);
 
     if (success) {
-      navigation.navigate("Settings");
+      console.log(userId)
+      navigation.navigate("Home");
     } else {
       setEmail("");
       setPassword("");

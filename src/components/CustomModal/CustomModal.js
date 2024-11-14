@@ -10,7 +10,11 @@ import {
   Platform,
   Image,
 } from "react-native";
-import { Video } from "expo-av";
+
+let VideoPlayer;
+if (Platform.OS !== "web") {
+  VideoPlayer = require("react-native-video").default;
+}
 
 const CustomModal = ({ isVisible, onClose, cardInfo }) => {
   if (!isVisible) return null;
@@ -37,14 +41,13 @@ const CustomModal = ({ isVisible, onClose, cardInfo }) => {
             {Platform.OS === "web" ? (
               <Image source={{ uri: imageUrl }} style={styles.image} />
             ) : (
-              <Video
+              <VideoPlayer
                 source={videoUrl}
                 style={styles.video}
-                useNativeControls={true} 
-                resizeMode="contain" 
-                isLooping={true} 
-                shouldPlay={true} 
-                onError={(e) => console.log(e)} 
+                controls={true}
+                onBuffer={() => console.log("Buffering...")}
+                onError={(e) => console.log(e)}
+                playing={true}
               />
             )}
           </View>
@@ -58,7 +61,7 @@ const CustomModal = ({ isVisible, onClose, cardInfo }) => {
           </View>
 
           <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-            <Text style={styles.closeButtonText}>PRONTO</Text>
+            <Text style={styles.closeButtonText}>Fechar</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -95,12 +98,10 @@ const styles = StyleSheet.create({
     height: 200,
     backgroundColor: "gray",
     marginBottom: 20,
-    borderRadius: 20,
   },
   video: {
     width: "100%",
     height: "100%",
-    borderRadius: 20,
   },
   image: {
     width: "100%",
@@ -130,11 +131,11 @@ const styles = StyleSheet.create({
   closeButton: {
     paddingVertical: 10,
     paddingHorizontal: 20,
-    backgroundColor: "#FF9900",
-    borderRadius: 10,
+    backgroundColor: "#3498db",
+    borderRadius: 5,
   },
   closeButtonText: {
-    color: "#FFFFFF",
+    color: "black",
     fontSize: 16,
   },
 });

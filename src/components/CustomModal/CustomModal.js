@@ -1,6 +1,4 @@
-import React from "react";
-import Menu from "../Menu/Menu";
-import { separateSyllables } from "../../utils/separateSyllables";
+import React, { useState, useEffect } from "react";
 import {
   Modal,
   View,
@@ -9,22 +7,47 @@ import {
   StyleSheet,
   Platform,
   Image,
+  ActivityIndicator,
 } from "react-native";
+import axios from "axios";
+import { BASE_IMG_URL } from "@env";
+import { separateSyllables } from "../../utils/separateSyllables";
+import useUserId from "../../hooks/useUserId";
 
 let VideoPlayer;
 if (Platform.OS !== "web") {
   VideoPlayer = require("react-native-video").default;
 }
 
-const CustomModal = ({ isVisible, onClose, cardInfo }) => {
-  if (!isVisible) return null;
+const CustomModal = ({ isVisible, onClose, cardId }) => {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [cardInfo, setCardInfo] = useState(null);
+  const {userId} = useUserId()
 
-  const syllables = separateSyllables(cardInfo?.description || "");
+  useEffect(() => {
+    if (cardId) {
+      const fetchCardInfo = async () => {
+        setLoading(true);
+        setError(null);
+        try {
+          const response = await axios.get(
+            `http://localhost:4000/item/${cardId}/user/${userId}`
+          );
+          setCardInfo(response.data.item);
+          setLoading(false);
+        } catch (error) {
+          setError("Erro ao carregar os detalhes do cartão.");
+          setLoading(false);
+        }
+      };
+      fetchCardInfo();
+    }
+  }, [cardId]);
 
-  const videoUrl = require("../../assets/videos/cute_cats.mp4");
+  const syllables = cardInfo ? separateSyllables(cardInfo.syllables || "") : [];
 
-  const imageUrl =
-    "https://em-content.zobj.net/source/apple/391/dog-face_1f436.png";
+  if (!isVisible || !cardId) return null;
 
   return (
     <Modal
@@ -35,37 +58,43 @@ const CustomModal = ({ isVisible, onClose, cardInfo }) => {
     >
       <View style={styles.modalOverlay}>
         <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>{cardInfo?.title}</Text>
-
-          <View style={styles.videoContainer}>
-            {Platform.OS === "web" ? (
-              <Image source={{ uri: imageUrl }} style={styles.image} />
-            ) : (
-              <VideoPlayer
-                source={videoUrl}
-                style={styles.video}
-                controls={true}
-                onBuffer={() => console.log("Buffering...")}
-                onError={(e) => console.log(e)}
-                playing={true}
-              />
-            )}
-          </View>
-
-          <View style={styles.syllablesContainer}>
-            {syllables.map((syllable, index) => (
-              <View key={index} style={styles.syllableBox}>
-                <Text style={styles.syllableText}>{syllable}</Text>
+          {loading ? (
+            <ActivityIndicator size="large" color="#3498db" />
+          ) : error ? (
+            <Text style={styles.errorText}>{error}</Text>
+          ) : (
+            <>
+              <Text style={styles.modalTitle}>{cardInfo.name}</Text>
+              <View style={styles.videoContainer}>
+                {Platform.OS === "web" ? (
+                  <Image
+                    source={{ uri: BASE_IMG_URL + cardInfo?.img }}
+                    style={styles.image}
+                  />
+                ) : (
+                  <VideoPlayer
+                    source={{ uri: BASE_IMG_URL + cardInfo?.video }}
+                    style={styles.video}
+                    controls={true}
+                  />
+                )}
               </View>
-            ))}
-          </View>
-
+              <View style={styles.syllablesContainer}>
+                {syllables.map((syllable, index) => (
+                  <View key={index} style={styles.syllableBox}>
+                    <Text style={styles.syllableText}>
+                      {syllable.toUpperCase()}
+                    </Text>
+                  </View>
+                ))}
+              </View>
+            </>
+          )}
           <TouchableOpacity style={styles.closeButton} onPress={onClose}>
             <Text style={styles.closeButtonText}>Fechar</Text>
           </TouchableOpacity>
         </View>
       </View>
-      <Menu />
     </Modal>
   );
 };
@@ -93,6 +122,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 10,
   },
+  description: {
+    color: "#4F4F4F",
+    fontSize: 16,
+    marginBottom: 10,
+    textAlign: "center",
+  },
   videoContainer: {
     width: "100%",
     height: 200,
@@ -107,6 +142,21 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     resizeMode: "cover",
+  },
+  closeButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    backgroundColor: "#3498db",
+    borderRadius: 5,
+  },
+  closeButtonText: {
+    color: "black",
+    fontSize: 16,
+  },
+  errorText: {
+    color: "red",
+    fontSize: 16,
+    textAlign: "center",
   },
   syllablesContainer: {
     flexDirection: "row",
@@ -127,16 +177,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "medium",
     color: "#FFFFFF",
-  },
-  closeButton: {
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    backgroundColor: "#3498db",
-    borderRadius: 5,
-  },
-  closeButtonText: {
-    color: "black",
-    fontSize: 16,
   },
 });
 

@@ -17,15 +17,13 @@ const useAuthStore = create((set) => ({
         { headers: { "Content-Type": "application/json" } }
       );
 
-      const { user_id } = response.data;
+      set({ user: response.data.user_id, error: null, loading: false });
 
-      set({ user: user_id, error: null, loading: false });
-
-      AsyncStorage.setItem("user_id", user_id).catch((error) => {
+      AsyncStorage.setItem("user_id", user).catch((error) => {
         console.error("Erro ao salvar user_id no AsyncStorage:", error);
       });
 
-      return { success: true, user_id };
+      return { success: true };
     } catch (error) {
       const errorMessage = error.response?.data?.error || error.message || "Login Error";
       console.error("Login Error:", errorMessage);

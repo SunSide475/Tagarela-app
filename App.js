@@ -9,16 +9,13 @@ import Search from "./src/screens/Search/Search";
 import QuizMenu from "./src/screens/QuizMenu/QuizMenu";
 import LineCards from "./src/screens/LineCards/LineCards";
 import Account from "./src/screens/Settings/Account/Account";
-  
 
 const Stack = createStackNavigator();
 
 export default function App() {
-
-
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName="Search">
         <Stack.Screen
           name="Home"
           component={Home}
@@ -44,7 +41,7 @@ export default function App() {
           component={Settings}
           options={{ headerShown: false }}
         />
-         <Stack.Screen
+        <Stack.Screen
           name="Search"
           component={Search}
           options={{ headerShown: false }}

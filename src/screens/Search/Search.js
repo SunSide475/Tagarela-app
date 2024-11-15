@@ -1,32 +1,22 @@
-import React, { useState } from "react";
-import {
-  View,
-  FlatList,
-  TextInput,
-  Text,
-  StyleSheet,
-  Image,
-  ScrollView,
-} from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, TextInput, Text, StyleSheet, Image, ScrollView } from "react-native";
 import { Loading } from "../../components/Loading/Loading";
 import Card from "../../components/Card/Card";
 import Menu from "../../components/Menu/Menu";
 import icons from "../../assets/icons/icons";
 import useLoadFont from "../../hooks/useLoadFont";
 import Head from "../../components/Head/Head";
-
-const cardsData = [
-  { id: "1", name: "CACHORRO", imageUrl: "https://em-content.zobj.net/source/apple/81/dog-face_1f436.png" },
-  { id: "2", name: "PANQUECA", imageUrl: "https://em-content.zobj.net/source/apple/391/pancakes_1f95e.png" },
-  { id: "3", name: "SUSHI", imageUrl: "https://em-content.zobj.net/source/apple/391/sushi_1f363.png" },
-  { id: "4", name: "PIZZA", imageUrl: "https://em-content.zobj.net/source/apple/391/pizza_1f355.png" },
-  { id: "5", name: "SORVETE", imageUrl: "https://em-content.zobj.net/source/apple/391/soft-ice-cream_1f366.png" },
-  { id: "6", name: "BOLO", imageUrl: "https://em-content.zobj.net/source/apple/391/shortcake_1f370.png" },
-];
+import useCardsStore from "../../store/useCardsStore";
+import CustomModal from "../../components/CustomModal/CustomModal";
+import { BASE_IMG_URL } from '@env';
 
 const Search = () => {
-  const [text, setText] = useState("");
-  const [filteredCards, setFilteredCards] = useState(cardsData);
+  const [text, setText] = useState(""); 
+  const [filteredCards, setFilteredCards] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);  
+  const [selectedCard, setSelectedCard] = useState(null);   
+  const { getAllCards, cards, error, loading } = useCardsStore();
+
   const { fontsLoaded } = useLoadFont(
     {
       regular: require("../../assets/fonts/Quicksand-Regular.ttf"),
@@ -34,18 +24,40 @@ const Search = () => {
     Loading
   );
 
-  if (!fontsLoaded) {
-    return <Loading />;
-  }
+  useEffect(() => {
+    if (cards.length === 0) {
+      getAllCards();
+    } else {
+      setFilteredCards(cards);
+    }
+  }, [getAllCards, cards]);
 
   const handleChange = (input) => {
     setText(input);
 
-    const filtered = cardsData.filter((card) =>
-      card.name.toLowerCase().includes(input.toLowerCase())
-    );
-    setFilteredCards(filtered);
+    if (input === "") {
+      setFilteredCards(cards);
+    } else {
+      const filtered = cards.filter((card) =>
+        card.name.toLowerCase().includes(input.toLowerCase())
+      );
+      setFilteredCards(filtered);
+    }
   };
+
+  const handleCardClick = (id) => {
+    setSelectedCard(id);
+    setModalVisible(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalVisible(false);
+    setSelectedCard(null);
+  };
+
+  if (!fontsLoaded || loading) {
+    return <Loading />;
+  }
 
   return (
     <View style={styles.container}>
@@ -62,6 +74,8 @@ const Search = () => {
           />
         </View>
 
+        {error && <Text style={styles.noResultsText}>{error}</Text>}
+
         {filteredCards.length === 0 ? (
           <Text style={styles.noResultsText}>Nenhum cartão encontrado.</Text>
         ) : (
@@ -71,7 +85,8 @@ const Search = () => {
                 key={card.id}
                 smallSize={true}
                 name={card.name}
-                imageUrl={card.imageUrl}
+                imageUrl={BASE_IMG_URL + card.img}
+                onPress={() => handleCardClick(card.id)}  
               />
             ))}
           </View>
@@ -79,6 +94,12 @@ const Search = () => {
       </ScrollView>
 
       <Menu />
+
+      <CustomModal
+        isVisible={modalVisible}
+        onClose={handleCloseModal}
+        cardId={selectedCard}  
+      />
     </View>
   );
 };

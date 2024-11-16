@@ -27,7 +27,7 @@ const btns = [
   { id: 6, title: "MEUS CARTÕES" },
 ];
 
-const { height } = Dimensions.get('window'); // Obter altura da tela
+const { height } = Dimensions.get('window');
 
 const Home = ({ navigation }) => {
   const { fontsLoaded } = useLoadFont(
@@ -74,7 +74,7 @@ const Home = ({ navigation }) => {
             style={[
               styles.searchIconContainer,
               {
-                marginTop: height > 800 ? height * 0.18 : height * 0.15, // Ajuste para um valor mais para cima
+                marginTop: height > 800 ? height * 0.18 : height * 0.15,
               },
             ]}
           >
@@ -92,7 +92,6 @@ const Home = ({ navigation }) => {
         </View>
 
         <Text style={styles.text}>RECENTES</Text>
-
         <View style={styles.cardsContainer}>
           <Card
             name="CACHORRO"

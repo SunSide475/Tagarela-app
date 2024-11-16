@@ -3,7 +3,7 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage"; 
 
 const useAuthStore = create((set) => ({
-  user: null,
+  user_id: null,
   error: null,
   loading: false,
   login: async (email, password) => {
@@ -16,17 +16,15 @@ const useAuthStore = create((set) => ({
         { email, password },
         { headers: { "Content-Type": "application/json" } }
       );
-
-      set({ user: response.data.user_id, error: null, loading: false });
-
-      AsyncStorage.setItem("user_id", user).catch((error) => {
+      set({ user_id: response.data.user_id, error: null, loading: false });
+  
+      AsyncStorage.setItem("user_id", response.data.user_id).catch((error) => {
         console.error("Erro ao salvar user_id no AsyncStorage:", error);
       });
 
-      return { success: true };
+      return { success: true, message: response.data.message, user_id: response.data.user_id};
     } catch (error) {
       const errorMessage = error.response?.data?.error || error.message || "Login Error";
-      console.error("Login Error:", errorMessage);
       set({ error: errorMessage, loading: false });
       return { success: false, error: errorMessage };
     }
@@ -45,8 +43,8 @@ const useAuthStore = create((set) => ({
           headers: { "Content-Type": "application/json" },
         }
       );
-      set({ user: response.data, error: null, loading: false });
-      return { success: true, data: response.data };
+      set({ user: response.data.user_id, error: null, loading: false });
+      return { success: true, message: response.data.message,  };
     } catch (error) {
       const errorMessage =
         error.response?.data?.error || error.message || "Registration Error";

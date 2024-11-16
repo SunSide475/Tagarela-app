@@ -14,13 +14,14 @@ import { BASE_IMG_URL } from "@env";
 import { separateSyllables } from "../../utils/separateSyllables";
 import { useEvent } from "expo";
 import { useVideoPlayer, VideoView } from "expo-video";
-import useUserId from '../../hooks/useUserId'
+import useUserId from "../../hooks/useUserId";
+
 
 const CustomModal = ({ isVisible, onClose, cardId }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [cardInfo, setCardInfo] = useState(null);
-  const {userId} = useUserId()
+  const { userId } = useUserId() 
 
   useEffect(() => {
     if (cardId) {

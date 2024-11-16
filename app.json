@@ -24,7 +24,14 @@
       "favicon": "./src/assets/general/tagarela_logo.png"
     },
     "plugins": [
-      "expo-font"
+      "expo-font",
+      [
+        "expo-video",
+        {
+          "supportsBackgroundPlayback": true,
+          "supportsPictureInPicture": true
+        }
+      ]
     ],
     "sdkVersion": "52.0.0",
     "newArchEnabled": "true"

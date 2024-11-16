@@ -1,8 +1,19 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Modal, View, Text, TouchableOpacity, StyleSheet, Platform, ActivityIndicator } from "react-native";
+import {
+  Modal,
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Platform,
+  ActivityIndicator,
+  Image
+} from "react-native";
 import axios from "axios";
 import { BASE_IMG_URL } from "@env";
 import { separateSyllables } from "../../utils/separateSyllables";
+import { useEvent } from "expo";
+import { useVideoPlayer, VideoView } from "expo-video";
 import useUserId from '../../hooks/useUserId'
 
 const CustomModal = ({ isVisible, onClose, cardId }) => {
@@ -32,17 +43,19 @@ const CustomModal = ({ isVisible, onClose, cardId }) => {
   }, [cardId]);
 
   const syllables = cardInfo ? separateSyllables(cardInfo.syllables || "") : [];
+  const videoSource = cardInfo ? BASE_IMG_URL + cardInfo?.video : null;
 
+    const player = useVideoPlayer(videoSource, (player) => {
+      player.loop = true; 
+      player.play();
+    });
+  
+
+    const { isPlaying } = useEvent(player, "playingChange", {
+      isPlaying: player.playing,
+    });
+    
   if (!isVisible || !cardId) return null;
-
-  const onBuffer = (buffer) => {
-    console.log("Buffering:", buffer);
-  };
-
-  const onError = (error) => {
-    console.log("Error:", error);
-    setError("Erro ao carregar o vídeo.");
-  };
 
   return (
     <Modal
@@ -67,7 +80,10 @@ const CustomModal = ({ isVisible, onClose, cardId }) => {
                     style={styles.image}
                   />
                 ) : (
-                 <Text>oi</Text>
+                  <VideoView
+                    style={styles.video}
+                    player={player}
+                  />
                 )}
               </View>
               <View style={styles.syllablesContainer}>

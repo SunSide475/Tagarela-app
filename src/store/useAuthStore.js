@@ -35,7 +35,7 @@ const useAuthStore = create((set) => ({
     set({ loading: true, error: null });
     try {
       const response = await axios.post(
-        "http://localhost:4000/register",
+        "http://10.0.2.2:4000/register",
         {
           username,
           email,

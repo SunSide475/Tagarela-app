@@ -1,23 +1,9 @@
-import React, { useState, useEffect } from "react";
-import {
-  Modal,
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Platform,
-  Image,
-  ActivityIndicator,
-} from "react-native";
+import React, { useState, useEffect, useRef } from "react";
+import { Modal, View, Text, TouchableOpacity, StyleSheet, Platform, ActivityIndicator } from "react-native";
 import axios from "axios";
 import { BASE_IMG_URL } from "@env";
 import { separateSyllables } from "../../utils/separateSyllables";
-import useUserId from "../../hooks/useUserId";
-
-let VideoPlayer;
-if (Platform.OS !== "web") {
-  VideoPlayer = require("react-native-video").default;
-}
+import useUserId from '../../hooks/useUserId'
 
 const CustomModal = ({ isVisible, onClose, cardId }) => {
   const [loading, setLoading] = useState(true);
@@ -32,7 +18,7 @@ const CustomModal = ({ isVisible, onClose, cardId }) => {
         setError(null);
         try {
           const response = await axios.get(
-            `http://localhost:4000/item/${cardId}/user/${userId}`
+            `http://10.0.2.2:4000/item/${cardId}/user/${userId}`
           );
           setCardInfo(response.data.item);
           setLoading(false);
@@ -48,6 +34,15 @@ const CustomModal = ({ isVisible, onClose, cardId }) => {
   const syllables = cardInfo ? separateSyllables(cardInfo.syllables || "") : [];
 
   if (!isVisible || !cardId) return null;
+
+  const onBuffer = (buffer) => {
+    console.log("Buffering:", buffer);
+  };
+
+  const onError = (error) => {
+    console.log("Error:", error);
+    setError("Erro ao carregar o vídeo.");
+  };
 
   return (
     <Modal
@@ -72,11 +67,7 @@ const CustomModal = ({ isVisible, onClose, cardId }) => {
                     style={styles.image}
                   />
                 ) : (
-                  <VideoPlayer
-                    source={{ uri: BASE_IMG_URL + cardInfo?.video }}
-                    style={styles.video}
-                    controls={true}
-                  />
+                 <Text>oi</Text>
                 )}
               </View>
               <View style={styles.syllablesContainer}>
@@ -121,12 +112,6 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: "bold",
     marginBottom: 10,
-  },
-  description: {
-    color: "#4F4F4F",
-    fontSize: 16,
-    marginBottom: 10,
-    textAlign: "center",
   },
   videoContainer: {
     width: "100%",

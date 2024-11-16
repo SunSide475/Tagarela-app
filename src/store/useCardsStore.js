@@ -8,7 +8,7 @@ const useCardsStore = create((set) => ({
   getAllCards: async () => {
     set({ loading: true, error: null });
     try {
-      const response = await axios.get("http://localhost:4000/items");
+      const response = await axios.get("http://10.0.2.2:4000/items");
       set({ cards: response.data.items, error: null, loading: false });
     } catch (error) {
       const errorMessage = error.response?.data?.error || error.message || "Erro ao carregar";

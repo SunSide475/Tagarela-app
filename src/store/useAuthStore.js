@@ -12,7 +12,7 @@ const useAuthStore = create((set) => ({
     try {
      
       const response = await axios.post(
-        "https://localhost:4000/logar", 
+        "http://10.0.2.2:4000/logar", 
         { email, password },
         { headers: { "Content-Type": "application/json" } }
       );

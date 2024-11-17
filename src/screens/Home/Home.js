@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useFocusEffect } from '@react-navigation/native';
 import {
   View,
   FlatList,
@@ -17,6 +18,9 @@ import icons from "../../assets/icons/icons";
 import useLoadFont from "../../hooks/useLoadFont";
 import Head from "../../components/Head/Head";
 import CustomModal from "../../components/CustomModal/CustomModal";
+import useCardsStore from "../../store/useCardsStore";
+import { BASE_IMG_URL } from "@env";
+import useUserId from "../../hooks/useUserId";
 
 const btns = [
   { id: 1, title: "ALIMENTO" },
@@ -27,7 +31,7 @@ const btns = [
   { id: 6, title: "MEUS CARTÕES" },
 ];
 
-const { height } = Dimensions.get('window');
+const { height } = Dimensions.get("window");
 
 const Home = ({ navigation }) => {
   const { fontsLoaded } = useLoadFont(
@@ -39,6 +43,19 @@ const Home = ({ navigation }) => {
 
   const [isModalVisible, setModalVisible] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
+  const { recentCards, getRecentCards, loading } = useCardsStore();
+  const { userId } = useUserId();
+
+  useEffect(() => {
+    getRecentCards(userId);
+  }, [getRecentCards, userId]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      getRecentCards(userId);
+    }, [getRecentCards, userId])
+  );
+
 
   const openModal = (cardInfo) => {
     setSelectedCard(cardInfo);
@@ -50,16 +67,14 @@ const Home = ({ navigation }) => {
     setSelectedCard(null);
   };
 
-  if (!fontsLoaded) {
+  if (!fontsLoaded || loading) {
     return <Loading />;
   }
 
   const renderItem = ({ item }) => (
     <Pressable
-      style={({ pressed }) => [
-        styles.button,
-        pressed && styles.buttonPressed,
-      ]}>
+      style={({ pressed }) => [styles.button, pressed && styles.buttonPressed]}
+    >
       <Text style={styles.buttonText}>{item.title}</Text>
     </Pressable>
   );
@@ -92,52 +107,26 @@ const Home = ({ navigation }) => {
         </View>
 
         <Text style={styles.text}>RECENTES</Text>
-        <View style={styles.cardsContainer}>
-          <Card
-            name="CACHORRO"
-            imageUrl="https://em-content.zobj.net/source/apple/81/dog-face_1f436.png"
-            onPress={() =>
-              openModal({
-                title: "CACHORRO",
-                description: "CA-CHO-RRO",
-                imageUrl: "https://em-content.zobj.net/source/apple/81/dog-face_1f436.png",
-              })
-            }
-          />
-          <Card
-            name="PANQUECA"
-            imageUrl="https://em-content.zobj.net/source/apple/391/pancakes_1f95e.png"
-            onPress={() =>
-              openModal({
-                title: "PANQUECA",
-                description: "PAN-QUE-CA",
-                imageUrl: "https://em-content.zobj.net/source/apple/391/pancakes_1f95e.png",
-              })
-            }
-          />
-          <Card
-            name="SUSHI"
-            imageUrl="https://em-content.zobj.net/source/apple/391/sushi_1f363.png"
-            onPress={() =>
-              openModal({
-                title: "SUSHI",
-                description: "SU-SHI",
-                imageUrl: "https://em-content.zobj.net/source/apple/391/sushi_1f363.png",
-              })
-            }
-          />
-          <Card
-            name="PIZZA"
-            imageUrl="https://em-content.zobj.net/source/apple/391/pizza_1f355.png"
-            onPress={() =>
-              openModal({
-                title: "PIZZA",
-                description: "PI-ZZA",
-                imageUrl: "https://em-content.zobj.net/source/apple/391/pizza_1f355.png",
-              })
-            }
-          />
-        </View>
+        {recentCards.length >= 4 ? (
+          <View style={styles.cardsContainer}>
+            {recentCards.slice(0, 4).map((card) => (
+              <Card
+                key={card.id}
+                name={card.name}
+                imageUrl={BASE_IMG_URL + card.img}
+                onPress={() =>
+                  openModal({
+                    title: card.name,
+                    description: card.syllables,
+                    imageUrl: BASE_IMG_URL + card.img,
+                  })
+                }
+              />
+            ))}
+          </View>
+        ) : (
+          <Text style={styles.text}>Não há cards suficientes para exibir.</Text>
+        )}
         <Text style={styles.text}>MAIS UTILIZADOS</Text>
 
         <View style={[styles.cardsContainer, { paddingBottom: "35%" }]}>
@@ -148,7 +137,8 @@ const Home = ({ navigation }) => {
               openModal({
                 title: "SORVETE",
                 description: "SOR-VE-TE",
-                imageUrl: "https://em-content.zobj.net/source/apple/391/soft-ice-cream_1f366.png",
+                imageUrl:
+                  "https://em-content.zobj.net/source/apple/391/soft-ice-cream_1f366.png",
               })
             }
           />
@@ -159,7 +149,8 @@ const Home = ({ navigation }) => {
               openModal({
                 title: "BOLO",
                 description: "BO-LO",
-                imageUrl: "https://em-content.zobj.net/source/apple/391/shortcake_1f370.png",
+                imageUrl:
+                  "https://em-content.zobj.net/source/apple/391/shortcake_1f370.png",
               })
             }
           />
@@ -170,7 +161,8 @@ const Home = ({ navigation }) => {
               openModal({
                 title: "SUSHI",
                 description: "SU-SHI",
-                imageUrl: "https://em-content.zobj.net/source/apple/391/sushi_1f363.png",
+                imageUrl:
+                  "https://em-content.zobj.net/source/apple/391/sushi_1f363.png",
               })
             }
           />
@@ -181,7 +173,8 @@ const Home = ({ navigation }) => {
               openModal({
                 title: "PIZZA",
                 description: "PI-ZZA",
-                imageUrl: "https://em-content.zobj.net/source/apple/391/pizza_1f355.png",
+                imageUrl:
+                  "https://em-content.zobj.net/source/apple/391/pizza_1f355.png",
               })
             }
           />
@@ -245,6 +238,7 @@ const styles = StyleSheet.create({
   searchIcon: {
     width: 32,
     height: 32,
+    marginTop: 20,
   },
   cardsContainer: {
     display: "flex",

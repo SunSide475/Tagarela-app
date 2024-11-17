@@ -16,7 +16,7 @@ const usePopUp = () => {
 
       const timer = setTimeout(() => {
         closePopUp();
-      }, 4000);
+      }, 3000);
 
       return () => clearTimeout(timer);
     } else {

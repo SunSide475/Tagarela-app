@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
   popUpContainer: {
     backgroundColor: "#d3d3d3",
     width: "100%",
-    height: "100%",
+    height: "120%",
     zIndex: 1000,
     position: "absolute",
     justifyContent: "center",

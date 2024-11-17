@@ -32,13 +32,12 @@ const Register = () => {
 
     if (success) {
       showPopUp("Registro realizado com sucesso!");
-      navigation.navigate("Settings");
+      navigation.navigate("Home");
     } else {
       setUsername("");
       setEmail("");
       setPassword("");
       setConfirmPassword("");
-
       showPopUp("Erro ao registrar.");
     }
   };

@@ -12,12 +12,15 @@ import { useNavigation } from "@react-navigation/native";
 import general from "../../assets/general/genereal";
 import useAuthStore from "../../store/useAuthStore";
 import { Loading } from "../../components/Loading/Loading";
+import PopUp from "../../components/PopUp/PopUp";
+import usePopUp from "../../hooks/usePopUp";
 
 const Login = () => {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { loading, login, error, cleanError } = useAuthStore();
+  const { showPopUp, popUpVisible, popUpMessage, scale } = usePopUp();
 
   useEffect(() => {
     cleanError();
@@ -27,10 +30,12 @@ const Login = () => {
     const { success, user_id } = await login(email, password);
 
     if (success) {
+      showPopUp("Login realizado com sucesso!");
       navigation.navigate("Home");
     } else {
       setEmail("");
       setPassword("");
+      showPopUp("Erro ao realizar login.");
     }
   };
   return (
@@ -88,6 +93,12 @@ const Login = () => {
               </View>
             </View>
           </View>
+          <PopUp
+            title="Operação"
+            message={popUpMessage}
+            visible={popUpVisible}
+            scale={scale}
+          />
         </View>
       </KeyboardAwareScrollView>
     </>
@@ -146,7 +157,7 @@ const styles = StyleSheet.create({
   },
   input: {
     width: "100%",
-    height: 60, 
+    height: 60,
     borderRadius: 10,
     backgroundColor: "#D9D9D9",
     color: "black",

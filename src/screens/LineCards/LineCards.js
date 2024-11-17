@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   TextInput,
@@ -11,17 +11,24 @@ import {
 import Card from "../../components/Card/Card";
 import Menu from "../../components/Menu/Menu";
 import icons from "../../assets/icons/icons";
-import useLoadFont from "../../hooks/useLoadFont";
 import Head from "../../components/Head/Head";
+import useCardsStore from "../../store/useCardsStore";
+import { Loading } from "../../components/Loading/Loading";
+import { BASE_IMG_URL } from "@env";
 
 const LineCards = () => {
   const [text, setText] = useState("");
   const [queue, setQueue] = useState([]);
   const [cardNames, setCardNames] = useState([]);
+  const { getAllCards, cards, error, loading } = useCardsStore();
 
-  const handleAddCard = (name, imageUrl) => {
+  useEffect(() => {
+    getAllCards();
+  }, [getAllCards]);
+
+  const handleAddCard = (name, img) => {
     if (!cardNames.includes(name) && queue.length < 3) {
-      setQueue([...queue, { name, imageUrl }]);
+      setQueue([...queue, { name, img }]);
       setCardNames([...cardNames, name]);
     }
   };
@@ -31,31 +38,43 @@ const LineCards = () => {
     setCardNames([]);
   };
 
-  const filteredCards = [
-    { name: "CACHORRO", imageUrl: "https://em-content.zobj.net/source/apple/81/dog-face_1f436.png" },
-    { name: "PANQUECA", imageUrl: "https://em-content.zobj.net/source/apple/391/pancakes_1f95e.png" },
-    { name: "SUSHI", imageUrl: "https://em-content.zobj.net/source/apple/391/sushi_1f363.png" },
-    { name: "PIZZA", imageUrl: "https://em-content.zobj.net/source/apple/391/pizza_1f355.png" },
-    { name: "SORVETE", imageUrl: "https://em-content.zobj.net/source/apple/391/soft-ice-cream_1f366.png" },
-    { name: "BOLO", imageUrl: "https://em-content.zobj.net/source/apple/391/shortcake_1f370.png" },
-  ].filter(card => card.name.toLowerCase().includes(text.toLowerCase()));
+  const filteredCards = cards.filter((card) =>
+    card.name.toLowerCase().includes(text.toLowerCase())
+  );
+
+  if (loading) {
+    return <Loading></Loading>;
+  }
+
+  if (error) {
+    return <Text style={styles.errorText}>Erro: {error}</Text>;
+  }
 
   return (
     <View style={styles.container}>
       <Head />
       <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-        
         <View style={styles.phraseContainer}>
-          {queue.map((card, index) => (
+          {queue.map((card, index) => {
+            const imageUrl = `${BASE_IMG_URL}${card.img}`;
+            console.log("Image URL:", imageUrl);
+            return (
+              <Image
+                key={index}
+                source={{ uri: imageUrl }}
+                style={styles.cardImageInQueue}
+              />
+            );
+          })}
+
+          <TouchableOpacity
+            style={styles.clearButton}
+            onPress={handleClearQueue}
+          >
             <Image
-              key={index}
-              source={{ uri: card.imageUrl }}
-              style={styles.cardImageInQueue}
+              source={require("../../assets/icons/icon-delete.png")}
+              style={styles.deleteIcon}
             />
-          ))}
-          
-          <TouchableOpacity style={styles.clearButton} onPress={handleClearQueue}>
-            <Image source={require("../../assets/icons/icon-delete.png")} style={styles.deleteIcon} />
           </TouchableOpacity>
         </View>
 
@@ -76,12 +95,11 @@ const LineCards = () => {
               key={card.name}
               smallSize={true}
               name={card.name}
-              imageUrl={card.imageUrl}
-              onPress={() => handleAddCard(card.name, card.imageUrl)}
+              imageUrl={BASE_IMG_URL + card.img}
+              onPress={() => handleAddCard(card.name, card.img)}
             />
           ))}
         </View>
-
       </ScrollView>
 
       <Menu />
@@ -142,6 +160,7 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     marginTop: "5%",
     gap: 20,
+    paddingBottom: 40,
   },
   input: {
     width: "100%",
@@ -169,6 +188,5 @@ const styles = StyleSheet.create({
     padding: 5,
   },
 });
-
 
 export default LineCards;

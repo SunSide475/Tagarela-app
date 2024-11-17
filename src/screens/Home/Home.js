@@ -23,12 +23,15 @@ import { BASE_IMG_URL } from "@env";
 import useUserId from "../../hooks/useUserId";
 
 const btns = [
-  { id: 1, title: "ALIMENTO" },
-  { id: 2, title: "AÇÃO" },
-  { id: 3, title: "EMOÇÃO" },
-  { id: 4, title: "NECESSIDADE" },
-  { id: 5, title: "PESSOA" },
-  { id: 6, title: "MEUS CARTÕES" },
+  { id: 1, title: "ALIMENTO", category: "ALIMENTO" },
+  { id: 2, title: "PESSOA", category: "PESSOA" },
+  { id: 3, title: "AÇÃO", category: "ACAO"  },
+  { id: 4, title: "EMOÇÃO", category: "EMOCAO" },
+  { id: 5, title: "NECESSIDADE", category: "NECESSIDADE" },
+  { id: 6, title: "ANIMAL", category: "ANIMAL"},
+  { id: 7, title: "MATERIAL", category: "MATERIAL"},
+  { id: 8, title: "OBJETO", category: "OBJETO"},
+  { id: 9, title: "RESPOSTA", category: "RESPOSTA"},
 ];
 
 const { height } = Dimensions.get("window");
@@ -43,21 +46,23 @@ const Home = ({ navigation }) => {
 
   const [isModalVisible, setModalVisible] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
-  const { recentCards, getRecentCards, loading, getMostViewedCards, mostViewedCards } = useCardsStore();
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const { recentCards, getRecentCards, loading, getMostViewedCards, mostViewedCards, getAllCards, cards } = useCardsStore();
   const { userId } = useUserId();
 
   useEffect(() => {
     getRecentCards(userId);
     getMostViewedCards(userId);
-  }, [getRecentCards, getMostViewedCards, userId]);
+    getAllCards();
+  }, [getRecentCards, getMostViewedCards, userId, getAllCards]);
 
   useFocusEffect(
     React.useCallback(() => {
       getRecentCards(userId);
       getMostViewedCards(userId);
-    }, [getRecentCards, getMostViewedCards, userId])
+      getAllCards();
+    }, [getRecentCards, getMostViewedCards, getAllCards, userId])
   );
-
 
   const openModal = (cardInfo) => {
     setSelectedCard(cardInfo);
@@ -76,10 +81,15 @@ const Home = ({ navigation }) => {
   const renderItem = ({ item }) => (
     <Pressable
       style={({ pressed }) => [styles.button, pressed && styles.buttonPressed]}
+      onPress={() => setSelectedCategory(item.category)}
     >
       <Text style={styles.buttonText}>{item.title}</Text>
     </Pressable>
   );
+
+  const filteredCards = selectedCategory
+    ? cards.filter(card => card.category.toUpperCase() === selectedCategory.toUpperCase())
+    : [];
 
   return (
     <View style={styles.container}>
@@ -108,48 +118,76 @@ const Home = ({ navigation }) => {
           />
         </View>
 
-        <Text style={styles.text}>RECENTES</Text>
-        {recentCards.length >= 4 ? (
-          <View style={styles.cardsContainer}>
-            {recentCards.slice(0, 4).map((card) => (
-              <Card
-                key={card.id}
-                name={card.name}
-                imageUrl={BASE_IMG_URL + card.img}
-                onPress={() =>
-                  openModal({
-                    title: card.name,
-                    description: card.syllables,
-                    imageUrl: BASE_IMG_URL + card.img,
-                  })
-                }
-              />
-            ))}
-          </View>
+        {selectedCategory ? (
+          <>
+            <Text style={styles.text}>{selectedCategory.toUpperCase()}</Text>
+            <View style={styles.cardsContainer}>
+              {filteredCards.length > 0 ? (
+                filteredCards.map((card) => (
+                  <Card
+                    key={card.id}
+                    name={card.name}
+                    imageUrl={BASE_IMG_URL + card.img}
+                    onPress={() =>
+                      openModal({
+                        title: card.name,
+                        description: card.syllables,
+                        imageUrl: BASE_IMG_URL + card.img,
+                      })
+                    }
+                  />
+                ))
+              ) : (
+                <Text style={styles.text}>Não há cards para esta categoria.</Text>
+              )}
+            </View>
+          </>
         ) : (
-          <Text style={styles.text}>Não há cards suficientes para exibir.</Text>
-        )}
-        <Text style={styles.text}>MAIS UTILIZADOS</Text>
+          <>
+            <Text style={styles.text}>RECENTES</Text>
+            {recentCards.length >= 4 ? (
+              <View style={styles.cardsContainer}>
+                {recentCards.slice(0, 4).map((card) => (
+                  <Card
+                    key={card.id}
+                    name={card.name}
+                    imageUrl={BASE_IMG_URL + card.img}
+                    onPress={() =>
+                      openModal({
+                        title: card.name,
+                        description: card.syllables,
+                        imageUrl: BASE_IMG_URL + card.img,
+                      })
+                    }
+                  />
+                ))}
+              </View>
+            ) : (
+              <Text style={styles.text}>Não há cards suficientes para exibir.</Text>
+            )}
 
-        {mostViewedCards.length >= 4 ? (
-          <View style={styles.cardsContainer}>
-            {mostViewedCards.slice(0, 4).map((card) => (
-              <Card
-                key={card.id}
-                name={card.name}
-                imageUrl={BASE_IMG_URL + card.img}
-                onPress={() =>
-                  openModal({
-                    title: card.name,
-                    description: card.syllables,
-                    imageUrl: BASE_IMG_URL + card.img,
-                  })
-                }
-              />
-            ))}
-          </View>
-        ) : (
-          <Text style={styles.text}>Não há cards suficientes para exibir.</Text>
+            <Text style={styles.text}>MAIS UTILIZADOS</Text>
+            {mostViewedCards.length >= 4 ? (
+              <View style={styles.cardsContainer}>
+                {mostViewedCards.slice(0, 4).map((card) => (
+                  <Card
+                    key={card.id}
+                    name={card.name}
+                    imageUrl={BASE_IMG_URL + card.img}
+                    onPress={() =>
+                      openModal({
+                        title: card.name,
+                        description: card.syllables,
+                        imageUrl: BASE_IMG_URL + card.img,
+                      })
+                    }
+                  />
+                ))}
+              </View>
+            ) : (
+              <Text style={styles.text}>Não há cards suficientes para exibir.</Text>
+            )}
+          </>
         )}
       </ScrollView>
 
@@ -170,6 +208,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     display: "flex",
     flexDirection: "column",
+    paddingBottom: 70
   },
   scrollViewContainer: {
     flexGrow: 1,

@@ -43,17 +43,19 @@ const Home = ({ navigation }) => {
 
   const [isModalVisible, setModalVisible] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
-  const { recentCards, getRecentCards, loading } = useCardsStore();
+  const { recentCards, getRecentCards, loading, getMostViewedCards, mostViewedCards } = useCardsStore();
   const { userId } = useUserId();
 
   useEffect(() => {
     getRecentCards(userId);
-  }, [getRecentCards, userId]);
+    getMostViewedCards(userId);
+  }, [getRecentCards, getMostViewedCards, userId]);
 
   useFocusEffect(
     React.useCallback(() => {
       getRecentCards(userId);
-    }, [getRecentCards, userId])
+      getMostViewedCards(userId);
+    }, [getRecentCards, getMostViewedCards, userId])
   );
 
 
@@ -129,56 +131,26 @@ const Home = ({ navigation }) => {
         )}
         <Text style={styles.text}>MAIS UTILIZADOS</Text>
 
-        <View style={[styles.cardsContainer, { paddingBottom: "35%" }]}>
-          <Card
-            name="SORVETE"
-            imageUrl="https://em-content.zobj.net/source/apple/391/soft-ice-cream_1f366.png"
-            onPress={() =>
-              openModal({
-                title: "SORVETE",
-                description: "SOR-VE-TE",
-                imageUrl:
-                  "https://em-content.zobj.net/source/apple/391/soft-ice-cream_1f366.png",
-              })
-            }
-          />
-          <Card
-            name="BOLO"
-            imageUrl="https://em-content.zobj.net/source/apple/391/shortcake_1f370.png"
-            onPress={() =>
-              openModal({
-                title: "BOLO",
-                description: "BO-LO",
-                imageUrl:
-                  "https://em-content.zobj.net/source/apple/391/shortcake_1f370.png",
-              })
-            }
-          />
-          <Card
-            name="SUSHI"
-            imageUrl="https://em-content.zobj.net/source/apple/391/sushi_1f363.png"
-            onPress={() =>
-              openModal({
-                title: "SUSHI",
-                description: "SU-SHI",
-                imageUrl:
-                  "https://em-content.zobj.net/source/apple/391/sushi_1f363.png",
-              })
-            }
-          />
-          <Card
-            name="PIZZA"
-            imageUrl="https://em-content.zobj.net/source/apple/391/pizza_1f355.png"
-            onPress={() =>
-              openModal({
-                title: "PIZZA",
-                description: "PI-ZZA",
-                imageUrl:
-                  "https://em-content.zobj.net/source/apple/391/pizza_1f355.png",
-              })
-            }
-          />
-        </View>
+        {mostViewedCards.length >= 4 ? (
+          <View style={styles.cardsContainer}>
+            {mostViewedCards.slice(0, 4).map((card) => (
+              <Card
+                key={card.id}
+                name={card.name}
+                imageUrl={BASE_IMG_URL + card.img}
+                onPress={() =>
+                  openModal({
+                    title: card.name,
+                    description: card.syllables,
+                    imageUrl: BASE_IMG_URL + card.img,
+                  })
+                }
+              />
+            ))}
+          </View>
+        ) : (
+          <Text style={styles.text}>Não há cards suficientes para exibir.</Text>
+        )}
       </ScrollView>
 
       <Menu />

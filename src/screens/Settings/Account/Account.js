@@ -3,9 +3,23 @@ import Head from '../../../components/Head/Head';
 import Menu from '../../../components/Menu/Menu';
 import icons from "../../../assets/icons/icons";
 import { useNavigation } from '@react-navigation/native';
+import useAuthStore from "../../../store/useAuthStore";
+import useUserId from "../../../hooks/useUserId";
+import { useFocusEffect } from "@react-navigation/native";
+import React, {useEffect} from "react";
+
 
 const Account = () => {
   const navigation = useNavigation();
+  const { getUserInfo, userInfo } = useAuthStore();
+  const { userId } = useUserId();
+
+  useFocusEffect(
+    React.useCallback(() => {
+      getUserInfo(userId);
+    }, [userId])
+  );
+  
 
   const handleEditAccount = () => {
     navigation.navigate('EditAccount');
@@ -26,11 +40,11 @@ const Account = () => {
         <View style={styles.accountInfo}>
           <View style={styles.infoRow}>
             <Text style={styles.text}>Nome:</Text>
-            <Text style={styles.value}>Nome Completo</Text>
+            <Text style={styles.value}>{userInfo.username}</Text>
           </View>
           <View style={styles.infoRow}>
             <Text style={styles.text}>Email:</Text>
-            <Text style={styles.value}>email@dominio.com</Text>
+            <Text style={styles.value}>{userInfo.email}</Text>
           </View>
           <View style={styles.infoRow}>
             <Text style={styles.text}>Senha:</Text>

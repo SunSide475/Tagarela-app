@@ -6,6 +6,8 @@ const useAuthStore = create((set) => ({
   user_id: null,
   error: null,
   loading: false,
+  userInfo: [],
+
   login: async (email, password) => {
     set({ loading: true, error: null });
 
@@ -33,6 +35,7 @@ const useAuthStore = create((set) => ({
       return { success: false, error: errorMessage };
     }
   },
+
   register: async (username, email, password) => {
     set({ loading: true, error: null });
     try {
@@ -53,7 +56,11 @@ const useAuthStore = create((set) => ({
         console.error("Erro ao salvar user_id no AsyncStorage:", error);
       });
 
-      return { success: true, message: response.data.message,  user_id: response.data.user_id };
+      return {
+        success: true,
+        message: response.data.message,
+        user_id: response.data.user_id,
+      };
     } catch (error) {
       const errorMessage =
         error.response?.data?.error || error.message || "Registration Error";
@@ -61,7 +68,22 @@ const useAuthStore = create((set) => ({
       return { success: false, error: errorMessage };
     }
   },
+  getUserInfo: async (userId) => {
+    set({ loading: true, error: null });
+    try {
+      const response = await axios.get(`http://10.0.2.2:4000/user/${userId}`);
 
+      set({
+        userInfo: response.data.user,
+        error: null,
+        loading: false,
+      });
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.error || error.message || "Erro ao carregar";
+      set({ error: errorMessage, userInfo: [], loading: false });
+    }
+  },
   logout: () => set({ user: null, error: null, loading: false }),
   cleanError: () => set({ error: null }),
 }));

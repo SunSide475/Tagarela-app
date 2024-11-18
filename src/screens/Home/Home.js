@@ -110,13 +110,7 @@ const Home = ({ navigation }) => {
             key={card.id}
             name={card.name}
             imageUrl={BASE_IMG_URL + card.img}
-            onPress={() =>
-              openModal({
-                title: card.name,
-                description: card.syllables,
-                imageUrl: BASE_IMG_URL + card.img,
-              })
-            }
+            onPress={() => handleCardClick(card.id)}  
           />
         ))
       ) : (
@@ -324,9 +318,6 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontSize: 18,
     fontWeight: "bold",
-  },
-  buttonSelected: {
-    backgroundColor: "#7E57C2",
   },
 });
 

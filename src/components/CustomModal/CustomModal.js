@@ -47,7 +47,7 @@ const CustomModal = ({ isVisible, onClose, cardId }) => {
   const videoSource = cardInfo ? BASE_IMG_URL + cardInfo?.video : null;
 
     const player = useVideoPlayer(videoSource, (player) => {
-      player.loop = true; 
+      player.loop = false; 
       player.play();
     });
   

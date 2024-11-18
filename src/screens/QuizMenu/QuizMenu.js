@@ -4,6 +4,8 @@ import { Loading } from "../../components/Loading/Loading";
 import Menu from "../../components/Menu/Menu";
 import useLoadFont from "../../hooks/useLoadFont";
 import Head from "../../components/Head/Head";
+import useGameStore from "../../store/useGameStore";
+import { useNavigation } from "@react-navigation/native";
 
 const QuizMenu = () => {
   const { fontsLoaded } = useLoadFont(
@@ -13,6 +15,13 @@ const QuizMenu = () => {
     },
     Loading
   );
+  const navigation = useNavigation();
+  const {getLevelData, level1Data} = useGameStore()
+
+  const handleLevelPress = (level) => {
+    getLevelData(level);
+    navigation.navigate("Game")
+  };
 
   if (!fontsLoaded) {
     return <Loading />;
@@ -22,6 +31,7 @@ const QuizMenu = () => {
     <View style={styles.container}>
       <Head />
       <Pressable
+        onPress={() => handleLevelPress(1)}
         style={({ pressed }) => [
           styles.button,
           {
@@ -38,6 +48,7 @@ const QuizMenu = () => {
         <Text style={styles.buttonText}>NÍVEL 1</Text>
       </Pressable>
       <Pressable
+      onPress={() => handleLevelPress(2)}
         style={({ pressed }) => [
           styles.button,
           {
@@ -54,6 +65,7 @@ const QuizMenu = () => {
         <Text style={styles.buttonText}>NÍVEL 2</Text>
       </Pressable>
       <Pressable
+      onPress={() => handleLevelPress(3)}
         style={({ pressed }) => [
           styles.button,
           {
@@ -82,7 +94,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "start",
     alignItems: "center",
-    paddingTop: "30%"
+    paddingTop: "30%",
   },
   button: {
     display: "flex",
@@ -93,10 +105,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     borderRadius: 8,
-    marginTop: 50
+    marginTop: 50,
   },
   buttonText: {
-    fontFamily: 'bold',
+    fontFamily: "bold",
     marginLeft: 20,
     color: "#fff",
     fontSize: 19,

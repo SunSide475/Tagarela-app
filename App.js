@@ -10,13 +10,14 @@ import QuizMenu from "./src/screens/QuizMenu/QuizMenu";
 import LineCards from "./src/screens/LineCards/LineCards";
 import Account from "./src/screens/Settings/Account/Account";
 import RegisterCard from "./src/screens/CardsUser/RegisterCard";
+import Game from "./src/screens/Game/Game";
 
 const Stack = createStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
+      <Stack.Navigator initialRouteName="QuizMenu">
         <Stack.Screen
           name="Home"
           component={Home}
@@ -65,6 +66,11 @@ export default function App() {
         <Stack.Screen
           name="RegisterCard"
           component={RegisterCard}
+          options={{ headerShown: false }}
+        />
+           <Stack.Screen
+          name="Game"
+          component={Game}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

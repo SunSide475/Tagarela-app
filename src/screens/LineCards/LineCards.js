@@ -39,7 +39,7 @@ const LineCards = () => {
   };
 
   const filteredCards = cards.filter((card) =>
-    card.name.toLowerCase().includes(text.toLowerCase())
+    card.name.toUpperCase().includes(text.toUpperCase())
   );
 
   if (loading) {

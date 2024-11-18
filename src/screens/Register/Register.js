@@ -89,6 +89,12 @@ const Register = () => {
               <Text style={styles.submitBtnTxt}>Cadastrar</Text>
             </TouchableOpacity>
           </View>
+          <Text
+                  style={styles.registerLink}
+                  onPress={() => navigation.navigate("Login")}
+                >
+                  JÁ POSSUI CONTA?
+                </Text>
         </View>
         <PopUp
           title="Operação"
@@ -142,6 +148,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     marginTop: 30,
   },
+  registerLink: {
+    color: "#4F4F4F",
+    fontSize: 18,
+    marginTop: 60,
+    textAlign: "center",
+  },
+
   welcomeOrange: {
     fontSize: 27,
     color: "orange",

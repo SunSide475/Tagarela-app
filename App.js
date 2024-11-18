@@ -9,6 +9,7 @@ import Search from "./src/screens/Search/Search";
 import QuizMenu from "./src/screens/QuizMenu/QuizMenu";
 import LineCards from "./src/screens/LineCards/LineCards";
 import Account from "./src/screens/Settings/Account/Account";
+import RegisterCard from "./src/screens/CardsUser/RegisterCard";
 
 const Stack = createStackNavigator();
 
@@ -59,6 +60,11 @@ export default function App() {
         <Stack.Screen
           name="Account"
           component={Account}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="RegisterCard"
+          component={RegisterCard}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

@@ -32,6 +32,7 @@ const btns = [
   { id: 7, title: "MATERIAL", category: "MATERIAL"},
   { id: 8, title: "OBJETO", category: "OBJETO"},
   { id: 9, title: "RESPOSTA", category: "RESPOSTA"},
+  { id: 10, title: "MEUS CARTÕES", category: "MEUS CARTÕES"},
 ];
 
 const { height } = Dimensions.get("window");
@@ -47,7 +48,16 @@ const Home = ({ navigation }) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const { recentCards, getRecentCards, loading, getMostViewedCards, mostViewedCards, getAllCards, cards } = useCardsStore();
+  const {
+    recentCards = [],
+    getRecentCards,
+    loading,
+    getMostViewedCards,
+    mostViewedCards = [],
+    getAllCards,
+    cards = [],
+    userCards = [],
+  } = useCardsStore();
   const { userId } = useUserId();
 
   useEffect(() => {
@@ -78,18 +88,59 @@ const Home = ({ navigation }) => {
     return <Loading />;
   }
 
-  const renderItem = ({ item }) => (
-    <Pressable
-      style={({ pressed }) => [styles.button, pressed && styles.buttonPressed]}
-      onPress={() => setSelectedCategory(item.category)}
-    >
-      <Text style={styles.buttonText}>{item.title}</Text>
-    </Pressable>
-  );
+  const toggleCategory = (category) => {
+    setSelectedCategory((prev) => (prev === category ? null : category));
+  };
+
+  const renderItem = ({ item }) => {
+    const isSelected = selectedCategory === item.category;
+    return (
+      <Pressable
+        style={[
+          styles.button,
+          isSelected && styles.buttonSelected,
+        ]}
+        onPress={() => toggleCategory(item.category)}
+      >
+        <Text style={styles.buttonText}>{item.title}</Text>
+      </Pressable>
+    );
+  };
 
   const filteredCards = selectedCategory
-    ? cards.filter(card => card.category.toUpperCase() === selectedCategory.toUpperCase())
+    ? cards.filter(
+        (card) => card.category.toUpperCase() === selectedCategory.toUpperCase()
+      )
     : [];
+
+  const renderUserCards = () => (
+    <View style={styles.cardsContainer}>
+      {userCards.length > 0 ? (
+        userCards.map((card) => (
+          <Card
+            key={card.id}
+            name={card.name}
+            imageUrl={BASE_IMG_URL + card.img}
+            onPress={() =>
+              openModal({
+                title: card.name,
+                description: card.syllables,
+                imageUrl: BASE_IMG_URL + card.img,
+              })
+            }
+          />
+        ))
+      ) : (
+        <Text style={styles.text}>Nenhum cartão cadastrado.</Text>
+      )}
+      <TouchableOpacity
+        style={styles.createCardButton}
+        onPress={() => navigation.navigate("RegisterCard")}
+      >
+        <Text style={styles.createCardButtonText}>Criar Cartão</Text>
+      </TouchableOpacity>
+    </View>
+  );
 
   return (
     <View style={styles.container}>
@@ -118,7 +169,9 @@ const Home = ({ navigation }) => {
           />
         </View>
 
-        {selectedCategory ? (
+        {selectedCategory === "MEUS CARTÕES" ? (
+          renderUserCards()
+        ) : selectedCategory ? (
           <>
             <Text style={styles.text}>{selectedCategory.toUpperCase()}</Text>
             <View style={styles.cardsContainer}>
@@ -144,7 +197,7 @@ const Home = ({ navigation }) => {
           </>
         ) : (
           <>
-            <Text style={styles.text}>RECENTES</Text>
+            <Text style={styles.textTitle}>RECENTES</Text>
             {recentCards.length >= 4 ? (
               <View style={styles.cardsContainer}>
                 {recentCards.slice(0, 4).map((card) => (
@@ -166,7 +219,7 @@ const Home = ({ navigation }) => {
               <Text style={styles.text}>Não há cards suficientes para exibir.</Text>
             )}
 
-            <Text style={styles.text}>MAIS UTILIZADOS</Text>
+            <Text style={styles.textTitle}>MAIS UTILIZADOS</Text>
             {mostViewedCards.length >= 4 ? (
               <View style={styles.cardsContainer}>
                 {mostViewedCards.slice(0, 4).map((card) => (
@@ -201,6 +254,7 @@ const Home = ({ navigation }) => {
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
@@ -253,20 +307,46 @@ const styles = StyleSheet.create({
   },
   cardsContainer: {
     display: "flex",
-    justifyContent: "center",
+    justifyContent: "left",
     flexDirection: "row",
     flexWrap: "wrap",
     marginTop: "5%",
     paddingBottom: "5%",
+    marginLeft: "5%",
     gap: 40,
   },
-  text: {
+  textTitle: {
     fontFamily: "regular",
-    marginTop: "8%",
-    paddingLeft: "7%",
+    marginTop: "15%",
+    paddingLeft: "8%",
     fontSize: 22,
     fontWeight: "bold",
   },
+  text: {
+    fontFamily: "regular",
+    marginTop: "5%",
+    paddingLeft: "8%",
+    fontSize: 22,
+  },
+  createCardButton: {
+    backgroundColor: "#FFC247",
+    borderRadius: 30,
+    paddingVertical: 12,
+    paddingHorizontal: 25,
+    alignSelf: "center",
+    marginTop: 20,
+    marginLeft: "5%",
+  },
+  createCardButtonText: {
+    color: "#FFFFFF",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  buttonSelected: {
+    backgroundColor: "#7E57C2",
+  },
 });
+
+
 
 export default Home;

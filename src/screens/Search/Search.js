@@ -39,7 +39,7 @@ const Search = () => {
       setFilteredCards(cards);
     } else {
       const filtered = cards.filter((card) =>
-        card.name.toLowerCase().includes(input.toLowerCase())
+        card.name.toUpperCase().includes(input.toUpperCase())
       );
       setFilteredCards(filtered);
     }

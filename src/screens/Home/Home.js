@@ -47,6 +47,7 @@ const Home = ({ navigation }) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedButtonId, setSelectedButtonId] = useState(null)
   const { recentCards, getRecentCards, loading, getMostViewedCards, mostViewedCards, getAllCards, cards } = useCardsStore();
   const { userId } = useUserId();
 
@@ -64,12 +65,12 @@ const Home = ({ navigation }) => {
     }, [getRecentCards, getMostViewedCards, getAllCards, userId])
   );
 
-  const openModal = (cardInfo) => {
-    setSelectedCard(cardInfo);
+  const handleCardClick = (id) => {
+    setSelectedCard(id);
     setModalVisible(true);
   };
 
-  const closeModal = () => {
+  const handleCloseModal = () => {
     setModalVisible(false);
     setSelectedCard(null);
   };
@@ -77,15 +78,22 @@ const Home = ({ navigation }) => {
   if (!fontsLoaded || loading) {
     return <Loading />;
   }
+  const renderItem = ({ item }) => {
+    const isSelected = selectedButtonId === item.id; 
+    const buttonStyle = isSelected ? styles.buttonSelected : styles.button; 
 
-  const renderItem = ({ item }) => (
-    <Pressable
-      style={({ pressed }) => [styles.button, pressed && styles.buttonPressed]}
-      onPress={() => setSelectedCategory(item.category)}
-    >
-      <Text style={styles.buttonText}>{item.title}</Text>
-    </Pressable>
-  );
+    return (
+      <Pressable
+        style={buttonStyle}
+        onPress={() => {
+          setSelectedCategory(item.category);
+          setSelectedButtonId(item.id);
+        }}
+      >
+        <Text style={styles.buttonText}>{item.title}</Text>
+      </Pressable>
+    );
+  };
 
   const filteredCards = selectedCategory
     ? cards.filter(card => card.category.toUpperCase() === selectedCategory.toUpperCase())
@@ -128,13 +136,7 @@ const Home = ({ navigation }) => {
                     key={card.id}
                     name={card.name}
                     imageUrl={BASE_IMG_URL + card.img}
-                    onPress={() =>
-                      openModal({
-                        title: card.name,
-                        description: card.syllables,
-                        imageUrl: BASE_IMG_URL + card.img,
-                      })
-                    }
+                    onPress={() => handleCardClick(card.id)}  
                   />
                 ))
               ) : (
@@ -152,13 +154,7 @@ const Home = ({ navigation }) => {
                     key={card.id}
                     name={card.name}
                     imageUrl={BASE_IMG_URL + card.img}
-                    onPress={() =>
-                      openModal({
-                        title: card.name,
-                        description: card.syllables,
-                        imageUrl: BASE_IMG_URL + card.img,
-                      })
-                    }
+                    onPress={() => handleCardClick(card.id)}  
                   />
                 ))}
               </View>
@@ -174,13 +170,7 @@ const Home = ({ navigation }) => {
                     key={card.id}
                     name={card.name}
                     imageUrl={BASE_IMG_URL + card.img}
-                    onPress={() =>
-                      openModal({
-                        title: card.name,
-                        description: card.syllables,
-                        imageUrl: BASE_IMG_URL + card.img,
-                      })
-                    }
+                    onPress={() => handleCardClick(card.id)}  
                   />
                 ))}
               </View>
@@ -193,10 +183,10 @@ const Home = ({ navigation }) => {
 
       <Menu />
 
-      <CustomModal
+        <CustomModal
         isVisible={isModalVisible}
-        onClose={closeModal}
-        cardInfo={selectedCard}
+        onClose={handleCloseModal}
+        cardId={selectedCard}  
       />
     </View>
   );
@@ -227,6 +217,18 @@ const styles = StyleSheet.create({
     display: "flex",
     flexWrap: "nowrap",
     backgroundColor: "#FFC247",
+    borderRadius: 60,
+    justifyContent: "center",
+    alignItems: "center",
+    marginHorizontal: 8,
+    paddingHorizontal: 30,
+    paddingVertical: 10,
+    marginTop: 20,
+  },
+  buttonSelected: {
+    display: "flex",
+    flexWrap: "nowrap",
+    backgroundColor: "#7E57C2",
     borderRadius: 60,
     justifyContent: "center",
     alignItems: "center",

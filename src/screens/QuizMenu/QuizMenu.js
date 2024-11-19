@@ -4,7 +4,6 @@ import { Loading } from "../../components/Loading/Loading";
 import Menu from "../../components/Menu/Menu";
 import useLoadFont from "../../hooks/useLoadFont";
 import Head from "../../components/Head/Head";
-import useGameStore from "../../store/useGameStore";
 import { useNavigation } from "@react-navigation/native";
 
 const QuizMenu = () => {
@@ -16,11 +15,13 @@ const QuizMenu = () => {
     Loading
   );
   const navigation = useNavigation();
-  const {getLevelData, level1Data} = useGameStore()
 
   const handleLevelPress = (level) => {
-    getLevelData(level);
-    navigation.navigate("Game")
+    if (level) {
+      navigation.navigate("Game", { level });
+    } else {
+      console.error("Não foi possível carregar os dados do nível.");
+    }
   };
 
   if (!fontsLoaded) {
@@ -48,7 +49,7 @@ const QuizMenu = () => {
         <Text style={styles.buttonText}>NÍVEL 1</Text>
       </Pressable>
       <Pressable
-      onPress={() => handleLevelPress(2)}
+        onPress={() => handleLevelPress(2)}
         style={({ pressed }) => [
           styles.button,
           {
@@ -65,7 +66,7 @@ const QuizMenu = () => {
         <Text style={styles.buttonText}>NÍVEL 2</Text>
       </Pressable>
       <Pressable
-      onPress={() => handleLevelPress(3)}
+        onPress={() => handleLevelPress(3)}
         style={({ pressed }) => [
           styles.button,
           {

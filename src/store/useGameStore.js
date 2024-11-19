@@ -2,16 +2,14 @@ import { create } from "zustand";
 import axios from "axios";
 
 const useCardsStore = create((set) => ({
-  level1Data: null,
+  levelData: null,
   loading: false,
   error: null,
-
-  getLevelData: async () => {
+  getLevelData: async (level) => {
     set({ loading: true, error: null });
     try {
-      const response = await axios.get(`http://10.0.2.2:4000/quiz?nivel=1`);
+      const response = await axios.get(`http://10.0.2.2:4000/quiz?nivel=${level}`);
       const quizList = response.data[0]?.quiz_game_list;
-
       if (quizList && quizList.length > 1) { 
         const randomIndices = [];
 
@@ -23,9 +21,9 @@ const useCardsStore = create((set) => ({
         }
 
         const selectedQuizzes = randomIndices.map(index => quizList[index]); 
-        set({ level1Data: selectedQuizzes, loading: false });
+        set({ levelData: selectedQuizzes, loading: false });
       } else {
-        set({ level1Data: null, loading: false }); 
+        set({ levelData: null, loading: false });
       }
     } catch (error) {
       set({ error: error.message, loading: false });

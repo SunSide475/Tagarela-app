@@ -7,23 +7,27 @@ import useAuthStore from "../../../store/useAuthStore";
 import useUserId from "../../../hooks/useUserId";
 import { useFocusEffect } from "@react-navigation/native";
 import React, {useEffect} from "react";
+import { Loading } from "../../../components/Loading/Loading";
 
 
 const Account = () => {
   const navigation = useNavigation();
-  const { getUserInfo, userInfo } = useAuthStore();
+  const { getUserInfo, userInfo, loading } = useAuthStore();
   const { userId } = useUserId();
 
   useFocusEffect(
     React.useCallback(() => {
       getUserInfo(userId);
-    }, [userId])
+    }, [userId, getUserInfo])
   );
-  
 
   const handleEditAccount = () => {
     navigation.navigate('EditAccount');
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <>

@@ -59,6 +59,10 @@ const icons = {
     src: require("./icon-edit.png"),
     alt: "Edit icon",
   },
+  play: {
+    src: require("./icon-play.png"),
+    alt: "Icon play"
+  }
 };
 
 export default icons;

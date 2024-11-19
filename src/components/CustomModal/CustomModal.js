@@ -15,6 +15,7 @@ import { separateSyllables } from "../../utils/separateSyllables";
 import { useEvent } from "expo";
 import { useVideoPlayer, VideoView } from "expo-video";
 import useUserId from "../../hooks/useUserId";
+import icons from "../../assets/icons/icons";
 
 
 const CustomModal = ({ isVisible, onClose, cardId }) => {
@@ -73,7 +74,7 @@ const CustomModal = ({ isVisible, onClose, cardId }) => {
             <Text style={styles.errorText}>{error}</Text>
           ) : (
             <>
-              <Text style={styles.modalTitle}>{cardInfo.name}</Text>
+              <Text style={styles.modalTitle}>{cardInfo.name.toUpperCase()}</Text>
               <View style={styles.videoContainer}>
                 {Platform.OS === "web" ? (
                   <Image
@@ -98,8 +99,15 @@ const CustomModal = ({ isVisible, onClose, cardId }) => {
               </View>
             </>
           )}
+           <View style={styles.view}>
+            <Image
+            source={icons.play.src}
+            accessibilityLabel={icons.play.alt}
+            style={styles.playImage}
+            ></Image>
+          </View>
           <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-            <Text style={styles.closeButtonText}>Fechar</Text>
+            <Text style={styles.closeButtonText}>PRONTO</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -113,6 +121,19 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  view: {
+    backgroundColor: "#7E57C2",
+    width: 60,
+    height: 65,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 10
+  },
+  playImage: {
+    width: 25,
+    height: 25
   },
   modalContent: {
     width: "100%",
@@ -146,13 +167,14 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
   },
   closeButton: {
+    marginTop: 30,
     paddingVertical: 10,
-    paddingHorizontal: 20,
-    backgroundColor: "#3498db",
+    paddingHorizontal: 30,
+    backgroundColor: "#FF9900",
     borderRadius: 5,
   },
   closeButtonText: {
-    color: "black",
+    color: "#FFFFFF",
     fontSize: 16,
   },
   errorText: {
@@ -176,7 +198,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   syllableText: {
-    fontSize: 15,
+    fontSize: 18,
     fontWeight: "medium",
     color: "#FFFFFF",
   },

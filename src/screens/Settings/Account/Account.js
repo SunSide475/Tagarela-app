@@ -5,7 +5,6 @@ import icons from "../../../assets/icons/icons";
 import { useNavigation } from '@react-navigation/native';
 import useAuthStore from "../../../store/useAuthStore";
 import useUserId from "../../../hooks/useUserId";
-import { useFocusEffect } from "@react-navigation/native";
 import React, {useEffect} from "react";
 import { Loading } from "../../../components/Loading/Loading";
 
@@ -15,11 +14,12 @@ const Account = () => {
   const { getUserInfo, userInfo, loading } = useAuthStore();
   const { userId } = useUserId();
 
-  useFocusEffect(
-    React.useCallback(() => {
+  useEffect(() => {
+    if (userId) {
       getUserInfo(userId);
-    }, [userId, getUserInfo])
-  );
+    }
+  }, [userId, getUserInfo]); 
+
 
   const handleEditAccount = () => {
     navigation.navigate('EditAccount');

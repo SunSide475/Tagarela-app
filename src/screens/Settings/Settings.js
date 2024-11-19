@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 18,
-    fontWeight: "100",
+    fontWeight: "350",
     color: "#4F4F4F",
   },
   settingsTitle: {

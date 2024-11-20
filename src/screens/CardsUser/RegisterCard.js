@@ -11,8 +11,10 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { launchImageLibrary } from "react-native-image-picker";
+import axios from "axios";
 import Head from "../../components/Head/Head";
 import Menu from "../../components/Menu/Menu";
+import useUserId from "../../hooks/useUserId";
 
 const { width, height } = Dimensions.get("window");
 
@@ -23,18 +25,19 @@ const RegisterCard = () => {
   const [video, setVideo] = useState(null);
   const [name, setName] = useState("");
   const [syllables, setSyllables] = useState("");
+  const { userId } = useUserId();
 
   const handleImageUpload = () => {
     launchImageLibrary(
       {
         mediaType: "photo",
-        quality: 0.8,
+        quality: 0.8, 
       },
       (response) => {
         if (response.didCancel) {
           Alert.alert("Cancelado", "Seleção de imagem foi cancelada.");
-        } else if (response.errorMessage) {
-          Alert.alert("Erro", response.errorMessage);
+        } else if (response.errorCode) {
+          Alert.alert("Erro", response.errorMessage || "Erro ao carregar a imagem.");
         } else {
           const selectedImage = response.assets[0];
           setImage(selectedImage.uri);
@@ -43,49 +46,83 @@ const RegisterCard = () => {
     );
   };
 
+
   const handleVideoUpload = () => {
     launchImageLibrary(
       {
-        mediaType: "video",
+        mediaType: "video"
       },
       (response) => {
         if (response.didCancel) {
           Alert.alert("Cancelado", "Seleção de vídeo foi cancelada.");
-        } else if (response.errorMessage) {
-          Alert.alert("Erro", response.errorMessage);
+        } else if (response.errorCode) {
+          Alert.alert("Erro", response.errorMessage || "Erro ao carregar o vídeo.");
         } else {
           const selectedVideo = response.assets[0];
-          setVideo(selectedVideo.uri);
+          setVideo(selectedVideo.uri); 
         }
       }
     );
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!image || !name || !syllables) {
       Alert.alert("Erro", "Por favor, preencha todos os campos e envie uma imagem.");
       return;
     }
 
-    const cardData = {
-      image,
-      video,
-      name,
-      syllables,
-    };
+    const formData = new FormData();
 
-    console.log("Dados enviados:", cardData);
+    formData.append("name", name);
+    formData.append("syllables", syllables);
 
-    Alert.alert("Sucesso", "Cartão cadastrado com sucesso!");
-    setImage(null);
-    setVideo(null);
-    setName("");
-    setSyllables("");
+    if (image) {
+      const imageFile = {
+        uri: image,
+        type: "image/webp", 
+        name: `${name.replace(/\s+/g, "_")}.webp`, 
+      };
+      formData.append("image", imageFile);
+    }
+
+    if (video) {
+      const videoFile = {
+        uri: video,
+        type: "video/mp4",
+        name: `${name.replace(/\s+/g, "_")}.mp4`,
+      };
+      formData.append("video", videoFile);
+    }
+
+    try {
+      const response = await axios.post(
+        `http://localhost:4000/user/${userId}/item`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        Alert.alert("Sucesso", "Cartão cadastrado com sucesso!");
+        setImage(null);
+        setVideo(null);
+        setName("");
+        setSyllables("");
+      } else {
+        Alert.alert("Erro", response.data.message || "Erro ao cadastrar o cartão.");
+      }
+    } catch (error) {
+      Alert.alert("Erro", "Falha na comunicação com a API.");
+      console.error(error);
+    }
   };
 
   return (
     <View style={styles.container}>
-    <Head />
+      <Head />
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
           <Text style={styles.backButtonText}>{"<"}</Text>
@@ -102,9 +139,6 @@ const RegisterCard = () => {
           ) : (
             <Text style={styles.uploadText}>↑</Text>
           )}
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.uploadButton} onPress={handleSubmit}>
-          <Text style={styles.uploadButtonText}>ENVIAR IMAGEM</Text>
         </TouchableOpacity>
 
         <Text style={styles.text}>INFORMAÇÕES</Text>
@@ -124,16 +158,14 @@ const RegisterCard = () => {
         <TouchableOpacity style={styles.videoButton} onPress={handleVideoUpload}>
           <Text style={styles.videoButtonText}>⬇ CARREGAR VÍDEO</Text>
         </TouchableOpacity>
-        {video && <Text style={styles.videoInfo}>Vídeo selecionado: {video.split('/').pop()}</Text>}
+        {video && <Text style={styles.videoInfo}>Vídeo selecionado: {video.split("/").pop()}</Text>}
 
         <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
           <Text style={styles.submitButtonText}>SALVAR CARTÃO</Text>
         </TouchableOpacity>
       </View>
       <Menu />
-
     </View>
-    
   );
 };
 
@@ -160,13 +192,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#fff",
   },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#fff",
-    textAlign: "center",
-    flex: 1,
-  },
   content: {
     padding: 16,
     flex: 1,
@@ -180,14 +205,9 @@ const styles = StyleSheet.create({
   text: {
     fontFamily: "regular",
     marginTop: "10%",
-    paddingLeft: "5%%",
+    paddingLeft: "5%",
     fontSize: 22,
     fontWeight: "bold",
-  },
-  label: {
-    fontSize: 16,
-    fontWeight: "bold",
-    marginVertical: 8,
   },
   imageUpload: {
     height: 150,
@@ -208,24 +228,6 @@ const styles = StyleSheet.create({
     fontSize: 32,
     color: "#7E57C2",
   },
-  uploadButton: {
-    backgroundColor: "#FFC247",
-    paddingVertical: 12,
-    borderRadius: 8,
-    alignItems: "center",
-    marginVertical: 16,
-  },
-  uploadButtonText: {
-    color: "#fff",
-    fontWeight: "bold",
-  },
-  input: {
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
-    paddingVertical: 8,
-    marginVertical: 12,
-    fontSize: 16,
-  },
   videoButton: {
     backgroundColor: "#FFC247",
     paddingVertical: 12,
@@ -244,15 +246,14 @@ const styles = StyleSheet.create({
   },
   submitButton: {
     backgroundColor: "#7E57C2",
-    paddingVertical: 14,
+    paddingVertical: 12,
     borderRadius: 8,
     alignItems: "center",
-    marginTop: 32,
+    marginTop: 20,
   },
   submitButtonText: {
     color: "#fff",
     fontWeight: "bold",
-    fontSize: 16,
   },
 });
 

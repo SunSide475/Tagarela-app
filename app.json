@@ -18,7 +18,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/general/tagarela_logo.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": ["READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"]
     },
     "web": {
       "favicon": "./src/assets/general/tagarela_logo.png"
@@ -30,6 +31,12 @@
         {
           "supportsBackgroundPlayback": true,
           "supportsPictureInPicture": true
+        }
+      ],
+      [
+        "expo-image-picker", 
+        {
+          "photosPermission": "O aplicativo acessa suas fotos para permitir que você compartilhe com seus amigos."
         }
       ]
     ],

@@ -10,7 +10,7 @@ import {
   Alert,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { launchImageLibrary } from "react-native-image-picker";
+import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
 import Head from "../../components/Head/Head";
 import Menu from "../../components/Menu/Menu";
@@ -21,53 +21,59 @@ const { width, height } = Dimensions.get("window");
 const RegisterCard = () => {
   const navigation = useNavigation();
 
-  const [image, setImage] = useState(null);
-  const [video, setVideo] = useState(null);
+  const [image, setImage] = useState(null); 
+  const [video, setVideo] = useState(null); 
   const [name, setName] = useState("");
   const [syllables, setSyllables] = useState("");
   const { userId } = useUserId();
 
-  const handleImageUpload = () => {
-    launchImageLibrary(
-      {
-        mediaType: "photo",
-        quality: 0.8, 
-      },
-      (response) => {
-        if (response.didCancel) {
-          Alert.alert("Cancelado", "Seleção de imagem foi cancelada.");
-        } else if (response.errorCode) {
-          Alert.alert("Erro", response.errorMessage || "Erro ao carregar a imagem.");
-        } else {
-          const selectedImage = response.assets[0];
-          setImage(selectedImage.uri);
-        }
-      }
-    );
+  const pickImage = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (status !== "granted") {
+      alert("Você precisa dar permissão para acessar as fotos!");
+      return;
+    }
+
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3], 
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+      setVideo(null);
+    }
   };
 
+  const pickVideo = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
-  const handleVideoUpload = () => {
-    launchImageLibrary(
-      {
-        mediaType: "video"
-      },
-      (response) => {
-        if (response.didCancel) {
-          Alert.alert("Cancelado", "Seleção de vídeo foi cancelada.");
-        } else if (response.errorCode) {
-          Alert.alert("Erro", response.errorMessage || "Erro ao carregar o vídeo.");
-        } else {
-          const selectedVideo = response.assets[0];
-          setVideo(selectedVideo.uri); 
-        }
-      }
-    );
+    if (status !== "granted") {
+      alert("Você precisa dar permissão para acessar as fotos!");
+      return;
+    }
+
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Videos, 
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      setVideo(result.assets[0].uri);
+      setImage(null);
+    }
   };
 
   const handleSubmit = async () => {
-    if (!image || !name || !syllables) {
-      Alert.alert("Erro", "Por favor, preencha todos os campos e envie uma imagem.");
+    if (!image && !video || !name || !syllables) {
+      Alert.alert("Erro", "Por favor, preencha todos os campos e envie uma imagem ou vídeo.");
       return;
     }
 
@@ -79,10 +85,10 @@ const RegisterCard = () => {
     if (image) {
       const imageFile = {
         uri: image,
-        type: "image/webp", 
-        name: `${name.replace(/\s+/g, "_")}.webp`, 
+        type: "image/webp",
+        name: `${name.replace(/\s+/g, "_")}.webp`,
       };
-      formData.append("image", imageFile);
+      formData.append("img", imageFile);
     }
 
     if (video) {
@@ -133,11 +139,20 @@ const RegisterCard = () => {
         <Text style={styles.sectionTitle}>ADICIONAR CARTÃO</Text>
 
         <Text style={styles.text}>CARREGAR IMAGEM</Text>
-        <TouchableOpacity style={styles.imageUpload} onPress={handleImageUpload}>
+        <TouchableOpacity style={styles.imageUpload} onPress={pickImage}>
           {image ? (
             <Image source={{ uri: image }} style={styles.uploadedImage} resizeMode="cover" />
           ) : (
             <Text style={styles.uploadText}>↑</Text>
+          )}
+        </TouchableOpacity>
+
+        <Text style={styles.text}>CARREGAR VÍDEO</Text>
+        <TouchableOpacity style={styles.videoButton} onPress={pickVideo}>
+          {video ? (
+            <Text style={styles.uploadText}>Vídeo Selecionado</Text>
+          ) : (
+            <Text style={styles.uploadText}>⬇ Selecionar Vídeo</Text>
           )}
         </TouchableOpacity>
 
@@ -154,11 +169,6 @@ const RegisterCard = () => {
           value={syllables}
           onChangeText={setSyllables}
         />
-
-        <TouchableOpacity style={styles.videoButton} onPress={handleVideoUpload}>
-          <Text style={styles.videoButtonText}>⬇ CARREGAR VÍDEO</Text>
-        </TouchableOpacity>
-        {video && <Text style={styles.videoInfo}>Vídeo selecionado: {video.split("/").pop()}</Text>}
 
         <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
           <Text style={styles.submitButtonText}>SALVAR CARTÃO</Text>
@@ -225,24 +235,17 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   uploadText: {
-    fontSize: 32,
-    color: "#7E57C2",
+    fontSize: 18,
+    color: "#FFFFFF",
   },
   videoButton: {
-    backgroundColor: "#FFC247",
+    backgroundColor: "#FFC247", // Cor amarela
     paddingVertical: 12,
     borderRadius: 8,
     alignItems: "center",
     marginTop: 16,
-  },
-  videoButtonText: {
-    color: "#fff",
-    fontWeight: "bold",
-  },
-  videoInfo: {
-    fontSize: 14,
-    color: "#888",
-    marginTop: 8,
+    borderWidth: 1,
+    borderColor: "#FFB300", // Um tom mais escuro de amarelo para o contorno
   },
   submitButton: {
     backgroundColor: "#7E57C2",
@@ -252,6 +255,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   submitButtonText: {
+    fontSize: 18,
     color: "#fff",
     fontWeight: "bold",
   },

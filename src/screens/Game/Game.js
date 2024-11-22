@@ -35,11 +35,57 @@ const Game = () => {
     await sound.playAsync();
   };
 
+  const [receivedNumber, setReceivedNumber] = useState(null);
+
+  const handleCardPress = async (index) => {
+    setSelectedCardIndex(index);
+    triggerAnimation();
+    console.log("current Index", currentQuestionIndex, "index", index)
+
+    if (index == currentQuestionIndex) {
+      await playSound(require('../../assets/audios/correct_answer.mp3'));
+
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      if (currentQuestionIndex === levelData.length - 1) {
+        navigation.navigate('QuizMenu');
+      } else {
+        setCurrentQuestionIndex(currentQuestionIndex + 1);
+        setSelectedCardIndex(null);
+      }
+    } else {
+      await playSound(require('../../assets/audios/wrong_answer.mp3'));
+    }
+  };
+
   useEffect(() => {
+    const ws = new WebSocket('ws://192.168.176.41:81');
+ 
+    ws.onopen = () => {
+      console.log('Connected to ESP32 WebSocket server');
+    };
+ 
+    ws.onmessage = (e) => {
+      console.log('Received from ESP32:', e.data);
+      handleCardPress(e.data)
+    };
+ 
+    ws.onerror = (e) => {
+      console.error('WebSocket Error:', e.message);
+    };
+ 
+    ws.onclose = (e) => {
+      console.log('WebSocket closed:', e.code, e.reason);
+    };
+    
     const fetchData = async () => {
       await getLevelData(level);
     };
     fetchData();
+
+    return () => {
+      ws.close();
+    };
   }, [level, getLevelData]);
 
   if (loading || !levelData || levelData.length === 0) {
@@ -62,26 +108,6 @@ const Game = () => {
         useNativeDriver: true,
       }),
     ]).start();
-  };
-
-  const handleCardPress = async (index) => {
-    setSelectedCardIndex(index);
-    triggerAnimation();
-
-    if (index === correctAnswerIndex) {
-      await playSound(require('../../assets/audios/correct_answer.mp3'));
-
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      if (currentQuestionIndex === levelData.length - 1) {
-        navigation.navigate('QuizMenu');
-      } else {
-        setCurrentQuestionIndex(currentQuestionIndex + 1);
-        setSelectedCardIndex(null);
-      }
-    } else {
-      await playSound(require('../../assets/audios/wrong_answer.mp3'));
-    }
   };
 
   const cardColors = ["#FFE647", "#FA0000", "#1A7BF2", "#494949"];

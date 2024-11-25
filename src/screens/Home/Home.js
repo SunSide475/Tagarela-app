@@ -236,6 +236,7 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: "#fff",
     paddingHorizontal: 20,
+    marginTop: 30
   },
   flatListContainer: {
     flexDirection: "row",

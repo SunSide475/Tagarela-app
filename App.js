@@ -17,7 +17,7 @@ const Stack = createStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="RegisterCard">
+      <Stack.Navigator initialRouteName="QuizMenu">
         <Stack.Screen
           name="Home"
           component={Home}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Animated, Pressable, Image, Text, StyleSheet, View } from "react-native";
+import { Animated, Pressable, Image, Text, StyleSheet, View, Modal, TouchableOpacity } from "react-native";
 import { Audio } from "expo-av";
 import { BASE_IMG_URL } from "@env";
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -8,6 +8,7 @@ import { useVideoPlayer, VideoView } from "expo-video";
 import Head from "../../components/Head/Head";
 import Menu from "../../components/Menu/Menu";
 import useGameStore from "../../store/useGameStore";
+import icons from "../../assets/icons/icons";
 
 const Game = () => {
   const navigation = useNavigation();
@@ -16,8 +17,8 @@ const Game = () => {
   const { levelData, getLevelData, loading } = useGameStore();
   const [selectedCardIndex, setSelectedCardIndex] = useState(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [showCongratsModal, setShowCongratsModal] = useState(false);
   const buttonScale = useState(new Animated.Value(1))[0];
-
 
   const videoSource = levelData?.[currentQuestionIndex]?.game_items[
     levelData?.[currentQuestionIndex]?.correct_answer
@@ -35,49 +36,55 @@ const Game = () => {
     await sound.playAsync();
   };
 
-  const [receivedNumber, setReceivedNumber] = useState(null);
-
   const handleCardPress = async (index) => {
     setSelectedCardIndex(index);
     triggerAnimation();
-    console.log("current Index", currentQuestionIndex, "index", index)
 
-    if (index == currentQuestionIndex) {
+    const currentQuestion = levelData[currentQuestionIndex];
+    const correctAnswerIndex = currentQuestion.correct_answer;
+
+    if (index === correctAnswerIndex) {
       await playSound(require('../../assets/audios/correct_answer.mp3'));
 
       await new Promise(resolve => setTimeout(resolve, 1000));
 
       if (currentQuestionIndex === levelData.length - 1) {
-        navigation.navigate('QuizMenu');
+        setShowCongratsModal(true);
       } else {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
         setSelectedCardIndex(null);
       }
     } else {
+      // Resposta errada
       await playSound(require('../../assets/audios/wrong_answer.mp3'));
     }
   };
 
+  const closeCongratsModal = () => {
+    setShowCongratsModal(false);
+    navigation.navigate('QuizMenu');
+  };
+
   useEffect(() => {
     const ws = new WebSocket('ws://192.168.176.41:81');
- 
+
     ws.onopen = () => {
       console.log('Connected to ESP32 WebSocket server');
     };
- 
+
     ws.onmessage = (e) => {
       console.log('Received from ESP32:', e.data);
-      handleCardPress(e.data)
+      handleCardPress(parseInt(e.data));
     };
- 
+
     ws.onerror = (e) => {
       console.error('WebSocket Error:', e.message);
     };
- 
+
     ws.onclose = (e) => {
       console.log('WebSocket closed:', e.code, e.reason);
     };
-    
+
     const fetchData = async () => {
       await getLevelData(level);
     };
@@ -153,6 +160,26 @@ const Game = () => {
           )}
         </View>
       </View>
+
+      {/* Modal de Parabéns */}
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={showCongratsModal}
+        onRequestClose={closeCongratsModal}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+          <Image source={icons.medal.src}  accessibilityLabel={icons.medal.alt}></Image>
+            <Text style={styles.modalText}>PARABÉNS</Text>
+            <Text style={styles.modalSmallText}>Você completou o quiz!</Text>
+            <TouchableOpacity onPress={closeCongratsModal} style={styles.modalButton}>
+              <Text style={styles.modalButtonText}>PRONTO</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
       <Menu />
     </>
   );
@@ -214,6 +241,42 @@ const styles = StyleSheet.create({
     width: "40%",
     height: "60%",
     marginBottom: 10,
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalContent: {
+    backgroundColor: "#fff",
+    padding: 40,
+    borderRadius: 15,
+    alignItems: "center",
+    width: "85%",
+  },
+  modalText: {
+    marginTop: 20,
+    fontSize: 22,
+    fontWeight: "bold",
+    color: "#4F4F4F",
+  },
+  modalSmallText: {
+    fontSize: 17,
+    fontWeight: "400",
+    color: "#4F4F4F",
+  },
+  modalButton: {
+    marginTop: 20,
+    backgroundColor: "#7E57C2",
+    paddingHorizontal: 40,
+    paddingVertical: 5,
+    borderRadius: 10,
+  },
+  modalButtonText: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 20,
   },
 });
 

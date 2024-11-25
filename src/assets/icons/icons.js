@@ -62,7 +62,11 @@ const icons = {
   play: {
     src: require("./icon-play.png"),
     alt: "Icon play"
-  }
+  },
+  medal: {
+    src: require("./icon-medal.png"),
+    alt: "Golden medal icon"
+  },
 };
 
 export default icons;

@@ -57,21 +57,54 @@ Antes de começar, certifique-se de ter instalado:
 ## 📁 Estrutura de Pastas
 ```bash
 ├── src/
-│   ├── assets/              # Arquivos estáticos (imagens, fontes, etc.)
-│   ├── components/          # Componentes reutilizáveis
-│   │   ├── Head.js          # Componente de cabeçalho
-│   │   ├── Loading.js       # Componente de tela de carregamento
-│   │   └── Menu.js          # Componente de menu
-│   ├── hooks/               # Hooks personalizados
-│   │   └── usePopUp.js      # Hook para animações de pop-up
-│   ├── screens/             # Telas do aplicativo
-│   │   ├── Login.js         # Tela de login
-│   │   ├── Register.js      # Tela de cadastro
-│   ├── Settings/            # Tela de configurações
-│   ├── TestCard/            # Componente de teste
-├── store/                   # Armazenamento de estado global (Redux ou similar)
-├── App.js                   # Arquivo principal
-├── .gitignore               # Arquivos a serem ignorados pelo Git
+│   ├── assets/                  # Arquivos estáticos (imagens, fontes, etc.)
+│   ├── components/              # Componentes reutilizáveis
+│   │   ├── Card/
+│   │   │   └── Card.js          # Componente de card
+│   │   ├── CustomModal/
+│   │   │   └── CustomModal.js   # Componente de Modal Customizado
+│   │   ├── Head/
+│   │   │   └── Head.js          # Componente de cabeçalho
+│   │   ├── Loading/
+│   │   │   └── Loading.js       # Componente de tela de carregamento
+│   │   ├── Menu/
+│   │   │   └── Menu.js          # Componente de menu
+│   │   └── PopUp/
+│   │       └── PopUp.js         # Componente de Pop-up
+│   ├── hooks/                   # Hooks personalizados
+│   │   ├── useLoadFont/
+│   │   │   └── useLoadFont.js   # Hook para carregamento de fontes
+│   │   ├── usePopUp/
+│   │   │   └── usePopUp.js      # Hook para animações de pop-up
+│   │   └── useUserId/
+│   │       └── useUserId.js     # Hook para resgatar o id de usuario
+│   ├── screens/                 # Telas do aplicativo
+│   │   ├── RegisterCard/
+│   │   │   └── RegisterCard.js  # Tela de cadastro de cards personalizados
+│   │   ├── Game/
+│   │   │   └── Game.js          # Tela de jogo do quiz
+│   │   ├── Home/
+│   │   │   └── Home.js          # Tela home
+│   │   ├── LineCards/
+│   │   │   └── LineCards.js     # Tela de Fila para comunicação
+│   │   ├── Login/
+│   │   │   └── Login.js         # Tela de login
+│   │   ├── QuizMenu/
+│   │   │   └── QuizMenu.js      # Tela para seleção do nível do quiz
+│   │   ├── Register/
+│   │   │   └── Register.js      # Tela de cadastro
+│   ├── Settings/
+│   │   └── Settings.js          # Tela de configurações
+│   ├── TestCard/
+│   │   └── TestCard.js          # Componente de teste
+├── store/                       # Armazenamento de estado global (Zustand)
+│   ├── useAuthStore.js          # Gerencia o estado de autenticação do usuário
+│   ├── useCardsStore.js         # Gerencia o estado dos cards
+│   └── useGameStore.js          # Gerencia o estado dos jogos do quiz
+├── utils/                       # Funções utilitárias
+│   └── separateSyllables.js     # Função que se´para as silabas de uma palavra
+├── .gitignore                   # Arquivos a serem ignorados pelo Git
+├── App.js                       # Arquivo principal
 ```
 ## 🛠️ Uso
 Para uma melhor experiência, recomenda-se usar um dispositivo móvel ou um emulador com a resolução de tela apropriada. Você pode ajustar as configurações de exibição no seu dispositivo, se necessário.

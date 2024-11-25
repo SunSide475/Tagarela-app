@@ -49,13 +49,13 @@ const Game = () => {
       await new Promise(resolve => setTimeout(resolve, 1000));
 
       if (currentQuestionIndex === levelData.length - 1) {
+        playSound(require('../../assets/audios/game_victory.mp3'))
         setShowCongratsModal(true);
       } else {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
         setSelectedCardIndex(null);
       }
     } else {
-      // Resposta errada
       await playSound(require('../../assets/audios/wrong_answer.mp3'));
     }
   };
@@ -161,7 +161,6 @@ const Game = () => {
         </View>
       </View>
 
-      {/* Modal de Parabéns */}
       <Modal
         animationType="fade"
         transparent={true}

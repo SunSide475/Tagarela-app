@@ -50,6 +50,7 @@ const CustomModal = ({ isVisible, onClose, cardId }) => {
     const player = useVideoPlayer(videoSource, (player) => {
       player.loop = false; 
       player.play();
+      player.isControlsVisible = false;
     });
   
 

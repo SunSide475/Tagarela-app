@@ -77,10 +77,6 @@ const Game = () => {
       handleCardPress(parseInt(e.data));
     };
 
-    ws.onerror = (e) => {
-      console.error('WebSocket Error:', e.message);
-    };
-
     ws.onclose = (e) => {
       console.log('WebSocket closed:', e.code, e.reason);
     };

@@ -5,7 +5,7 @@ const Card = ({ name, imageUrl, onPress, smallSize }) => {
   const cardStyles = [
     styles.card,
     {
-      width: smallSize ? 110 : 160,
+      width: smallSize ? 110 : 155,
       height: smallSize ? 110 : 170,
     },
   ];
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 0.1 },
     shadowOpacity: 0.1,
     shadowRadius: 3,
-    elevation: 10,
+    elevation: 5,
   },
   image: {
     width: "65%",

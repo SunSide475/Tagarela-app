@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Animated, Pressable, Image, Text, StyleSheet, View, Modal, TouchableOpacity } from "react-native";
 import { Audio } from "expo-av";
-import { BASE_IMG_URL } from "@env";
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Loading } from "../../components/Loading/Loading";
 import { useVideoPlayer, VideoView } from "expo-video";
@@ -19,6 +18,7 @@ const Game = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [showCongratsModal, setShowCongratsModal] = useState(false);
   const buttonScale = useState(new Animated.Value(1))[0];
+  const BASE_IMG_URL = "https://tagarela-sunside-pi-dsm.s3.us-east-1.amazonaws.com/"
 
   const videoSource = levelData?.[currentQuestionIndex]?.game_items[
     levelData?.[currentQuestionIndex]?.correct_answer

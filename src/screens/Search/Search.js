@@ -8,7 +8,6 @@ import useLoadFont from "../../hooks/useLoadFont";
 import Head from "../../components/Head/Head";
 import useCardsStore from "../../store/useCardsStore";
 import CustomModal from "../../components/CustomModal/CustomModal";
-import { BASE_IMG_URL } from '@env';
 
 const Search = () => {
   const [text, setText] = useState(""); 
@@ -16,6 +15,7 @@ const Search = () => {
   const [modalVisible, setModalVisible] = useState(false);  
   const [selectedCard, setSelectedCard] = useState(null);   
   const { getAllCards, cards, error, loading } = useCardsStore();
+  const BASE_IMG_URL = "https://tagarela-sunside-pi-dsm.s3.us-east-1.amazonaws.com/"
 
   const { fontsLoaded } = useLoadFont(
     {

@@ -10,7 +10,6 @@ import {
   Image
 } from "react-native";
 import axios from "axios";
-import { BASE_IMG_URL } from "@env";
 import { separateSyllables } from "../../utils/separateSyllables";
 import { useEvent } from "expo";
 import { useVideoPlayer, VideoView } from "expo-video";
@@ -22,7 +21,8 @@ const CustomModal = ({ isVisible, onClose, cardId }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [cardInfo, setCardInfo] = useState(null);
-  const { userId } = useUserId() 
+  const { userId } = useUserId()
+  const BASE_IMG_URL = "https://tagarela-sunside-pi-dsm.s3.us-east-1.amazonaws.com/" 
 
   useEffect(() => {
     if (cardId) {

@@ -14,13 +14,13 @@ import icons from "../../assets/icons/icons";
 import Head from "../../components/Head/Head";
 import useCardsStore from "../../store/useCardsStore";
 import { Loading } from "../../components/Loading/Loading";
-import { BASE_IMG_URL } from "@env";
 
 const LineCards = () => {
   const [text, setText] = useState("");
   const [queue, setQueue] = useState([]);
   const [cardNames, setCardNames] = useState([]);
   const { getAllCards, cards, error, loading } = useCardsStore();
+  const BASE_IMG_URL = "https://tagarela-sunside-pi-dsm.s3.us-east-1.amazonaws.com/"
 
   useEffect(() => {
     getAllCards();

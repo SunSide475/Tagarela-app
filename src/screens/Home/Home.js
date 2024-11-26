@@ -19,7 +19,6 @@ import useLoadFont from "../../hooks/useLoadFont";
 import Head from "../../components/Head/Head";
 import CustomModal from "../../components/CustomModal/CustomModal";
 import useCardsStore from "../../store/useCardsStore";
-import { BASE_IMG_URL } from "@env";
 import useUserId from "../../hooks/useUserId";
 
 const btns = [
@@ -51,6 +50,7 @@ const Home = ({ navigation }) => {
   const [selectedButtonId, setSelectedButtonId] = useState(null)
   const { recentCards, getRecentCards, loading, getMostViewedCards, mostViewedCards, getAllCards, cards } = useCardsStore();
   const { userId } = useUserId();
+  const BASE_IMG_URL = "https://tagarela-sunside-pi-dsm.s3.us-east-1.amazonaws.com/"
 
   useEffect(() => {
     getRecentCards(userId);

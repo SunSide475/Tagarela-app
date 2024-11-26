@@ -27,7 +27,7 @@ const LineCards = () => {
   }, [getAllCards]);
 
   const handleAddCard = (name, img) => {
-    if (!cardNames.includes(name) && queue.length < 3) {
+    if (!cardNames.includes(name) && queue.length < 5) { 
       setQueue([...queue, { name, img }]);
       setCardNames([...cardNames, name]);
     }
@@ -43,7 +43,7 @@ const LineCards = () => {
   );
 
   if (loading) {
-    return <Loading></Loading>;
+    return <Loading />;
   }
 
   if (error) {
@@ -57,12 +57,13 @@ const LineCards = () => {
         <View style={styles.phraseContainer}>
           {queue.map((card, index) => {
             const imageUrl = `${BASE_IMG_URL}${card.img}`;
-            console.log("Image URL:", imageUrl);
+            const imageStyle = queue.length > 4 ? styles.cardImageInQueueSmall : styles.cardImageInQueue;
+
             return (
               <Image
                 key={index}
                 source={{ uri: imageUrl }}
-                style={styles.cardImageInQueue}
+                style={imageStyle}
               />
             );
           })}
@@ -140,6 +141,12 @@ const styles = StyleSheet.create({
     marginRight: 20,
     marginBottom: 10,
   },
+  cardImageInQueueSmall: {
+    width: 45, 
+    height: 45, 
+    marginRight: 15, 
+    marginBottom: 10,
+  },
   searchContainer: {
     alignItems: "center",
     display: "flex",
@@ -186,6 +193,11 @@ const styles = StyleSheet.create({
     right: 10,
     top: 10,
     padding: 5,
+  },
+  errorText: {
+    color: "red",
+    textAlign: "center",
+    marginTop: 20,
   },
 });
 

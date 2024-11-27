@@ -10,11 +10,11 @@ import {
   Alert,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
 import Head from "../../components/Head/Head";
 import Menu from "../../components/Menu/Menu";
 import useUserId from "../../hooks/useUserId";
+import * as DocumentPicker from 'expo-document-picker';
 
 const { width, height } = Dimensions.get("window");
 
@@ -22,57 +22,65 @@ const RegisterCard = () => {
   const navigation = useNavigation();
 
   const [image, setImage] = useState(null); 
-  const [video, setVideo] = useState(null); 
+  const [video, setVideo] = useState(null);
+  const [audio, setAudio] = useState(null);
   const [name, setName] = useState("");
   const [syllables, setSyllables] = useState("");
   const { userId } = useUserId();
+  const getBlobFromUri = async (uri) => {
+    try {
+      const response = await fetch(uri); 
+      const blob = await response.blob(); 
+      return blob;
+    } catch (error) {
+      console.error('Error converting URI to Blob:', error);
+      throw error;
+    }
+  };
+  
 
   const pickImage = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-
-    if (status !== "granted") {
-      alert("Você precisa dar permissão para acessar as fotos!");
-      return;
-    }
-
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3], 
-      quality: 1,
-    });
-
-    console.log(result);
-
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
-      setVideo(null);
+    try {
+      const result = await DocumentPicker.getDocumentAsync({
+        type: 'image/*',
+      });
+      console.log('Selected image:', result.output.item(0));
+      setImage(result.output.item(0));
+    } catch (error) {
+      console.error('Error picking image:', error);
     }
   };
-
+  
   const pickVideo = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-
-    if (status !== "granted") {
-      alert("Você precisa dar permissão para acessar as fotos!");
-      return;
-    }
-
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Videos, 
-      quality: 1,
-    });
-
-    console.log(result);
-
-    if (!result.canceled) {
-      setVideo(result.assets[0].uri);
-      setImage(null);
+    try {
+      const result = await DocumentPicker.getDocumentAsync({
+        type: 'video/*', 
+      });
+      console.log('Selected video:',  result.output.item(0));
+      setVideo(result.output.item(0));
+    } catch (error) {
+      console.error('Error picking video:', error);
     }
   };
+  
+  const pickAudio = async () => {
+    try {
+      const result = await DocumentPicker.getDocumentAsync({
+        type: 'audio/*',
+      });
+      console.log('Selected audio:', result.output.item(0));
+      setAudio(result.output.item(0));
+
+    } catch (error) {
+      console.error('Error picking audio:', error);
+    }
+  };
+  
+  
+  
 
   const handleSubmit = async () => {
-    if (!image && !video || !name || !syllables) {
+    if (!image || !audio || !video || !name || !syllables) {
       Alert.alert("Erro", "Por favor, preencha todos os campos e envie uma imagem ou vídeo.");
       return;
     }
@@ -81,28 +89,15 @@ const RegisterCard = () => {
 
     formData.append("name", name);
     formData.append("syllables", syllables);
-
-    if (image) {
-      const imageFile = {
-        uri: image,
-        type: "image/webp",
-        name: `${name.replace(/\s+/g, "_")}.webp`,
-      };
-      formData.append("img", imageFile);
-    }
-
-    if (video) {
-      const videoFile = {
-        uri: video,
-        type: "video/mp4",
-        name: `${name.replace(/\s+/g, "_")}.mp4`,
-      };
-      formData.append("video", videoFile);
-    }
+    formData.append("category", "Custom");
+    formData.append("subcategory", "Custom");
+    formData.append("image", image);
+    formData.append("video", video)
+    formData.append("audio", audio)
 
     try {
       const response = await axios.post(
-        `http://localhost:4000/user/${userId}/item`,
+        `http://localhost:4000/user/31e42c1b-16cf-4a1d-9d8d-f208aa02adc3/item`,
         formData,
         {
           headers: {
@@ -115,6 +110,7 @@ const RegisterCard = () => {
         Alert.alert("Sucesso", "Cartão cadastrado com sucesso!");
         setImage(null);
         setVideo(null);
+        setAudio(null);
         setName("");
         setSyllables("");
       } else {
@@ -155,7 +151,14 @@ const RegisterCard = () => {
             <Text style={styles.uploadText}>⬇ Selecionar Vídeo</Text>
           )}
         </TouchableOpacity>
-
+        <Text style={styles.text}>CARREGAR AÚDIO</Text>
+        <TouchableOpacity style={styles.videoButton} onPress={pickAudio}>
+          {audio ? (
+            <Text style={styles.uploadText}>AudioSelecionado Selecionado</Text>
+          ) : (
+            <Text style={styles.uploadText}>⬇ Selecionar Aúdio</Text>
+          )}
+        </TouchableOpacity>
         <Text style={styles.text}>INFORMAÇÕES</Text>
         <TextInput
           style={styles.input}

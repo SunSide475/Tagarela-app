@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Dimensions,
   Alert,
+  ScrollView, // Importar ScrollView
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
@@ -37,7 +38,6 @@ const RegisterCard = () => {
       throw error;
     }
   };
-  
 
   const pickImage = async () => {
     try {
@@ -50,7 +50,7 @@ const RegisterCard = () => {
       console.error('Error picking image:', error);
     }
   };
-  
+
   const pickVideo = async () => {
     try {
       const result = await DocumentPicker.getDocumentAsync({
@@ -62,7 +62,7 @@ const RegisterCard = () => {
       console.error('Error picking video:', error);
     }
   };
-  
+
   const pickAudio = async () => {
     try {
       const result = await DocumentPicker.getDocumentAsync({
@@ -75,9 +75,6 @@ const RegisterCard = () => {
       console.error('Error picking audio:', error);
     }
   };
-  
-  
-  
 
   const handleSubmit = async () => {
     if (!image || !audio || !video || !name || !syllables) {
@@ -97,7 +94,7 @@ const RegisterCard = () => {
 
     try {
       const response = await axios.post(
-        `http://localhost:4000/user/31e42c1b-16cf-4a1d-9d8d-f208aa02adc3/item`,
+        `http://localhost:4000/user/${userId}/item`,
         formData,
         {
           headers: {
@@ -131,7 +128,7 @@ const RegisterCard = () => {
         </TouchableOpacity>
       </View>
 
-      <View style={styles.content}>
+      <ScrollView contentContainerStyle={styles.content}>
         <Text style={styles.sectionTitle}>ADICIONAR CARTÃO</Text>
 
         <Text style={styles.text}>CARREGAR IMAGEM</Text>
@@ -151,14 +148,16 @@ const RegisterCard = () => {
             <Text style={styles.uploadText}>⬇ Selecionar Vídeo</Text>
           )}
         </TouchableOpacity>
+
         <Text style={styles.text}>CARREGAR AÚDIO</Text>
         <TouchableOpacity style={styles.videoButton} onPress={pickAudio}>
           {audio ? (
-            <Text style={styles.uploadText}>AudioSelecionado Selecionado</Text>
+            <Text style={styles.uploadText}>Audio Selecionado</Text>
           ) : (
             <Text style={styles.uploadText}>⬇ Selecionar Aúdio</Text>
           )}
         </TouchableOpacity>
+
         <Text style={styles.text}>INFORMAÇÕES</Text>
         <TextInput
           style={styles.input}
@@ -168,7 +167,7 @@ const RegisterCard = () => {
         />
         <TextInput
           style={styles.input}
-          placeholder="SÍLABAS"
+          placeholder="SÍLABAS (SEPARADAS POR - )"
           value={syllables}
           onChangeText={setSyllables}
         />
@@ -176,7 +175,8 @@ const RegisterCard = () => {
         <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
           <Text style={styles.submitButtonText}>SALVAR CARTÃO</Text>
         </TouchableOpacity>
-      </View>
+      </ScrollView>
+
       <Menu />
     </View>
   );
@@ -207,7 +207,8 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 16,
-    flex: 1,
+    flexGrow: 1,
+    paddingBottom: 100, 
   },
   sectionTitle: {
     fontSize: 18,
@@ -242,26 +243,33 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
   },
   videoButton: {
-    backgroundColor: "#FFC247", // Cor amarela
+    backgroundColor: "#FFC247", 
     paddingVertical: 12,
     borderRadius: 8,
     alignItems: "center",
     marginTop: 16,
     borderWidth: 1,
-    borderColor: "#FFB300", // Um tom mais escuro de amarelo para o contorno
+    borderColor: "#FFB300", 
   },
   submitButton: {
     backgroundColor: "#7E57C2",
     paddingVertical: 12,
     borderRadius: 8,
     alignItems: "center",
-    marginTop: 20,
+    marginTop: 40,
   },
   submitButtonText: {
     fontSize: 18,
     color: "#fff",
     fontWeight: "bold",
   },
+  input: {
+    fontSize:16,
+    paddingLeft: "3%",
+    borderBottomWidth: 2,
+    borderColor: "#4F4F4F",
+    marginTop: 20
+  }
 });
 
 export default RegisterCard;

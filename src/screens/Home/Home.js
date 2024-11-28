@@ -22,6 +22,7 @@ import useCardsStore from "../../store/useCardsStore";
 import useUserId from "../../hooks/useUserId";
 
 const btns = [
+  { id: 10, title: "MEUS CARTÕES", category: "MEUS CARTÕES"},
   { id: 1, title: "ALIMENTO", category: "ALIMENTO" },
   { id: 2, title: "PESSOA", category: "PESSOA" },
   { id: 3, title: "AÇÃO", category: "ACAO"  },
@@ -31,7 +32,6 @@ const btns = [
   { id: 7, title: "MATERIAL", category: "MATERIAL"},
   { id: 8, title: "OBJETO", category: "OBJETO"},
   { id: 9, title: "RESPOSTA", category: "RESPOSTA"},
-  { id: 10, title: "MEUS CARTÕES", category: "MEUS CARTÕES"},
 ];
 
 const { height } = Dimensions.get("window");
@@ -47,10 +47,10 @@ const Home = ({ navigation }) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [selectedButtonId, setSelectedButtonId] = useState(null)
+  const [selectedButtonId, setSelectedButtonId] = useState(null);
   const { recentCards, getRecentCards, loading, getMostViewedCards, mostViewedCards, getAllCards, cards } = useCardsStore();
   const { userId } = useUserId();
-  const BASE_IMG_URL = "https://tagarela-sunside-pi-dsm.s3.us-east-1.amazonaws.com/"
+  const BASE_IMG_URL = "https://tagarela-sunside-pi-dsm.s3.us-east-1.amazonaws.com/";
 
   useEffect(() => {
     getRecentCards(userId);
@@ -79,6 +79,7 @@ const Home = ({ navigation }) => {
   if (!fontsLoaded || loading) {
     return <Loading />;
   }
+
   const renderItem = ({ item }) => {
     const isSelected = selectedButtonId === item.id; 
     const buttonStyle = isSelected ? styles.buttonSelected : styles.button; 
@@ -96,16 +97,16 @@ const Home = ({ navigation }) => {
     );
   };
 
-  const filteredCards = selectedCategory
-    ? cards.filter(
-        (card) => card.category.toUpperCase() === selectedCategory.toUpperCase()
-      )
+  const filteredCards = selectedCategory === "MEUS CARTÕES"
+    ? cards.filter((card) => card.category === "CUSTOM" && card.userId === userId) 
+    : selectedCategory
+    ? cards.filter((card) => card.category.toUpperCase() === selectedCategory.toUpperCase())
     : [];
 
   const renderUserCards = () => (
     <View style={styles.cardsContainer}>
-      {userCards.length > 0 ? (
-        userCards.map((card) => (
+      {filteredCards.length > 0 ? (
+        filteredCards.map((card) => (
           <Card
             key={card.id}
             name={card.name}
@@ -116,28 +117,18 @@ const Home = ({ navigation }) => {
       ) : (
         <Text style={styles.text}>Nenhum cartão cadastrado.</Text>
       )}
-      <TouchableOpacity
-        style={styles.createCardButton}
-        onPress={() => navigation.navigate("RegisterCard")}
-      >
-        <Text style={styles.createCardButtonText}>Criar Cartão</Text>
-      </TouchableOpacity>
     </View>
   );
 
   return (
     <View style={styles.container}>
       <Head />
+
       <ScrollView contentContainerStyle={styles.scrollViewContainer}>
         <View style={styles.carouselContainer}>
           <TouchableOpacity
             onPress={() => navigation.navigate("Search")}
-            style={[
-              styles.searchIconContainer,
-              {
-                marginTop: height > 800 ? height * 0.18 : height * 0.15,
-              },
-            ]}
+            style={[styles.searchIconContainer, { marginTop: height > 800 ? height * 0.18 : height * 0.15 }]}
           >
             <Image source={icons.searchPurple.src} style={styles.searchIcon} />
           </TouchableOpacity>
@@ -153,65 +144,79 @@ const Home = ({ navigation }) => {
         </View>
 
         {selectedCategory === "MEUS CARTÕES" ? (
-          renderUserCards()
+          <>
+            {renderUserCards()}
+            <TouchableOpacity
+              style={styles.createCardButton}
+              onPress={() => navigation.navigate("RegisterCard")}
+            >
+              <Text style={styles.createCardButtonText}>Criar Cartão</Text>
+            </TouchableOpacity>
+          </>
         ) : selectedCategory ? (
           <>
             <Text style={styles.text}>{selectedCategory.toUpperCase()}</Text>
-            <View style={styles.cardsContainer}>
-              {filteredCards.length > 0 ? (
-                filteredCards.map((card) => (
-                  <Card
-                    key={card.id}
-                    name={card.name}
-                    imageUrl={BASE_IMG_URL + card.img}
-                    onPress={() => handleCardClick(card.id)}  
-                  />
-                ))
-              ) : (
-                <Text style={styles.text}>Não há cards para esta categoria.</Text>
-              )}
-            </View>
+            <ScrollView style={styles.cardsScrollView}>
+              <View style={styles.cardsContainer}>
+                {filteredCards.length > 0 ? (
+                  filteredCards.map((card) => (
+                    <Card
+                      key={card.id}
+                      name={card.name}
+                      imageUrl={BASE_IMG_URL + card.img}
+                      onPress={() => handleCardClick(card.id)}  
+                    />
+                  ))
+                ) : (
+                  <Text style={styles.text}>Não há cards para esta categoria.</Text>
+                )}
+              </View>
+            </ScrollView>
           </>
         ) : (
           <>
             <Text style={styles.textTitle}>RECENTES</Text>
-            {recentCards.length >= 4 ? (
+            <ScrollView style={styles.cardsScrollView}>
               <View style={styles.cardsContainer}>
-                {recentCards.slice(0, 4).map((card) => (
-                  <Card
-                    key={card.id}
-                    name={card.name}
-                    imageUrl={BASE_IMG_URL + card.img}
-                    onPress={() => handleCardClick(card.id)}  
-                  />
-                ))}
+                {recentCards.length >= 4 ? (
+                  recentCards.slice(0, 4).map((card) => (
+                    <Card
+                      key={card.id}
+                      name={card.name}
+                      imageUrl={BASE_IMG_URL + card.img}
+                      onPress={() => handleCardClick(card.id)}  
+                    />
+                  ))
+                ) : (
+                  <Text style={styles.text}>Não há cards suficientes para exibir.</Text>
+                )}
               </View>
-            ) : (
-              <Text style={styles.text}>Não há cards suficientes para exibir.</Text>
-            )}
+            </ScrollView>
 
             <Text style={styles.textTitle}>MAIS UTILIZADOS</Text>
-            {mostViewedCards.length >= 4 ? (
+            <ScrollView style={styles.cardsScrollView}>
               <View style={styles.cardsContainer}>
-                {mostViewedCards.slice(0, 4).map((card) => (
-                  <Card
-                    key={card.id}
-                    name={card.name}
-                    imageUrl={BASE_IMG_URL + card.img}
-                    onPress={() => handleCardClick(card.id)}  
-                  />
-                ))}
+                {mostViewedCards.length >= 4 ? (
+                  mostViewedCards.slice(0, 4).map((card) => (
+                    <Card
+                      key={card.id}
+                      name={card.name}
+                      imageUrl={BASE_IMG_URL + card.img}
+                      onPress={() => handleCardClick(card.id)}  
+                    />
+                  ))
+                ) : (
+                  <Text style={styles.text}>Não há cards suficientes para exibir.</Text>
+                )}
               </View>
-            ) : (
-              <Text style={styles.text}>Não há cards suficientes para exibir.</Text>
-            )}
+            </ScrollView>
           </>
         )}
       </ScrollView>
 
       <Menu />
 
-        <CustomModal
+      <CustomModal
         isVisible={isModalVisible}
         onClose={handleCloseModal}
         cardId={selectedCard}  
@@ -219,7 +224,6 @@ const Home = ({ navigation }) => {
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {
@@ -293,6 +297,9 @@ const styles = StyleSheet.create({
     marginLeft: "5%",
     gap: 40,
   },
+  cardsScrollView: {
+    marginBottom: 30, 
+  },
   textTitle: {
     fontFamily: "regular",
     marginTop: "15%",
@@ -321,7 +328,5 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
-
-
 
 export default Home;

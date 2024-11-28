@@ -14,22 +14,32 @@ import icons from "../../assets/icons/icons";
 import Head from "../../components/Head/Head";
 import useCardsStore from "../../store/useCardsStore";
 import { Loading } from "../../components/Loading/Loading";
+import { Audio } from "expo-av"; 
 
 const LineCards = () => {
   const [text, setText] = useState("");
   const [queue, setQueue] = useState([]);
   const [cardNames, setCardNames] = useState([]);
   const { getAllCards, cards, error, loading } = useCardsStore();
-  const BASE_IMG_URL = "https://tagarela-sunside-pi-dsm.s3.us-east-1.amazonaws.com/"
+  const [sound, setSound] = useState(); 
+  const BASE_IMG_URL = "https://tagarela-sunside-pi-dsm.s3.us-east-1.amazonaws.com/";
 
   useEffect(() => {
     getAllCards();
   }, [getAllCards]);
 
-  const handleAddCard = (name, img) => {
-    if (!cardNames.includes(name) && queue.length < 5) { 
+  const handleAddCard = async (name, img, audioUrl) => {
+    if (!cardNames.includes(name) && queue.length < 5) {
       setQueue([...queue, { name, img }]);
       setCardNames([...cardNames, name]);
+
+      if (audioUrl) {
+        const { sound } = await Audio.Sound.createAsync(
+          { uri: BASE_IMG_URL + audioUrl }
+        );
+        setSound(sound);
+        await sound.playAsync();
+      }
     }
   };
 
@@ -97,7 +107,7 @@ const LineCards = () => {
               smallSize={true}
               name={card.name}
               imageUrl={BASE_IMG_URL + card.img}
-              onPress={() => handleAddCard(card.name, card.img)}
+              onPress={() => handleAddCard(card.name, card.img, card.audio)}
             />
           ))}
         </View>
@@ -142,9 +152,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   cardImageInQueueSmall: {
-    width: 45, 
-    height: 45, 
-    marginRight: 15, 
+    width: 45,
+    height: 45,
+    marginRight: 15,
     marginBottom: 10,
   },
   searchContainer: {

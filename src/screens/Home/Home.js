@@ -155,7 +155,7 @@ const Home = ({ navigation }) => {
           </>
         ) : selectedCategory ? (
           <>
-            <Text style={styles.text}>{selectedCategory.toUpperCase()}</Text>
+            <Text style={styles.textCategory}>{selectedCategory.toUpperCase()}</Text>
             <ScrollView style={styles.cardsScrollView}>
               <View style={styles.cardsContainer}>
                 {filteredCards.length > 0 ? (
@@ -309,9 +309,15 @@ const styles = StyleSheet.create({
   },
   text: {
     fontFamily: "regular",
+    marginTop: "2%",
+    paddingLeft: "4%",
+    fontSize: 21,
+  },
+  textCategory: {
+    fontFamily: "regular",
     marginTop: "5%",
-    paddingLeft: "8%",
-    fontSize: 22,
+    paddingLeft: "5%",
+    fontSize: 21,
   },
   createCardButton: {
     backgroundColor: "#FFC247",

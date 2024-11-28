@@ -8,33 +8,35 @@ import {
   StyleSheet,
   Dimensions,
   Alert,
-  ScrollView, // Importar ScrollView
+  ScrollView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import Head from "../../components/Head/Head";
 import Menu from "../../components/Menu/Menu";
 import useUserId from "../../hooks/useUserId";
-import * as DocumentPicker from 'expo-document-picker';
+import * as DocumentPicker from "expo-document-picker";
 
 const { width, height } = Dimensions.get("window");
 
 const RegisterCard = () => {
   const navigation = useNavigation();
 
-  const [image, setImage] = useState(null); 
+  const [image, setImage] = useState(null);
   const [video, setVideo] = useState(null);
   const [audio, setAudio] = useState(null);
   const [name, setName] = useState("");
   const [syllables, setSyllables] = useState("");
   const { userId } = useUserId();
+
+
   const getBlobFromUri = async (uri) => {
     try {
-      const response = await fetch(uri); 
-      const blob = await response.blob(); 
+      const response = await fetch(uri);
+      const blob = await response.blob();
       return blob;
     } catch (error) {
-      console.error('Error converting URI to Blob:', error);
+      console.error("Error converting URI to Blob:", error);
       throw error;
     }
   };
@@ -42,37 +44,57 @@ const RegisterCard = () => {
   const pickImage = async () => {
     try {
       const result = await DocumentPicker.getDocumentAsync({
-        type: 'image/*',
+        type: "image/*",
       });
-      console.log('Selected image:', result.output.item(0));
-      setImage(result.output.item(0));
+      if (result.type === "cancel") return; 
+      console.log("Selected image:", result.uri);
+      const image = {
+        uri: result.assets[0].uri,
+        name: result.assets[0].name,
+        type: result.assets[0].mimeType,
+        size: result.assets[0].size,
+      };
+      setImage(image);
     } catch (error) {
-      console.error('Error picking image:', error);
+      console.error("Error picking image:", error);
     }
   };
 
   const pickVideo = async () => {
     try {
       const result = await DocumentPicker.getDocumentAsync({
-        type: 'video/*', 
+        type: "video/*",
       });
-      console.log('Selected video:',  result.output.item(0));
-      setVideo(result.output.item(0));
+      if (result.type === "cancel") return;
+      console.log("Selected video:", result.uri);
+      const video = {
+        uri: result.assets[0].uri,
+        name: result.assets[0].name,
+        type: result.assets[0].mimeType || "video/mp4", 
+        size: result.assets[0].size,
+      };
+      setVideo(video);
     } catch (error) {
-      console.error('Error picking video:', error);
+      console.error("Error picking video:", error);
     }
   };
 
   const pickAudio = async () => {
     try {
       const result = await DocumentPicker.getDocumentAsync({
-        type: 'audio/*',
+        type: "audio/*",
       });
-      console.log('Selected audio:', result.output.item(0));
-      setAudio(result.output.item(0));
-
+      if (result.type === "cancel") return;
+      console.log("Selected audio:", result.uri);
+      const audio = {
+        uri: result.assets[0].uri,
+        name: result.assets[0].name,
+        type: result.assets[0].mimeType || "audio/mpeg", 
+        size: result.assets[0].size,
+      };
+      setAudio(audio);
     } catch (error) {
-      console.error('Error picking audio:', error);
+      console.error("Error picking audio:", error);
     }
   };
 
@@ -88,13 +110,28 @@ const RegisterCard = () => {
     formData.append("syllables", syllables);
     formData.append("category", "Custom");
     formData.append("subcategory", "Custom");
-    formData.append("image", image);
-    formData.append("video", video)
-    formData.append("audio", audio)
+
+    formData.append("image", {
+      uri: image.uri,
+      name: image.name,
+      type: image.type,
+    });
+
+    formData.append("video", {
+      uri: video.uri,
+      name: video.name,
+      type: video.type,
+    });
+
+    formData.append("audio", {
+      uri: audio.uri,
+      name: audio.name,
+      type: audio.type,
+    });
 
     try {
       const response = await axios.post(
-        `http://localhost:4000/user/${userId}/item`,
+        `http://10.0.2.2:4000/user/${userId}/item`,
         formData,
         {
           headers: {
@@ -103,13 +140,14 @@ const RegisterCard = () => {
         }
       );
 
-      if (response.status === 200) {
+      if (response.status === 201) {
         Alert.alert("Sucesso", "Cartão cadastrado com sucesso!");
         setImage(null);
         setVideo(null);
         setAudio(null);
         setName("");
         setSyllables("");
+        navigation.navigate("Home")
       } else {
         Alert.alert("Erro", response.data.message || "Erro ao cadastrar o cartão.");
       }
@@ -134,7 +172,7 @@ const RegisterCard = () => {
         <Text style={styles.text}>CARREGAR IMAGEM</Text>
         <TouchableOpacity style={styles.imageUpload} onPress={pickImage}>
           {image ? (
-            <Image source={{ uri: image }} style={styles.uploadedImage} resizeMode="cover" />
+            <Image source={{ uri: image.uri }} style={styles.uploadedImage} resizeMode="cover" />
           ) : (
             <Text style={styles.uploadText}>↑</Text>
           )}
@@ -208,7 +246,7 @@ const styles = StyleSheet.create({
   content: {
     padding: 16,
     flexGrow: 1,
-    paddingBottom: 100, 
+    paddingBottom: 100,
   },
   sectionTitle: {
     fontSize: 18,
@@ -243,13 +281,13 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
   },
   videoButton: {
-    backgroundColor: "#FFC247", 
+    backgroundColor: "#FFC247",
     paddingVertical: 12,
     borderRadius: 8,
     alignItems: "center",
     marginTop: 16,
     borderWidth: 1,
-    borderColor: "#FFB300", 
+    borderColor: "#FFB300",
   },
   submitButton: {
     backgroundColor: "#7E57C2",
@@ -264,12 +302,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   input: {
-    fontSize:16,
+    fontSize: 16,
     paddingLeft: "3%",
     borderBottomWidth: 2,
     borderColor: "#4F4F4F",
-    marginTop: 20
-  }
+    marginTop: 20,
+  },
 });
 
 export default RegisterCard;

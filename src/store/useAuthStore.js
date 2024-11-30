@@ -84,6 +84,33 @@ const useAuthStore = create((set) => ({
       set({ error: errorMessage, userInfo: [], loading: false });
     }
   },
+  updateUserInfo: async (userId, updatedData) => {
+    set({ loading: true, error: null });
+    try {
+      const response = await axios.put(
+        `http://10.0.2.2:4000/user/${userId}`,
+        updatedData,
+        { headers: { "Content-Type": "application/json" } }
+      );
+
+      set({
+        userInfo: response.data.user,
+        error: null,
+        loading: false,
+      });
+
+      return {
+        success: true,
+        message: "Informações atualizadas com sucesso!",
+        userInfo: response.data.user,
+      };
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.error || error.message || "Erro ao atualizar informações";
+      set({ error: errorMessage, loading: false });
+      return { success: false, error: errorMessage };
+    }
+  },
   logout: () => set({ user: null, error: null, loading: false }),
   cleanError: () => set({ error: null }),
 }));

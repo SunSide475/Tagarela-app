@@ -34,11 +34,17 @@ const LineCards = () => {
       setCardNames([...cardNames, name]);
 
       if (audioUrl) {
-        const { sound } = await Audio.Sound.createAsync(
+        // Se já houver um som tocando, pare-o antes de carregar o novo áudio
+        if (sound) {
+          await sound.unloadAsync();
+        }
+
+        // Carregar e tocar o áudio da AWS
+        const { sound: newSound } = await Audio.Sound.createAsync(
           { uri: BASE_IMG_URL + audioUrl }
         );
-        setSound(sound);
-        await sound.playAsync();
+        setSound(newSound); // Atualiza o estado com o novo som
+        await newSound.playAsync(); // Toca o áudio
       }
     }
   };

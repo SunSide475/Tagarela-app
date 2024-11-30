@@ -7,12 +7,22 @@ import useAuthStore from "../../../store/useAuthStore";
 import useUserId from "../../../hooks/useUserId";
 import React, {useEffect} from "react";
 import { Loading } from "../../../components/Loading/Loading";
+import useLoadFont from "../../../hooks/useLoadFont";
 
 
 const Account = () => {
   const navigation = useNavigation();
   const { getUserInfo, userInfo, loading } = useAuthStore();
   const { userId } = useUserId();
+
+  const { fontsLoaded } = useLoadFont(
+    {
+      regular: require("../../../assets/fonts/Quicksand-Regular.ttf"),
+      medium: require("../../../assets/fonts/Quicksand-Medium.ttf"),
+      semiBold: require("../../../assets/fonts/Quicksand-SemiBold.ttf"),
+    },
+    Loading
+  );
 
   useEffect(() => {
     if (userId) {
@@ -25,7 +35,7 @@ const Account = () => {
     navigation.navigate('EditAccount');
   };
 
-  if (loading) {
+  if (!fontsLoaded || loading) {
     return <Loading />;
   }
 
@@ -43,15 +53,15 @@ const Account = () => {
         </View>
         <View style={styles.accountInfo}>
           <View style={styles.infoRow}>
-            <Text style={styles.text}>Nome:</Text>
-            <Text style={styles.value}>{userInfo.username}</Text>
+            <Text style={styles.text}>Nome</Text>
+            <Text style={styles.value}>{userInfo.name}</Text>
           </View>
           <View style={styles.infoRow}>
-            <Text style={styles.text}>Email:</Text>
+            <Text style={styles.text}>Email</Text>
             <Text style={styles.value}>{userInfo.email}</Text>
           </View>
           <View style={styles.infoRow}>
-            <Text style={styles.text}>Senha:</Text>
+            <Text style={styles.text}>Senha</Text>
             <Text style={styles.value}>********</Text>
           </View>
         </View>
@@ -72,21 +82,21 @@ const styles = StyleSheet.create({
     paddingTop: 200,
   },
   title: {
-    fontSize: 23,
-    fontWeight: '600',
+    fontFamily: "semiBold",
+    fontSize: 24,
     color: '#4F4F4F',
     marginBottom: 10,
   },
   text: {
-    fontSize: 18,
-    fontWeight: '400',
+    fontFamily: "medium",
+    fontSize: 26,
     color: '#4F4F4F',
   },
   value: {
-    fontSize: 18,
-    fontWeight: '400',
+    fontFamily: "regular",
+    fontSize: 20,
     color: '#4F4F4F',
-    textAlign: 'right',
+    textAlign: 'left',
     flex: 1,
   },
   settingsTitle: {
@@ -99,22 +109,18 @@ const styles = StyleSheet.create({
   },
   accountInfo: {
     width: '80%',
-    marginTop: 0,
     paddingHorizontal: 10,
   },
   infoRow: {
     width: '100%',
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    height: '17%',
     marginBottom: 20,
   },
   settingsActions: {
-    marginTop: 10,
+    marginTop: 5,
     width: '80%',
     display: 'flex',
     alignItems: 'flex-end',
-    marginBottom: 30,
   },
   iconEdit: {
     width: 40,

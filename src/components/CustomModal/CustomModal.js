@@ -15,14 +15,15 @@ import { useEvent } from "expo";
 import { useVideoPlayer, VideoView } from "expo-video";
 import useUserId from "../../hooks/useUserId";
 import icons from "../../assets/icons/icons";
-
+import { Audio } from "expo-av";
 
 const CustomModal = ({ isVisible, onClose, cardId }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [cardInfo, setCardInfo] = useState(null);
-  const { userId } = useUserId()
-  const BASE_IMG_URL = "https://tagarela-sunside-pi-dsm.s3.us-east-1.amazonaws.com/" 
+  const { userId } = useUserId();
+  const [sound, setSound] = useState(null); 
+  const BASE_IMG_URL = "https://tagarela-sunside-pi-dsm.s3.us-east-1.amazonaws.com/";
 
   useEffect(() => {
     if (cardId) {
@@ -46,18 +47,29 @@ const CustomModal = ({ isVisible, onClose, cardId }) => {
 
   const syllables = cardInfo ? separateSyllables(cardInfo.syllables || "") : [];
   const videoSource = cardInfo ? BASE_IMG_URL + cardInfo?.video : null;
+  const audioSource = cardInfo ? BASE_IMG_URL + cardInfo?.audio : null; 
 
-    const player = useVideoPlayer(videoSource, (player) => {
-      player.loop = false; 
-      player.play();
-      player.isControlsVisible = false;
-    });
-  
+  const playAudio = async () => {
+    if (sound) {
+      await sound.unloadAsync(); 
+    }
+    const { sound: newSound } = await Audio.Sound.createAsync(
+      { uri: audioSource }
+    );
+    setSound(newSound); 
+    await newSound.playAsync(); 
+  };
 
-    const { isPlaying } = useEvent(player, "playingChange", {
-      isPlaying: player.playing,
-    });
-    
+  const player = useVideoPlayer(videoSource, (player) => {
+    player.loop = false;
+    player.play();
+    player.isControlsVisible = false;
+  });
+
+  const { isPlaying } = useEvent(player, "playingChange", {
+    isPlaying: player.playing,
+  });
+
   if (!isVisible || !cardId) return null;
 
   return (
@@ -100,13 +112,16 @@ const CustomModal = ({ isVisible, onClose, cardId }) => {
               </View>
             </>
           )}
-           <View style={styles.view}>
-            <Image
-            source={icons.play.src}
-            accessibilityLabel={icons.play.alt}
-            style={styles.playImage}
-            ></Image>
+          <View style={styles.view}>
+            <TouchableOpacity onPress={playAudio}>
+              <Image
+                source={icons.play.src}
+                accessibilityLabel={icons.play.alt}
+                style={styles.playImage}
+              />
+            </TouchableOpacity>
           </View>
+
           <TouchableOpacity style={styles.closeButton} onPress={onClose}>
             <Text style={styles.closeButtonText}>PRONTO</Text>
           </TouchableOpacity>
@@ -130,11 +145,12 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 10
+    borderRadius: 10,
+    marginTop: 20,
   },
   playImage: {
     width: 25,
-    height: 25
+    height: 25,
   },
   modalContent: {
     width: "100%",

@@ -1,13 +1,14 @@
-import { View, StyleSheet, Text, TextInput, TouchableOpacity, Image } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, StyleSheet, Text, TextInput, TouchableOpacity, Image, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
 import Head from '../../../components/Head/Head';
 import Menu from '../../../components/Menu/Menu';
 import icons from "../../../assets/icons/icons";
 import { useNavigation } from '@react-navigation/native';
 import useAuthStore from "../../../store/useAuthStore";
 import useUserId from "../../../hooks/useUserId";
-import React, { useEffect, useState } from "react";
 import { Loading } from "../../../components/Loading/Loading";
 import useLoadFont from "../../../hooks/useLoadFont";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const EditAccount = () => {
   const navigation = useNavigation();
@@ -59,7 +60,13 @@ const EditAccount = () => {
   return (
     <>
       <Head />
-      <View style={styles.settingsContainer}>
+      <KeyboardAwareScrollView
+        style={styles.settingsContainer}
+        contentContainerStyle={styles.contentContainer}
+        keyboardShouldPersistTaps="handled"
+        enableOnAndroid={true}
+        extraScrollHeight={20} 
+      >
         <View style={styles.settingsTitle}>
           <Text style={styles.title}>EDITAR CONTA</Text>
         </View>
@@ -76,7 +83,6 @@ const EditAccount = () => {
               value={username}
               onChangeText={setUsername}
               placeholder={userInfo?.username || 'Nome'}
-
             />
           </View>
           <View style={styles.infoRow}>
@@ -102,7 +108,7 @@ const EditAccount = () => {
         <TouchableOpacity style={styles.button} onPress={handleUpdateAccount}>
           <Text style={styles.buttonText}>EDITAR</Text>
         </TouchableOpacity>
-      </View>
+      </KeyboardAwareScrollView>
       <Menu />
     </>
   );
@@ -110,13 +116,13 @@ const EditAccount = () => {
 
 const styles = StyleSheet.create({
   settingsContainer: {
-    width: '100%',
-    height: '100%',
+    flex: 1,  
     backgroundColor: '#fff',
-    display: 'flex',
-    justifyContent: 'flex-start',
+  },
+  contentContainer: {
+    paddingTop: 20, 
+    paddingBottom: 20, 
     alignItems: 'center',
-    paddingTop: 200,
   },
   title: {
     fontFamily: "semiBold",
@@ -140,6 +146,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   settingsTitle: {
+    marginTop: 170,
     width: '80%',
     height: '7%',
     display: 'flex',

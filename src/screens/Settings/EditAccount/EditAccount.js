@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Text, TextInput, TouchableOpacity, Image, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
+import { View, StyleSheet, Text, TextInput, TouchableOpacity, Image } from "react-native";
 import Head from '../../../components/Head/Head';
 import Menu from '../../../components/Menu/Menu';
 import icons from "../../../assets/icons/icons";
@@ -27,6 +27,7 @@ const EditAccount = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isUpdating, setIsUpdating] = useState(false);
 
   useEffect(() => {
     if (userId) {
@@ -42,19 +43,29 @@ const EditAccount = () => {
   }, [userInfo]);
 
   const handleUpdateAccount = async () => {
-    const updatedData = { username, email, password };
-    const result = await updateUserInfo(userId, updatedData);
+    setIsUpdating(true);  
 
-    if (result.success) {
-      alert("Informações atualizadas com sucesso!");
-      navigation.goBack();
-    } else {
-      alert("Erro ao atualizar as informações.");
+    const updatedData = { username, email, password };
+
+    try {
+      const result = await updateUserInfo(userId, updatedData);
+
+      if (result.success) {
+        alert("Informações atualizadas com sucesso!");
+        setIsUpdating(false);
+        navigation.navigate("Account");
+      } else {
+        alert("Erro ao atualizar as informações.");
+      }
+    } catch (error) {
+      alert("Erro inesperado durante a atualização.");
+    } finally {
+      setIsUpdating(false);  
     }
   };
 
-  if (!fontsLoaded || loading || !userInfo) {
-    return <Loading />;
+  if (!fontsLoaded || loading || isUpdating || !userInfo) {
+    return <Loading />; 
   }
 
   return (
@@ -65,7 +76,7 @@ const EditAccount = () => {
         contentContainerStyle={styles.contentContainer}
         keyboardShouldPersistTaps="handled"
         enableOnAndroid={true}
-        extraScrollHeight={20} 
+        extraScrollHeight={20}
       >
         <View style={styles.settingsTitle}>
           <Text style={styles.title}>EDITAR CONTA</Text>
@@ -116,12 +127,12 @@ const EditAccount = () => {
 
 const styles = StyleSheet.create({
   settingsContainer: {
-    flex: 1,  
+    flex: 1,
     backgroundColor: '#fff',
   },
   contentContainer: {
-    paddingTop: 20, 
-    paddingBottom: 20, 
+    paddingTop: 20,
+    paddingBottom: 20,
     alignItems: 'center',
   },
   title: {

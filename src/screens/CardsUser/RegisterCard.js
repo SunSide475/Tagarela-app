@@ -15,6 +15,7 @@ import axios from "axios";
 import Head from "../../components/Head/Head";
 import Menu from "../../components/Menu/Menu";
 import useUserId from "../../hooks/useUserId";
+import useIPStore from "../../store/useIPStore"
 import * as DocumentPicker from "expo-document-picker";
 
 const { width, height } = Dimensions.get("window");
@@ -28,6 +29,7 @@ const RegisterCard = () => {
   const [name, setName] = useState("");
   const [syllables, setSyllables] = useState("");
   const { userId } = useUserId();
+  const { ip } = useIPStore()
 
 
   const getBlobFromUri = async (uri) => {
@@ -131,7 +133,7 @@ const RegisterCard = () => {
 
     try {
       const response = await axios.post(
-        `http://10.0.2.2:4000/user/${userId}/item`,
+        `http://${ip}:4000/user/${userId}/item`,
         formData,
         {
           headers: {

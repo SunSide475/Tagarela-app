@@ -1,6 +1,8 @@
 import { create } from "zustand";
 import axios from "axios";
+import useIPStore from "./useIPStore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+
 
 const useAuthStore = create((set) => ({
   user_id: null,
@@ -9,11 +11,11 @@ const useAuthStore = create((set) => ({
   userInfo: [],
 
   login: async (email, password) => {
+    const { ip } = useIPStore.getState();
     set({ loading: true, error: null });
-
     try {
       const response = await axios.post(
-        "http://10.0.2.2:4000/logar",
+        `http://${ip}:4000/logar`,
         { email, password },
         { headers: { "Content-Type": "application/json" } }
       );
@@ -37,10 +39,11 @@ const useAuthStore = create((set) => ({
   },
 
   register: async (username, email, password) => {
+    const { ip } = useIPStore.getState();
     set({ loading: true, error: null });
     try {
       const response = await axios.post(
-        "http://10.0.2.2:4000/register",
+        `http://${ip}:4000/register`,
         {
           username,
           email,
@@ -69,9 +72,10 @@ const useAuthStore = create((set) => ({
     }
   },
   getUserInfo: async (userId) => {
+    const { ip } = useIPStore.getState();
     set({ loading: true, error: null });
     try {
-      const response = await axios.get(`http://10.0.2.2:4000/user/${userId}`);
+      const response = await axios.get(`http://${ip}:4000/user/${userId}`);
 
       set({
         userInfo: response.data.user,
@@ -85,10 +89,11 @@ const useAuthStore = create((set) => ({
     }
   },
   updateUserInfo: async (userId, updatedData) => {
+    const { ip } = useIPStore.getState();
     set({ loading: true, error: null });
     try {
       const response = await axios.put(
-        `http://10.0.2.2:4000/user/${userId}`,
+        `http://${ip}:4000/user/${userId}`,
         updatedData,
         { headers: { "Content-Type": "application/json" } }
       );

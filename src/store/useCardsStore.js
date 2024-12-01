@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import useIPStore from "./useIPStore";
 import axios from "axios";
 
 const useCardsStore = create((set) => ({
@@ -7,10 +8,12 @@ const useCardsStore = create((set) => ({
   mostViewedCards: [],
   error: null,
   loading: false,
+  
   getAllCards: async () => {
+    const { ip } = useIPStore.getState();
     set({ loading: true, error: null });
     try {
-      const response = await axios.get("http://10.0.2.2:4000/items");
+      const response = await axios.get(`http://${ip}:4000/items`);
       set({ cards: response.data.items, error: null, loading: false });
     } catch (error) {
       const errorMessage =
@@ -19,10 +22,11 @@ const useCardsStore = create((set) => ({
     }
   },
   getRecentCards: async (userId) => {
+    const { ip } = useIPStore.getState();
     set({ loading: true, error: null });
     try {
       const response = await axios.get(
-        `http://10.0.2.2:4000/user/${userId}/recents`
+        `http://${ip}:4000/user/${userId}/recents`
       );
 
       if (Array.isArray(response.data.history)) {
@@ -41,10 +45,11 @@ const useCardsStore = create((set) => ({
     }
   },
   getMostViewedCards: async (userId) => {
+    const { ip } = useIPStore.getState();
     set({ loading: true, error: null });
     try {
       const response = await axios.get(
-        `http://10.0.2.2:4000/user/${userId}/more_viewed`
+        `http://${ip}:4000/user/${userId}/more_viewed`
       );
 
       if (Array.isArray(response.data.items)) {

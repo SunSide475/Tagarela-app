@@ -1,14 +1,17 @@
 import { create } from "zustand";
+import useIPStore from "./useIPStore";
 import axios from "axios";
 
 const useCardsStore = create((set) => ({
   levelData: null,
   loading: false,
   error: null,
+
   getLevelData: async (level) => {
+    const { ip } = useIPStore.getState();
     set({ loading: true, error: null });
     try {
-      const response = await axios.get(`http://10.0.2.2:4000/quiz?nivel=${level}`);
+      const response = await axios.get(`http://${ip}:4000/quiz?nivel=${level}`);
       const quizList = response.data[0]?.quiz_game_list;
       if (quizList && quizList.length > 1) { 
         const randomIndices = [];

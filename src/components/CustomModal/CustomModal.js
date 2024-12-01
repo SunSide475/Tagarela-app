@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Modal,
   View,
@@ -16,13 +16,15 @@ import { useVideoPlayer, VideoView } from "expo-video";
 import useUserId from "../../hooks/useUserId";
 import icons from "../../assets/icons/icons";
 import { Audio } from "expo-av";
+import useIPStore from "../../store/useIPStore";
 
 const CustomModal = ({ isVisible, onClose, cardId }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [cardInfo, setCardInfo] = useState(null);
   const { userId } = useUserId();
-  const [sound, setSound] = useState(null); 
+  const [sound, setSound] = useState(null);
+  const { ip } = useIPStore()
   const BASE_IMG_URL = "https://tagarela-sunside-pi-dsm.s3.us-east-1.amazonaws.com/";
 
   useEffect(() => {
@@ -32,7 +34,7 @@ const CustomModal = ({ isVisible, onClose, cardId }) => {
         setError(null);
         try {
           const response = await axios.get(
-            `http://10.0.2.2:4000/item/${cardId}/user/${userId}`
+            `http://${ip}:4000/item/${cardId}/user/${userId}`
           );
           setCardInfo(response.data.item);
           setLoading(false);

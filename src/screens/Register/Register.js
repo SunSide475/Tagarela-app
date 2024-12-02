@@ -13,6 +13,7 @@ import useAuthStore from "../../store/useAuthStore";
 import { Loading } from "../../components/Loading/Loading";
 import PopUp from "../../components/PopUp/PopUp";
 import usePopUp from "../../hooks/usePopUp";
+import useLoadFont from "../../hooks/useLoadFont";
 
 const Register = () => {
   const navigation = useNavigation();
@@ -22,6 +23,16 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const { register, error, loading, cleanError } = useAuthStore();
   const { showPopUp, popUpVisible, popUpMessage, scale } = usePopUp();
+
+  const { fontsLoaded } = useLoadFont(
+    {
+      regular: require("../../assets/fonts/Quicksand-Regular.ttf"),
+      bold: require("../../assets/fonts/Quicksand-Bold.ttf"),
+      semiBold: require("../../assets/fonts/Quicksand-SemiBold.ttf"),
+      medium: require("../../assets/fonts/Quicksand-Medium.ttf"),
+    },
+    Loading
+  );
 
   useEffect(() => {
     cleanError();
@@ -86,15 +97,9 @@ const Register = () => {
               secureTextEntry={true}
             />
             <TouchableOpacity style={styles.submitBtn} onPress={handleRegister}>
-              <Text style={styles.submitBtnTxt}>Cadastrar</Text>
+              <Text style={styles.submitBtnTxt}>CADASTRAR</Text>
             </TouchableOpacity>
           </View>
-          <Text
-                  style={styles.registerLink}
-                  onPress={() => navigation.navigate("Login")}
-                >
-                  JÁ POSSUI CONTA?
-                </Text>
         </View>
         <PopUp
           title="Operação"
@@ -144,17 +149,10 @@ const styles = StyleSheet.create({
     fontSize: 27,
     fontWeight: "bold",
     color: "#4F4F4F",
-    textAlign: "center",
     marginBottom: 20,
     marginTop: 30,
+    paddingLeft: 20,
   },
-  registerLink: {
-    color: "#4F4F4F",
-    fontSize: 18,
-    marginTop: 60,
-    textAlign: "center",
-  },
-
   welcomeOrange: {
     fontSize: 27,
     color: "orange",
@@ -173,21 +171,24 @@ const styles = StyleSheet.create({
     height: 60,
     borderRadius: 10,
     backgroundColor: "#D9D9D9",
-    color: "black",
-    fontSize: 18,
+    color: "#4F4F4F",
+    fontSize: 20,
+    fontFamily: "regular",
     paddingLeft: 20,
   },
   submitBtn: {
-    backgroundColor: "#7E57C2",
-    width: "80%",
+    backgroundColor: "#FF9900",
+    width: "60%",
     height: 50,
     borderRadius: 10,
+    display: "flex",
     justifyContent: "center",
     alignItems: "center",
     marginTop: 40,
   },
   submitBtnTxt: {
-    fontSize: 20,
+    fontSize: 22,
+    fontFamily: "bold",
     color: "#fff",
   },
 });

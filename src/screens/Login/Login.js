@@ -14,6 +14,7 @@ import useAuthStore from "../../store/useAuthStore";
 import { Loading } from "../../components/Loading/Loading";
 import PopUp from "../../components/PopUp/PopUp";
 import usePopUp from "../../hooks/usePopUp";
+import useLoadFont from "../../hooks/useLoadFont";
 
 const Login = () => {
   const navigation = useNavigation();
@@ -21,6 +22,16 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const { loading, login, error, cleanError } = useAuthStore();
   const { showPopUp, popUpVisible, popUpMessage, scale } = usePopUp();
+
+  const { fontsLoaded } = useLoadFont(
+    {
+      regular: require("../../assets/fonts/Quicksand-Regular.ttf"),
+      bold: require("../../assets/fonts/Quicksand-Bold.ttf"),
+      semiBold: require("../../assets/fonts/Quicksand-SemiBold.ttf"),
+      medium: require("../../assets/fonts/Quicksand-Medium.ttf"),
+    },
+    Loading
+  );
 
   useEffect(() => {
     cleanError();
@@ -38,6 +49,10 @@ const Login = () => {
       showPopUp("Erro ao realizar login.");
     }
   };
+
+  if (!fontsLoaded) {
+    return <Loading />;
+  }
   return (
     <>
       <KeyboardAwareScrollView
@@ -88,7 +103,9 @@ const Login = () => {
                   style={styles.registerLink}
                   onPress={() => navigation.navigate("Register")}
                 >
-                  NÃO POSSUI CONTA?
+                  <Text style={styles.registerLinkBold}
+                  onPress={() => navigation.navigate("Register")}
+                  >NÃO</Text> POSSUI CONTA?
                 </Text>
               </View>
             </View>
@@ -138,11 +155,11 @@ const styles = StyleSheet.create({
   welcome: {
     fontSize: 27,
     fontWeight: "bold",
-    color: "gray",
+    color: "#4F4F4F",
   },
   welcomeOrange: {
     fontSize: 27,
-    color: "orange",
+    color: "#FF9900",
     fontWeight: "bold",
   },
   inputContainer: {
@@ -156,19 +173,19 @@ const styles = StyleSheet.create({
     gap: 20,
   },
   input: {
-    width: "100%",
+    width: "88%",
     height: 60,
     borderRadius: 10,
     backgroundColor: "#D9D9D9",
     color: "black",
-    fontWeight: "thin",
+    fontFamily: "regular",
     fontSize: 20,
     paddingHorizontal: 20,
     paddingVertical: 10,
   },
   submitBtn: {
     backgroundColor: "#7E57C2",
-    width: "80%",
+    width: "60%",
     height: 50,
     borderRadius: 10,
     display: "flex",
@@ -178,11 +195,18 @@ const styles = StyleSheet.create({
   },
   submitBtnTxt: {
     color: "white",
+    fontFamily: "bold",
     fontSize: 23,
   },
   registerLink: {
     color: "#4F4F4F",
-    fontSize: 18,
+    fontSize: 20,
+    fontFamily: "medium"
+  },
+  registerLinkBold: {
+    color: "#4F4F4F",
+    fontFamily: "semiBold",
+    fontSize: 20,
   },
   error: {
     color: "red",

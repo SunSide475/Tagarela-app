@@ -34,17 +34,15 @@ const LineCards = () => {
       setCardNames([...cardNames, name]);
 
       if (audioUrl) {
-        // Se já houver um som tocando, pare-o antes de carregar o novo áudio
         if (sound) {
           await sound.unloadAsync();
         }
 
-        // Carregar e tocar o áudio da AWS
         const { sound: newSound } = await Audio.Sound.createAsync(
           { uri: BASE_IMG_URL + audioUrl }
         );
-        setSound(newSound); // Atualiza o estado com o novo som
-        await newSound.playAsync(); // Toca o áudio
+        setSound(newSound); 
+        await newSound.playAsync();
       }
     }
   };
@@ -76,11 +74,13 @@ const LineCards = () => {
             const imageStyle = queue.length > 4 ? styles.cardImageInQueueSmall : styles.cardImageInQueue;
 
             return (
-              <Image
-                key={index}
-                source={{ uri: imageUrl }}
-                style={imageStyle}
-              />
+              <View key={index} style={styles.cardWrapper}>
+                <Image
+                  source={{ uri: imageUrl }}
+                  style={imageStyle}
+                />
+                <Text style={styles.cardName}>{card.name}</Text>
+              </View>
             );
           })}
 
@@ -151,17 +151,26 @@ const styles = StyleSheet.create({
     flexWrap: "nowrap",
     paddingHorizontal: 10,
   },
+  cardWrapper: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 20,
+    marginBottom: 10,
+  },
   cardImageInQueue: {
     width: 60,
     height: 60,
-    marginRight: 20,
-    marginBottom: 10,
   },
   cardImageInQueueSmall: {
     width: 45,
     height: 45,
-    marginRight: 15,
-    marginBottom: 10,
+  },
+  cardName: {
+    marginTop: 5,
+    fontSize: 14,
+    fontWeight: 600,
+    textAlign: "center",
+    color: "#7E57C2"
   },
   searchContainer: {
     alignItems: "center",

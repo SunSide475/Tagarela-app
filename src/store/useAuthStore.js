@@ -3,7 +3,6 @@ import axios from "axios";
 import useIPStore from "./useIPStore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-
 const useAuthStore = create((set) => ({
   user_id: null,
   error: null,
@@ -111,12 +110,23 @@ const useAuthStore = create((set) => ({
       };
     } catch (error) {
       const errorMessage =
-        error.response?.data?.error || error.message || "Erro ao atualizar informações";
+        error.response?.data?.error ||
+        error.message ||
+        "Erro ao atualizar informações";
       set({ error: errorMessage, loading: false });
       return { success: false, error: errorMessage };
     }
   },
-  logout: () => set({ user: null, error: null, loading: false }),
+  logout: async () => {
+    set({ user_id: null, userInfo: [], error: null, loading: false });
+    try {
+      await AsyncStorage.removeItem("user_id");
+      return { success: true, message: "Logout bem-sucedido!" };
+    } catch (error) {
+      console.error("Erro ao limpar o AsyncStorage:", error);
+      return { success: false, error: "Erro ao tentar fazer logout." };
+    }
+  },
   cleanError: () => set({ error: null }),
 }));
 

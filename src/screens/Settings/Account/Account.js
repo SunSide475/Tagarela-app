@@ -62,7 +62,9 @@ const Account = () => {
             <Text style={styles.text}>Senha</Text>
             <Text style={styles.value}>********</Text>
           </View>
+
         </View>
+        
       </View>
       <Menu />
     </>

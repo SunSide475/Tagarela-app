@@ -110,8 +110,8 @@ const RegisterCard = () => {
 
     formData.append("name", name);
     formData.append("syllables", syllables);
-    formData.append("category", "Custom");
-    formData.append("subcategory", "Custom");
+    formData.append("category", "custom");
+    formData.append("subcategory", "custom");
 
     formData.append("image", {
       uri: image.uri,

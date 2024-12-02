@@ -22,16 +22,16 @@ import useCardsStore from "../../store/useCardsStore";
 import useUserId from "../../hooks/useUserId";
 
 const btns = [
-  { id: 10, title: "MEUS CARTÕES", category: "MEUS CARTÕES"},
+  { id: 10, title: "MEUS CARTÕES", category: "CUSTOM" },
   { id: 1, title: "ALIMENTO", category: "ALIMENTO" },
   { id: 2, title: "PESSOA", category: "PESSOA" },
   { id: 3, title: "AÇÃO", category: "ACAO"  },
   { id: 4, title: "EMOÇÃO", category: "EMOCAO" },
   { id: 5, title: "NECESSIDADE", category: "NECESSIDADE" },
-  { id: 6, title: "ANIMAL", category: "ANIMAL"},
-  { id: 7, title: "MATERIAL", category: "MATERIAL"},
-  { id: 8, title: "OBJETO", category: "OBJETO"},
-  { id: 9, title: "RESPOSTA", category: "RESPOSTA"},
+  { id: 6, title: "ANIMAL", category: "ANIMAL" },
+  { id: 7, title: "MATERIAL", category: "MATERIAL" },
+  { id: 8, title: "OBJETO", category: "OBJETO" },
+  { id: 9, title: "RESPOSTA", category: "RESPOSTA" },
 ];
 
 const { height } = Dimensions.get("window");
@@ -81,8 +81,8 @@ const Home = ({ navigation }) => {
   }
 
   const renderItem = ({ item }) => {
-    const isSelected = selectedButtonId === item.id; 
-    const buttonStyle = isSelected ? styles.buttonSelected : styles.button; 
+    const isSelected = selectedButtonId === item.id;
+    const buttonStyle = isSelected ? styles.buttonSelected : styles.button;
 
     return (
       <Pressable
@@ -98,7 +98,7 @@ const Home = ({ navigation }) => {
   };
 
   const filteredCards = selectedCategory === "MEUS CARTÕES"
-    ? cards.filter((card) => card.category === "CUSTOM" && card.userId === userId) 
+    ? cards.filter((card) => card.category.toUpperCase() === "CUSTOM" && card.userId === userId)
     : selectedCategory
     ? cards.filter((card) => card.category.toUpperCase() === selectedCategory.toUpperCase())
     : [];
@@ -111,7 +111,7 @@ const Home = ({ navigation }) => {
             key={card.id}
             name={card.name}
             imageUrl={BASE_IMG_URL + card.img}
-            onPress={() => handleCardClick(card.id)}  
+            onPress={() => handleCardClick(card.id)}
           />
         ))
       ) : (
@@ -143,8 +143,9 @@ const Home = ({ navigation }) => {
           />
         </View>
 
-        {selectedCategory === "MEUS CARTÕES" ? (
+        {selectedCategory === "CUSTOM" ? (
           <>
+            <Text style={styles.textCategory}>MEUS CARTÕES</Text>
             {renderUserCards()}
             <TouchableOpacity
               style={styles.createCardButton}
@@ -164,7 +165,7 @@ const Home = ({ navigation }) => {
                       key={card.id}
                       name={card.name}
                       imageUrl={BASE_IMG_URL + card.img}
-                      onPress={() => handleCardClick(card.id)}  
+                      onPress={() => handleCardClick(card.id)}
                     />
                   ))
                 ) : (
@@ -184,7 +185,7 @@ const Home = ({ navigation }) => {
                       key={card.id}
                       name={card.name}
                       imageUrl={BASE_IMG_URL + card.img}
-                      onPress={() => handleCardClick(card.id)}  
+                      onPress={() => handleCardClick(card.id)}
                     />
                   ))
                 ) : (
@@ -202,7 +203,7 @@ const Home = ({ navigation }) => {
                       key={card.id}
                       name={card.name}
                       imageUrl={BASE_IMG_URL + card.img}
-                      onPress={() => handleCardClick(card.id)}  
+                      onPress={() => handleCardClick(card.id)}
                     />
                   ))
                 ) : (
@@ -219,7 +220,7 @@ const Home = ({ navigation }) => {
       <CustomModal
         isVisible={isModalVisible}
         onClose={handleCloseModal}
-        cardId={selectedCard}  
+        cardId={selectedCard}
       />
     </View>
   );
@@ -285,7 +286,6 @@ const styles = StyleSheet.create({
   searchIcon: {
     width: 32,
     height: 32,
-    marginTop: 20,
   },
   cardsContainer: {
     display: "flex",
@@ -298,7 +298,7 @@ const styles = StyleSheet.create({
     gap: 40,
   },
   cardsScrollView: {
-    marginBottom: 30, 
+    marginBottom: 30,
   },
   textTitle: {
     fontFamily: "regular",
@@ -326,7 +326,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 25,
     alignSelf: "center",
     marginTop: 20,
-    marginLeft: "5%",
+    marginLeft: "2%",
   },
   createCardButtonText: {
     color: "#FFFFFF",

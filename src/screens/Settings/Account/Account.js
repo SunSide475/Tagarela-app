@@ -1,3 +1,4 @@
+import React, { useEffect } from "react";
 import { View, StyleSheet, Text, Image, TouchableOpacity } from "react-native";
 import Head from '../../../components/Head/Head';
 import Menu from '../../../components/Menu/Menu';
@@ -5,13 +6,12 @@ import icons from "../../../assets/icons/icons";
 import { useNavigation } from '@react-navigation/native';
 import useAuthStore from "../../../store/useAuthStore";
 import useUserId from "../../../hooks/useUserId";
-import React, { useEffect } from "react";
 import { Loading } from "../../../components/Loading/Loading";
 import useLoadFont from "../../../hooks/useLoadFont";
 
 const Account = () => {
   const navigation = useNavigation();
-  const { getUserInfo, userInfo, loading } = useAuthStore();
+  const { getUserInfo, userInfo, loading, logout } = useAuthStore();
   const { userId } = useUserId();
 
   const { fontsLoaded } = useLoadFont(
@@ -29,10 +29,23 @@ const Account = () => {
     }
   }, [userId, getUserInfo]);
 
+  const handleLogout = async () => {
+    try {
+      const result = await logout();
+      if (result.success) {
+        navigation.navigate('Login');
+      } else {
+        console.error(result.error);
+      }
+    } catch (error) {
+      console.error("Erro ao tentar fazer logout:", error);
+    }
+  };
+
   if (!fontsLoaded || loading || !userInfo) {
     return <Loading />;
   }
-  
+
   const handleEditAccount = () => {
     navigation.navigate('EditAccount');
   };
@@ -62,9 +75,10 @@ const Account = () => {
             <Text style={styles.text}>Senha</Text>
             <Text style={styles.value}>********</Text>
           </View>
-
+          <TouchableOpacity style={styles.logoutBtn} onPress={handleLogout}>
+            <Text style={styles.logoutBtnText}>SAIR</Text>
+          </TouchableOpacity>
         </View>
-        
       </View>
       <Menu />
     </>
@@ -80,6 +94,21 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     paddingTop: 200,
+  },
+  logoutBtn: {
+    width: "50%",
+    height: "10%",
+    borderRadius: 10,
+    backgroundColor: "#FF9900",
+    display: "flex",
+    justifyContent: "center",
+    alignSelf: "center",
+    marginTop: "18%"
+  },
+  logoutBtnText: {
+    color: "#FFFFFF",
+    fontSize: 24,
+    textAlign: "center"
   },
   title: {
     fontFamily: "semiBold",

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Text, TextInput, TouchableOpacity, Image } from "react-native";
+import { View, StyleSheet, Text, TextInput, TouchableOpacity, Image, Modal } from "react-native";
 import Head from '../../../components/Head/Head';
 import Menu from '../../../components/Menu/Menu';
 import icons from "../../../assets/icons/icons";
@@ -28,6 +28,7 @@ const EditAccount = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isUpdating, setIsUpdating] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     if (userId) {
@@ -64,6 +65,19 @@ const EditAccount = () => {
     }
   };
 
+  const handleEditPress = () => {
+    setShowModal(true); 
+  };
+
+  const handleCancel = () => {
+    setShowModal(false); 
+  };
+
+  const handleConfirmEdit = () => {
+    handleUpdateAccount();
+    setShowModal(false);
+  };
+
   if (!fontsLoaded || loading || isUpdating || !userInfo) {
     return <Loading />; 
   }
@@ -82,7 +96,7 @@ const EditAccount = () => {
           <Text style={styles.title}>EDITAR CONTA</Text>
         </View>
         <View style={styles.settingsActions}>
-          <TouchableOpacity onPress={handleUpdateAccount}>
+          <TouchableOpacity onPress={handleEditPress}> 
             <Image source={icons.edit.src} style={styles.iconEdit} accessibilityLabel={icons.edit.alt} />
           </TouchableOpacity>
         </View>
@@ -116,10 +130,32 @@ const EditAccount = () => {
             />
           </View>
         </View>
-        <TouchableOpacity style={styles.button} onPress={handleUpdateAccount}>
+        <TouchableOpacity style={styles.button} onPress={handleEditPress}>
           <Text style={styles.buttonText}>EDITAR</Text>
         </TouchableOpacity>
       </KeyboardAwareScrollView>
+
+      <Modal
+        visible={showModal}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={handleCancel}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalText}>TEM CERTEZA QUE DESEJA{"\n"} EDITAR?</Text>
+            <View style={styles.modalButtons}>
+              <TouchableOpacity style={[styles.modalButton, {backgroundColor: "#FFF"}]} onPress={handleCancel}>
+                <Text style={[styles.modalButtonText, {color: "#000"}]}>VOLTAR</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.modalButton} onPress={handleConfirmEdit}>
+                <Text style={styles.modalButtonText}>EDITAR</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
       <Menu />
     </>
   );
@@ -196,6 +232,42 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontFamily: "semiBold",
     color: "#fff",
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    gap: 30,
+    backgroundColor: 'white',
+    paddingHorizontal: 10,
+    paddingVertical: 40,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  modalText: {
+    fontFamily: 'semiBold',
+    fontSize: 20,
+    fontFamily: 'medium',
+    marginBottom: 20,
+  },
+  modalButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  modalButton: {
+    paddingVertical: 5,
+    paddingHorizontal: 50,
+    margin: 5,
+    backgroundColor: '#FF9900',
+    borderRadius: 5,
+  },
+  modalButtonText: {
+    color: '#fff',
+    fontSize: 20,
+    fontFamily: 'semiBold',
   },
 });
 

@@ -327,6 +327,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginTop: 20,
     marginLeft: "2%",
+    marginBottom: 40
   },
   createCardButtonText: {
     color: "#FFFFFF",

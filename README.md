@@ -98,6 +98,10 @@ Antes de começar, certifique-se de ter instalado:
 │   │   │   └── Register.js      # Tela de cadastro
 │   ├── Settings/
 │   │   └── Settings.js          # Tela de configurações
+│   │   ├── Account/             
+│   │   │   └── Account.js       # Tela de conta do usuário
+│   │   └── EditAccount/            
+│   │       └── EditAccount.js   # Tela de edição da dados da conta do usuário
 │   ├── TestCard/
 │   │   └── TestCard.js          # Componente de teste
 ├── store/                       # Armazenamento de estado global (Zustand)

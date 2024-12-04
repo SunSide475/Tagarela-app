@@ -17,7 +17,10 @@ Com uma interface simples e adaptada, o Tagarela permite que as crianças clique
 - Animações com Pop-ups: Mensagens animadas com o hook usePopUp.
 - Menu Dinâmico: Navegação simples e prática entre as telas do aplicativo.
 - Configurações: Gerenciamento de preferências do usuário.
-- Tela de Testes: Componente para testes e exibição de dados.
+- Dados do Usuário: Edição de dados do usuário
+- Tela de fila: Tela para auxílio na comunicação da criança com os pais.
+- Cadastro de cards: Tela para cadastro de cards personalizados.
+
 
 ## 💡 Tecnologias Utilizadas
 
@@ -100,7 +103,8 @@ Antes de começar, certifique-se de ter instalado:
 ├── store/                       # Armazenamento de estado global (Zustand)
 │   ├── useAuthStore.js          # Gerencia o estado de autenticação do usuário
 │   ├── useCardsStore.js         # Gerencia o estado dos cards
-│   └── useGameStore.js          # Gerencia o estado dos jogos do quiz
+│   ├── useGameStore.js          # Gerencia o estado dos jogos do quiz
+│   └── useIPStore.js            # Gerencia o estado do IP para requisições de API
 ├── utils/                       # Funções utilitárias
 │   └── separateSyllables.js     # Função que se´para as silabas de uma palavra
 ├── .gitignore                   # Arquivos a serem ignorados pelo Git
@@ -108,3 +112,22 @@ Antes de começar, certifique-se de ter instalado:
 ```
 ## 🛠️ Uso
 Para uma melhor experiência, recomenda-se usar um dispositivo móvel ou um emulador com a resolução de tela apropriada. Você pode ajustar as configurações de exibição no seu dispositivo, se necessário.
+
+### Como configurar o IP para acessar a API local no dispositivo físico e emulador Android
+
+Ao rodar o projeto em diferentes ambientes, é necessário configurar corretamente o endereço IP para que o aplicativo consiga acessar a API que está rodando localmente. A seguir, explicamos como fazer isso dependendo do ambiente em que você está rodando o projeto:
+
+#### 1. Dispositivo físico (com Expo Go)
+- Se o aplicativo estiver rodando em um dispositivo físico utilizando o **Expo Go**, você precisa configurar o IP da sua máquina local para que o dispositivo consiga acessar a API.
+- Para isso, abra o arquivo `useIPStore.js` que está na pasta `store` do seu projeto.
+- No estado `ip` dentro desse arquivo, insira o **IP da sua máquina** (você pode encontrar o IP local da sua máquina usando comandos como `ipconfig` no Windows ou `ifconfig` no Linux/macOS).
+
+#### 2. Emulador Android (Android Studio)
+- Se o aplicativo estiver rodando em um **emulador Android** (Android Studio), o endereço IP da máquina local não funcionará diretamente. Isso ocorre porque o emulador Android não consegue acessar a API usando o IP local da máquina.
+- No caso do **emulador Android**, o endereço IP que você deve usar é o **10.0.2.2**. Este é o IP de loopback (ou "localhost") específico para o emulador Android, que permite que ele acesse a API rodando na máquina host.
+
+#### Resumo
+- **Em dispositivo físico com Expo Go**: Coloque o **IP da sua máquina** no estado `ip` de `useIPStore.js`.
+- **Em emulador Android (Android Studio)**: Use **10.0.2.2** como o IP no estado `ip` de `useIPStore.js`.
+
+Essa configuração é necessária para garantir que o aplicativo consiga acessar a API local, seja em um dispositivo físico ou emulador.

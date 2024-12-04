@@ -15,7 +15,8 @@ import axios from "axios";
 import Head from "../../components/Head/Head";
 import Menu from "../../components/Menu/Menu";
 import useUserId from "../../hooks/useUserId";
-import useIPStore from "../../store/useIPStore"
+import useIPStore from "../../store/useIPStore";
+import { Loading } from "../../components/Loading/Loading";
 import * as DocumentPicker from "expo-document-picker";
 
 const { width, height } = Dimensions.get("window");
@@ -29,8 +30,8 @@ const RegisterCard = () => {
   const [name, setName] = useState("");
   const [syllables, setSyllables] = useState("");
   const { userId } = useUserId();
-  const { ip } = useIPStore()
-
+  const { ip } = useIPStore();
+  const [isLoading, setIsLoading] = useState(false); 
 
   const getBlobFromUri = async (uri) => {
     try {
@@ -48,7 +49,7 @@ const RegisterCard = () => {
       const result = await DocumentPicker.getDocumentAsync({
         type: "image/*",
       });
-      if (result.type === "cancel") return; 
+      if (result.type === "cancel") return;
       console.log("Selected image:", result.uri);
       const image = {
         uri: result.assets[0].uri,
@@ -72,7 +73,7 @@ const RegisterCard = () => {
       const video = {
         uri: result.assets[0].uri,
         name: result.assets[0].name,
-        type: result.assets[0].mimeType || "video/mp4", 
+        type: result.assets[0].mimeType || "video/mp4",
         size: result.assets[0].size,
       };
       setVideo(video);
@@ -91,7 +92,7 @@ const RegisterCard = () => {
       const audio = {
         uri: result.assets[0].uri,
         name: result.assets[0].name,
-        type: result.assets[0].mimeType || "audio/mpeg", 
+        type: result.assets[0].mimeType || "audio/mpeg",
         size: result.assets[0].size,
       };
       setAudio(audio);
@@ -105,6 +106,8 @@ const RegisterCard = () => {
       Alert.alert("Erro", "Por favor, preencha todos os campos e envie uma imagem ou vídeo.");
       return;
     }
+
+    setIsLoading(true);
 
     const formData = new FormData();
 
@@ -142,6 +145,8 @@ const RegisterCard = () => {
         }
       );
 
+      setIsLoading(false); 
+
       if (response.status === 201) {
         Alert.alert("Sucesso", "Cartão cadastrado com sucesso!");
         setImage(null);
@@ -149,15 +154,20 @@ const RegisterCard = () => {
         setAudio(null);
         setName("");
         setSyllables("");
-        navigation.navigate("Home")
+        navigation.navigate("Home");
       } else {
         Alert.alert("Erro", response.data.message || "Erro ao cadastrar o cartão.");
       }
     } catch (error) {
+      setIsLoading(false);
       Alert.alert("Erro", "Falha na comunicação com a API.");
       console.error(error);
     }
   };
+
+  if (isLoading) {
+    return <Loading />
+  }
 
   return (
     <View style={styles.container}>
@@ -216,6 +226,7 @@ const RegisterCard = () => {
           <Text style={styles.submitButtonText}>SALVAR CARTÃO</Text>
         </TouchableOpacity>
       </ScrollView>
+ 
 
       <Menu />
     </View>

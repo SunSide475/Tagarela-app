@@ -97,8 +97,8 @@ const styles = StyleSheet.create({
   },
   logoutBtn: {
     width: "50%",
-    height: "10%",
-    borderRadius: 10,
+    height: "9%",
+    borderRadius: 5,
     backgroundColor: "#FF9900",
     display: "flex",
     justifyContent: "center",
@@ -107,7 +107,8 @@ const styles = StyleSheet.create({
   },
   logoutBtnText: {
     color: "#FFFFFF",
-    fontSize: 24,
+    fontSize: 18,
+    fontFamily: "semiBold",
     textAlign: "center"
   },
   title: {

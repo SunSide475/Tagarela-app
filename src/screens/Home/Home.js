@@ -128,7 +128,7 @@ const Home = ({ navigation }) => {
         <View style={styles.carouselContainer}>
           <TouchableOpacity
             onPress={() => navigation.navigate("Search")}
-            style={[styles.searchIconContainer, { marginTop: height > 800 ? height * 0.18 : height * 0.15 }]}
+            style={[styles.searchIconContainer, { marginTop: height > 800 ? height * 0.18 : height * 0.18 }]}
           >
             <Image source={icons.searchPurple.src} style={styles.searchIcon} />
           </TouchableOpacity>
